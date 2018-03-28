@@ -6,9 +6,9 @@ const testAroma = {
     cache: {},
     template: `
             <div class="content">
-                <div class="main">
+                <div class="main" style="position:relative;">
                     <div class="gifts-box-logo">
-                            <img src="http://pe1s.static.pdr365.com/minorite/testAroma/testAroma_logo.png" alt="">
+                        <img src="http://pe1s.static.pdr365.com/minorite/testAroma/testAroma_logo.png" alt="">
                     </div>
 
                     <!-- content-nav start -->
@@ -41,6 +41,20 @@ const testAroma = {
                         </ul>
                     </div>
                     <!-- slide-nav end -->
+
+                    <!--浮动元素开始-->
+                    <div class="slide slide_left">
+                        <div class="parallax-item ta-parallax-item-l-c" data-speed="0.2"> 
+                            <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_3.png">
+                        </div>
+                    </div>
+                    <div class="slide slide_right">
+                        <div class="parallax-item ta-parallax-item-r-c" data-speed="0.2"> 
+                            <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_4.png">
+                        </div>
+                    </div>
+                    <!--浮动元素结束-->
+                    
                 </div>
             </div>      
 	`, data: function () {
@@ -71,6 +85,8 @@ const testAroma = {
                     this.testAromaImgList = d.obj;
                 }
             });
+        //页面两侧浮动元素
+        float();
     }, methods: {
         clickNav(index) {
             this.slideSelected = index;

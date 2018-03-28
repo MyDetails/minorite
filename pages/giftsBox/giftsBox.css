@@ -121,3 +121,19 @@
     height: 30px;
     color: #1b1b1b;
   }
+
+    /*页面两侧浮动元素*/
+    .gb-parallax-item-l-c {
+      position: absolute;
+      right: 0;
+      top: 450px;
+      width: 216px;
+      height: 380px;
+    }
+    .gb-parallax-item-r-c {
+      position: absolute;
+      right: 0;
+      top: 200px;
+      width: 216px;
+      height: 300px;
+    }

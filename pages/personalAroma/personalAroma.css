@@ -121,3 +121,18 @@
     height: 30px;
     color: #1b1b1b;
   }
+/*浮动元素*/
+  .pa-parallax-item-l-c {
+    position: absolute;
+    right: 0;
+    top: 450px;
+    width: 216px;
+    height: 380px;
+  }
+  .pa-parallax-item-r-c {
+    position: absolute;
+    right: 0;
+    top: 200px;
+    width: 216px;
+    height: 300px;
+  }

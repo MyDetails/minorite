@@ -1,0 +1,15 @@
+/*页面两侧浮动元素*/
+.vc-parallax-item-l-c {
+    position: absolute;
+    right: 0;
+    top: 300px;
+    width: 216px;
+    height: 380px;
+  }
+  .vc-parallax-item-r-c {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 216px;
+    height: 300px;
+  }

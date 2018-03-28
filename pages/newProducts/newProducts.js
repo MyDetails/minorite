@@ -5,13 +5,6 @@
 const newProducts = {
     cache: {},
     template: `
-		
-        
-
-
-
-
-
         <div class="content brand-content">
             <div class="main" style="position:relative;">
                 <div class="title-logo" style="width:175px;heigth:145px;">
@@ -94,9 +87,6 @@ const newProducts = {
 
             </div>
         </div>
-
-
-
 	`, data: function () {
         return {
             brandImgList: [],

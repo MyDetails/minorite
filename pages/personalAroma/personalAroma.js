@@ -6,7 +6,7 @@ const personalAroma = {
     cache: {},
     template: `
         <div class="content">
-            <div class="main">
+            <div class="main" style="position:relative;">
                 <div class="personal-aroma-logo">
                         <img src="http://pe1s.static.pdr365.com/minorite/personalAroma/personalArome-logo.png" alt="">
                 </div>
@@ -75,6 +75,18 @@ const personalAroma = {
                         <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
                     </ul>
                 </div>
+
+                <div class="slide slide_left">
+                    <div class="parallax-item pa-parallax-item-l-c" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_3.png">
+                    </div>
+                </div>
+                <div class="slide slide_right">
+                    <div class="parallax-item pa-parallax-item-r-c" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_4.png">
+                    </div>
+                </div>
+
             </div>
         </div>
 	`, data: function () {
@@ -200,6 +212,8 @@ const personalAroma = {
                 });
             });
         })
+        //浮动元素
+        float();
     }, methods: {
         clickNav(index) {
             this.slideSelected = index;

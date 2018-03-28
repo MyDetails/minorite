@@ -6,7 +6,7 @@ const furnitureAroma = {
     cache: {},
     template: `
             <div class="content">
-                <div class="main">
+                <div class="main" style="position:relative;">
                     <div class="furniture-aroma-logo">
                             <img src="http://pe1s.static.pdr365.com/minorite/furnitureAroma/furnitureAroma-logo.png" alt="">
                     </div>
@@ -24,24 +24,36 @@ const furnitureAroma = {
                     <slide-nav></slide-nav>
 
                     <div class="slide-nav-right">
-                <ul class="furnitureAroma-img-list">
-                <li v-for="item in furnitureAromaImgList" :key="item.goods.id">
-                    <div class="furnitureAroma-img">
-                    <router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;">
-                        <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
-                    </router-link>
+                        <ul class="furnitureAroma-img-list">
+                            <li v-for="item in furnitureAromaImgList" :key="item.goods.id">
+                                <div class="furnitureAroma-img">
+                                    <router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;">
+                                        <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
+                                    </router-link>
+                                </div>
+                                <p>{{item.cat.catNameEn}}</p>
+                                <p>{{item.goods.goods_name}}</p>
+                                <p>¥{{item.goods.goods_price / 100}}</p>
+                            </li>
+                        </ul>
+                        <ul class="page-list">
+                            <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
+                        </ul>
                     </div>
-                    <p>{{item.cat.catNameEn}}</p>
-                    <p>{{item.goods.goods_name}}</p>
-                    <p>¥{{item.goods.goods_price / 100}}</p>
-                </li>
-                </ul>
-                <ul class="page-list">
-                <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
-                </ul>
-            </div>
                     <!-- slide-nav end -->
                     
+                    <!--浮动元素开始-->
+                    <div class="slide slide_left">
+                        <div class="parallax-item fa-parallax-item-l-c" data-speed="0.2"> 
+                            <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_3.png">
+                        </div>
+                    </div>
+                    <div class="slide slide_right">
+                        <div class="parallax-item fa-parallax-item-r-c" data-speed="0.2"> 
+                            <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_4.png">
+                        </div>
+                    </div>
+                    <!--浮动元素结束-->
                 </div>
             </div>
 	`, data: function () {
@@ -104,7 +116,8 @@ const furnitureAroma = {
                     }
                 });
         }
-
+        //浮动元素
+        float();
 
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();

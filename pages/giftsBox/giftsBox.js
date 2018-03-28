@@ -24,22 +24,22 @@ const giftsBox = {
 					<slide-nav></slide-nav>
 
 					<div class="slide-nav-right">
-				<ul class="giftsBox-img-list">
-				<li v-for="item in giftsBoxImgList" :key="item.goods.id">
-					<div class="giftsBox-img">
-					<router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;">
-                        <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
-                    </router-link>
+						<ul class="giftsBox-img-list">
+							<li v-for="item in giftsBoxImgList" :key="item.goods.id">
+								<div class="giftsBox-img">
+								<router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;">
+									<img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
+								</router-link>
+								</div>
+								<p v-if="item.cat">{{item.cat.catNameEn}}</p>
+								<p>{{item.goods.goods_name}}</p>
+								<p>¥{{item.goods.goods_price / 100}}</p>
+							</li>
+						</ul>
+						<ul class="page-list">
+							<li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
+						</ul>
 					</div>
-					<p v-if="item.cat">{{item.cat.catNameEn}}</p>
-					<p>{{item.goods.goods_name}}</p>
-					<p>¥{{item.goods.goods_price / 100}}</p>
-				</li>
-				</ul>
-				<ul class="page-list">
-				<li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
-				</ul>
-			</div>
 					<!-- slide-nav end -->
 					
 				</div>

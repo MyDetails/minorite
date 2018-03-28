@@ -198,6 +198,30 @@
       justify-content: center;
       align-items: center;
   }
+
+
+  .index-parallax-item-top {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 216px;
+    height: 380px;
+  }
+  .index-parallax-item-bottom {
+    position: absolute;
+    right: 0;
+    top: 1200px;
+    width: 216px;
+    height: 400px;
+  }
+  .index-parallax-item-center {
+    position: absolute;
+    right: 0;
+    top: 500px;
+    bottom: 0;
+    width: 216px;
+    height: 620px;
+  }
   
   
   

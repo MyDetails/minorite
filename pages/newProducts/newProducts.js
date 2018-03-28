@@ -5,28 +5,36 @@
 const newProducts = {
     cache: {},
     template: `
-		<div class="newProducts-box"><!-- 固定 容器-->
-            <!-- 新品上架开始 -->
-            <div class="newProducts-top">
-                <div class="newProducts">
-                    <div class="newProducts-title-box">
-                        <img class="newProducts-title" src="http://pe1s.static.pdr365.com/new-arrival_03.png">
-                        <img class="newProducts-title-p" src="http://pe1s.static.pdr365.com/newp_03.png">
-                    </div>
+		
+        
 
-                    <!-- content-nav start -->
-                    <div class="content-nav">
-                        <p>
-                            <span>首页</span> > 
-                            <span>新品上市</span>
-                        </p>
-                    </div>
-                    <!-- content-nav end -->
 
-                    <!-- slide-nav start -->
-                    
-                    <slide-nav></slide-nav>
-                    <!-- slide-nav end -->
+
+
+
+        <div class="content brand-content">
+            <div class="main" style="position:relative;">
+                <div class="title-logo" style="width:175px;heigth:145px;">
+                    <img src="http://pe1s.static.pdr365.com/new-arrival_03.png" alt="">
+                </div>
+
+                <!-- content-nav start -->
+                <div class="content-nav">
+                    <p>
+                        <span>首页</span> > 
+                        <span>所有品牌</span>
+                    </p>
+                </div>
+                <!-- content-nav end -->
+
+                <!-- slide-nav start -->
+
+                <slide-nav></slide-nav>
+                
+                <!-- slide-nav end -->
+
+                <!--新品上架开始-->
+                <div class="slide-nav-right" style="margin-bottom:250px;">
                     <div class="newProducts-list-box">
                         <div class="newProducts-list" v-for="item in newProducts" :key="item.goods.id">
                             <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="display: block;background:transparent;">
@@ -41,19 +49,18 @@ const newProducts = {
                         <router-link :to="{path: '/'}" style="color: #a62126;">更多>></router-link>
                         </p>
                     </div>
-                </div>
-                <div class="newProducts-postion-img">
-                    <img src="http://pe1s.static.pdr365.com/new-arrivalxian_10.png"/>
-                </div>
-            </div>
-            <!-- 新品上架结束 -->
-
-            <!-- 销售排行开始 -->
-            <div class="newProducts-bottom-box">
-                <div class="newProducts-bottom">
-                    <div class="newProducts-b-title-box">
-                        <img class="newProducts-b-title" src="http://pe1s.static.pdr365.com/new-arrival_13.png">
+                    <div class="newProducts-b-postion-img" style="top:0;">
+                        <img src="http://pe1s.static.pdr365.com/new-arrivalxian_38.png" style="margin-top:380px;">
                     </div>
+                </div>
+                <!-- 新品上架结束 -->
+
+
+                <!--销售排行开始-->
+                <div class="title-logo" style="width:120px;heigth:145px;float:left;margin-left:540px;">
+                    <img src="http://pe1s.static.pdr365.com/new-arrival_13.png" alt="">
+                </div>
+                <div class="slide-nav-right" style="position:relative;">
                     <div class="newProducts-list-bottom-box">
                         <div class="newProducts-list-b" v-for="(item, index) in salesRankingList" :key="item.goods.id">
                             <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="display:block;padding:10px;transparent;">
@@ -64,15 +71,32 @@ const newProducts = {
                             <p class="newProducts-list-b-info">{{item.goods.goods_name}}</p>
                             <p class="newProducts-list-b-money">¥{{item.goods.goods_price / 100}}</p>
                         </div>
-                        
+                    </div>
+                    <div class="newProducts-b-postion-img" style="top:0;">
+                        <img src="http://pe1s.static.pdr365.com/new-arrivalxian_38.png" style="margin-top:180px;">
                     </div>
                 </div>
-                <div class="newProducts-b-postion-img">
-                    <img src="http://pe1s.static.pdr365.com/new-arrivalxian_38.png"/>
-                </div>
-            </div>
+                <!--销售排行结束-->
 
-		</div>
+                <div class="slide slide_left">
+                    <div class="parallax-item np-parallax-item-center" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_01.png">
+                    </div>
+                </div>
+                <div class="slide slide_right">
+                    <div class="parallax-item np-parallax-item-top" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_02.png">
+                    </div>
+                    <div class="parallax-item np-parallax-item-bottom" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_03.png">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
 	`, data: function () {
         return {
             brandImgList: [],
@@ -92,7 +116,7 @@ const newProducts = {
         if (this.cat_id === '0') {
             window.scrollTo(0, 0);
         } else if (this.cat_id === '1') {
-            window.scrollTo(0, 1374);
+            window.scrollTo(0, 715);
         }
         //获取新品上市
         let pk2 = "tcss.goods.by.cat";
@@ -111,6 +135,9 @@ const newProducts = {
             .then(d => {
                 this.salesRankingList = d.obj.slice(0, 10);
             });
+
+        //页面两侧浮动元素
+        float();
 
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();

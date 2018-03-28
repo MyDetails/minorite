@@ -49,15 +49,15 @@ const index = {
           </ul>
           
           <div class="slide slide_left">
-              <div class="parallax-item parallax-item-top" data-speed="0.4"> 
+              <div class="parallax-item index-parallax-item-top" data-speed="0.2"> 
                 <img src="http://pe1s.static.pdr365.com/minorite/index/index_float_01.png">
               </div>
-              <div class="parallax-item parallax-item-bottom" data-speed="0.4"> 
+              <div class="parallax-item index-parallax-item-bottom" data-speed="0.2"> 
                 <img src="http://pe1s.static.pdr365.com/minorite/index/index_float_03.png">
               </div>
           </div>
           <div class="slide slide_right">
-              <div class="parallax-item parallax-item-center" data-speed="0.4"> 
+              <div class="parallax-item index-parallax-item-center" data-speed="0.2"> 
                 <img src="http://pe1s.static.pdr365.com/minorite/index/index_float_02.png">
               </div>
           </div>
@@ -583,6 +583,8 @@ const index = {
         this.newsList = d.obj.carddata.slice(0,3);
       }
     });
+    //页面两侧浮动元素
+    float();
   }, methods: {
     handleRender() {
       this.modal1 = true;

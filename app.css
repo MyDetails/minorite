@@ -1708,26 +1708,3 @@ background-color: #04593f;
   right: -250px;
   top: 0;
 }
-
-.parallax-item-top {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 216px;
-  height: 380px;
-}
-.parallax-item-bottom {
-  position: absolute;
-  right: 0;
-  top: 1400px;
-  width: 216px;
-  height: 400px;
-}
-.parallax-item-center {
-  position: absolute;
-  right: 0;
-  top: 600px;
-  bottom: 0;
-  width: 216px;
-  height: 620px;
-}

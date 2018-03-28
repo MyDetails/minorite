@@ -61,3 +61,34 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.ab-parallax-item-l-t {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 216px;
+  height: 380px;
+}
+.ab-parallax-item-l-b {
+  position: absolute;
+  right: 0;
+  top: 980px;
+  width: 216px;
+  height: 400px;
+}
+.ab-parallax-item-r-t {
+  position: absolute;
+  right: 0;
+  top: 380px;
+  bottom: 0;
+  width: 216px;
+  height: 620px;
+}
+.ab-parallax-item-r-b {
+  position: absolute;
+  right: 0;
+  top: 1800px;
+  bottom: 0;
+  width: 216px;
+  height: 620px;
+}

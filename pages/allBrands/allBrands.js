@@ -6,7 +6,7 @@ const allBrands = {
     cache: {},
     template: `
         <div class="content brand-content">
-            <div class="main">
+            <div class="main" style="position:relative;">
                 <div class="title-logo">
                     <img src="http://pe1s.static.pdr365.com/minorite/allBrands/all-brands-logo.png" alt="">
                 </div>
@@ -39,6 +39,23 @@ const allBrands = {
                     </li>
                     </ul>
                 </div>
+
+                <div class="slide slide_left">
+                    <div class="parallax-item ab-parallax-item-l-t" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_1.png">
+                    </div>
+                    <div class="parallax-item ab-parallax-item-l-b" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_3.png">
+                    </div>
+                </div>
+                <div class="slide slide_right">
+                    <div class="parallax-item ab-parallax-item-r-t" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_2.png">
+                    </div>
+                    <div class="parallax-item ab-parallax-item-r-b" data-speed="0.2"> 
+                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_4.png">
+                    </div>
+                </div>
                 
                 
             </div>
@@ -70,6 +87,8 @@ const allBrands = {
             .then(d => {
                 this.allBrands = d.obj.data;
             });
+            float();
+
     }, methods: {
         clickNav(index) {
             this.slideSelected = index;

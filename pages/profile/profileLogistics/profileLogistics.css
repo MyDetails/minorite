@@ -1,0 +1,30 @@
+.profileLogistics-content {
+    margin-top: 50px;
+}
+.profileLogistics-box {
+    float: right;
+    width: 940px;
+}
+.profileLogistics-title {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-radius: 2px;
+    background: #04593f;
+    color: #fff;
+    font-size: 14px;
+}
+.profileLogistics-title span:first-child {
+    margin-left: 30px;
+    font-size: 16px;
+}
+.profileLogistics-title span:nth-child(2) {
+    margin-left: 108px;
+}
+.profileLogistics-title span:last-child {
+    margin-left: 13px;
+}
+.profileLogistics-item {
+    margin-top: 30px;
+    padding-left: 30px;
+}

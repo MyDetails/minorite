@@ -1,0 +1,78 @@
+.offlineArtSpace-content {
+    margin-top: 270px;
+    background-position: center;
+  }
+  .offlineArtSpace-content-right {
+    float: left;
+    width: 950px;
+    height: 800px;
+    position: relative;
+    background: url("http://pe1s.static.pdr365.com/minorite/offlineArtSpace/artspace-bg.png") no-repeat center;
+  }
+  .art-space-box1,
+  .art-space-box2 {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 456px;
+    height: 310px;
+    box-shadow: -10px 10px 20px 3px #d9dad5;
+    border-radius: 5px;
+    color: #fff;
+    overflow: hidden;
+  }
+  .art-space-box::after {
+    display: block;
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    background: rgba(0, 0, 0, .6);
+    border-radius: 5px;
+    z-index: 1;
+  }
+  .art-space-box p {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+  }
+  .art-space-box:hover::after {
+    opacity: 1;
+  }
+  .art-space-box:hover p:first-child {
+    transform: translateY(-215px);
+    transition: .5s ease;
+  }
+  .art-space-box:hover p:last-child {
+    transform: translateY(-140px);
+    transition: .7s ease .3s;
+  }
+  .art-space-box p:first-child {
+    margin: 5px 0;
+    font-size: 38px;
+  }
+  .art-space-box p:last-child {
+    margin: 5px 0;
+    font-size: 12px;
+  }
+  .art-space-box p span {
+    border-bottom: 1px solid #fff;
+  }
+  .art-space-box1 {
+    left: 0;
+    top: 0;
+    background: url("http://pe1s.static.pdr365.com/minorite/offlineArtSpace/artSpace01.png") no-repeat;
+  }
+  .art-space-box2 {
+    left: 470px;
+    top: 320px;
+    background: url("http://pe1s.static.pdr365.com/minorite/offlineArtSpace/artSpace02.png") no-repeat;
+  }

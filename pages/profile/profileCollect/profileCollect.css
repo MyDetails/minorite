@@ -1,0 +1,65 @@
+.profileCollect-content {
+    margin-top: 50px;
+  }
+  .myCollect {
+    width: 940px;
+    float: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .myCollect-box {
+    float: left;
+    width: 940px;
+    height: auto;
+  }
+  .myCollect-list {
+    position: relative;
+    float: left;
+    margin-right: 70px;
+    margin-bottom: 70px;
+    width: 165px;
+    height: 250px;
+    background: #fff;
+  }
+  .myCollect-list:nth-child(4n) {
+    margin-right: 0;
+  }
+  .myCollect-list-img {
+    width: 165px;
+    height: 180px;
+  }
+  .myCollect-list-bot {
+    width: 165px;
+    height: 67px;
+    background: #0b3b25;
+  }
+  .myCollect-list-bot-title,
+  .myCollect-list-bot-pay {
+    width: 165px;
+    text-align: center;
+    height: 33px;
+    line-height: 33px;
+    color: #fff;
+  }
+  .myCollect-list-bot-fg {
+    width: 76%;
+    margin-left: 12%;
+    height: 1px;
+    background: #fff;
+  }
+  .myCollect-list-img-x {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+  }
+ .ivu-poptip-footer .ivu-btn-primary {
+   background-color: #0b3b25;
+   border-color: #0b3b25;
+ }

@@ -1,0 +1,171 @@
+.addToCar-content {
+    margin-top: 140px;
+  }
+  .personal-msg-container {
+    display: flex;
+    width: 100%;
+    border: 1px solid #ccc;
+  }
+  .personal-msg-item-container:first-child {
+    width: 348px;
+  }
+  .personal-msg-item-container:nth-child(2) {
+    width: 348px;
+  }
+  .personal-msg-item-container:nth-child(3) {
+    width: 505px;
+    background: #f4f1eb;
+  }
+  .personal-msg-item {
+    display: flex;
+    align-items: center;
+    height: 120px;
+    margin: 36px 0;
+    border-right: 1px solid #ccc;
+  }
+  .personal-msg-img {
+    width: 120px;
+    height: 120px;
+    margin-left: 20px;
+  }
+  .personal-msg-content {
+    margin-left: 26px;
+  }
+  .personal-msg-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #434343;
+  }
+  .change-pwd {
+    margin-top: 18px;
+  }
+  .change-pwd p {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #7d7d7d;
+  }
+  .phone-number {
+    margin-left: 55px;
+  }
+  .phone-number p {
+    font-size: 16px;
+  }
+  .phone-number p:first-child {
+    margin-bottom: 19px;
+  }
+  .address-details {
+    height: 192px;
+    margin: 0;
+    border: 0;
+  }
+  .address-details div:first-child {
+    margin-left: 70px;
+  }
+  .address-details p {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #434343;
+  }
+  .address-details p:first-child {
+    font-weight: bold;
+  }
+  .addToCar-table-container {
+    float: right;
+    width: 940px;
+  }
+  
+  .car-content {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .addToCar-total-price {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 65px;
+      background-color: #c6d9cf;
+      margin-left: -23px;
+      margin-right: -47px;
+  }
+  .addToCar-total-price p {
+      font-size: 12px;
+      color: #000;
+  }
+  .addToCar-total-price p span {
+      font-size: 36px;
+      font-weight: bold;
+      color: #04593f;
+  }
+  .addToCar-total-price input {
+      width: 158px;
+      height: 100%;
+      margin-left: 62px;
+      line-height: 65px;
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+      color: #fff;
+      background-color: #04593f;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  .car-address {
+      width: 100%;
+      text-align: right;
+  }
+  .car-address p{
+      padding-top: 17px;
+  }
+  .del {
+      margin: 10px 0;
+      margin-right: 20px;
+      color: #a62126;
+      background-color: #f7f9f3;
+      cursor: pointer; 
+  }
+  .del-go a{
+      color: #04593f;
+  }
+  .del-go input {
+    border-color: #f7f9f3;
+  }
+  .coupon {
+      margin-top: 47px;
+      width: 100%;
+      text-align: right;
+  }
+  .coupon span {
+      margin-left: 13px;
+      color: #000;
+  }
+  .coupon p {
+      margin-top: 18px;
+      color: #000;
+      text-align: right;
+  }
+  .goods-num {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+  }
+  .goods-num span {
+      color: rgb(125,125,125);
+      font-size: 12px;
+  }
+  .goods-num div {
+      color: #000;
+  }
+  .goods-num div span {
+      font-size: 14px;
+      color: #04593f;
+      font-weight: bold;
+  }
+  .count-accounts {
+      width: 940px;
+      float: right;
+      padding-left: 23px;
+      padding-right: 47px;
+      border: 1px solid #ccc;
+      border-top: 0;
+  }

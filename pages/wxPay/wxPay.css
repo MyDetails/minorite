@@ -1,0 +1,99 @@
+.wxPay-content {
+  margin-top: 50px;
+}
+.wxPay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #f7f9f3;
+  margin-top: 30px;
+}
+.wxPay-box {
+  width: 1200px;
+  height: auto;
+}
+.wxPay-top {
+  width: 1200px;
+  height: 60px;
+  background: #0b3b25;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wxPay-top-wx {
+  width: auto;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wxPay-top-title {
+  display: inline-block;
+  margin-left: 20px;
+}
+.wxPay-top img {
+  float: left;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+.wxPay-top-wp {
+  display: inline-block;
+  margin-right: 50px;
+}
+.wxPay-bot-box {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 115px;
+}
+.wxPay-bot-content {
+  width: 815px;
+  height: auto;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.wxPay-bot-pay,
+.wxPay-bot-hint {
+  height: auto;
+  font-size: 36px;
+  margin-top: 20px;
+  line-height: 1;
+  font-family: "pingfang";
+  color: #04593f;
+  font-weight: bold;
+  opacity: 0.7;
+}
+.wxPay-bot-content img {
+  width: 215px;
+  height: 215px;
+  margin-top: 35px;
+}
+.wxPay-bot-no {
+  font-size: 20px;
+  margin-top: 22px;
+  font-family: "pingfang";
+  color: #7d7d7d;
+}
+.wxPay-bot-time {
+  font-size: 20px;
+  margin-top: 10px;
+  font-family: "pingfang";
+  color: #7d7d7d;
+}
+#pay-img {
+  margin-top: 30px;
+}
+#pay-img td {
+  border: 0;
+}

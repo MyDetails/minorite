@@ -1,0 +1,63 @@
+.profileMsg-content {
+    margin-top: 50px;
+  }
+  .profileMsg-box {
+    width: 940px;
+    float: right;
+  }
+  .profileMsg-content-nav {
+    margin-top: 24px;
+  }
+  .personal-msg-btn .ivu-form-item-content {
+    margin-left: 0;
+  }
+  .personal-msg {
+    width: 100%;
+    margin-top: 50px;
+  }
+  
+  .ivu-avatar {
+    vertical-align: top;
+  }
+
+/* 更换头像 */
+.change-avatar .ivu-avatar-large {
+    width: 200px;
+    height: 200px;
+    line-height: 200px;
+    font-size: 100px;
+    border-radius: 2px;
+    margin-right: 40px;
+    background-color: #e9e9e9;
+  }
+  .change-avatar .ivu-avatar-default {
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    line-height: 100px;
+    margin-right: 40px;
+    border-radius: 2px;
+    background: #e9e9e9;
+  }
+  .change-avatar .ivu-avatar-small {
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    line-height: 50px;
+    border-radius: 2px;
+    background: #e9e9e9;
+  }
+  .personal-msg-tips {
+    margin-top: 30px;
+    margin-bottom: 12px;
+    font-weight: bold;
+  }
+  .upload-btn {
+    margin-top: 13px;
+    background-color: #fff;
+  }
+  .personal-msg-upload-tips {
+    float: right;
+    margin-top: 20px;
+    margin-left: 20px;
+  }

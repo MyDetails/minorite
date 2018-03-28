@@ -1,0 +1,123 @@
+.gifts-box-logo {
+    width: 175px;
+    height: 145px;
+    margin: 0 auto;
+    margin-top: 70px;
+  }
+  .giftsBox-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* width: 780px; */
+    margin: 0 auto;
+  }
+  .giftsBox-title-left {
+    width: 200px;
+    height: 200px;
+    margin-right: 56px;
+    color: #1b1b1b;
+  }
+  .giftsBox-title-right {
+    width: 512px;
+  }
+  .giftsBox-title-right p:first-child {
+    font-size: 26px;
+  }
+  .giftsBox-title-right p:last-child {
+    font-size: 12px;
+  }
+  
+  .slide-nav {
+    float: left;
+    width: 220px;
+    padding-top: 18px;
+    padding-left: 20px;
+    border-left: 1px solid #000;
+  }
+  .slide-nav-item p {
+    display: inline-block;
+    margin: 0;
+    padding: 6px;
+    color: #a62136;
+    font-size: 14px;
+    font-family: "nansong";
+    border-radius: 5px;
+  }
+  .slide-nav-item ol {
+    margin-left: 16px;
+  }
+  .slide-nav-hidden li {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  .slide-nav-hidden li a {
+    color: #1b1b1b;
+  }
+  .slide-nav-item p {
+  }
+  .slide-nav-item .slide-nav-active {
+    background-color: #c47676;
+    color: #fff;
+  }
+  .slide-nav-right {
+    display: flex;
+    align-items: center;
+    float: left;
+  }
+  
+  .giftsBox-img-list {
+    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    width: 890px;
+  }
+  .giftsBox-img-list li {
+    display: flex;
+    /* justify-content: space-between; */
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    height: 300px;
+  }
+  .giftsBox-img {
+    /* height: 190px; */
+  }
+  .giftsBox-img-list li p {
+    margin: 0;
+  }
+  .giftsBox-img-list li p:first-of-type {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #a62126;
+  }
+  .giftsBox-img-list li p:nth-of-type(2) {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #000;
+  }
+  .giftsBox-img-list li p:nth-of-type(3) {
+    font-size: 11px;
+    color: #000;
+  }
+  .page-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    float: right;
+    width: 68px;
+    text-align: center;
+    color: #1b1b1b;
+  }
+  .page-list li {
+    height: 30px;
+  }
+  .fade-end {
+    color: #9c9c9c;
+  }
+  .page-list li.current {
+    font-size: 26px;
+    line-height: 26px;
+    height: 30px;
+    color: #1b1b1b;
+  }

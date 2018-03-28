@@ -1,0 +1,200 @@
+
+.pay-methods-box {
+    display: flex;
+    margin-top: 41px;
+}
+.pay-methods {
+    display: inline-block;
+    vertical-align: middle;
+    width: 150px;
+    height: 40px;
+    margin-right: 45px;
+}
+.alipay img{
+    width: 112px;
+    height: 39px;
+}
+.wechat-pay img {
+    width: 124px;
+    height: 33px;
+}
+.union-pay img {
+    width: 121px;
+    height: 29px;
+}
+
+
+.pay-order-table .ivu-table-body .ivu-table-column-center {
+    border: 0;
+}
+
+
+.total-price {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 65px;
+    background-color: #c6d9cf;
+    margin-left: -27px;
+    margin-right: -27px;
+}
+.total-price p {
+    font-size: 12px;
+    color: #000;
+}
+.total-price p span {
+    font-size: 36px;
+    font-weight: bold;
+    color: #04593f;
+}
+.total-price input {
+    width: 158px;
+    height: 100%;
+    margin-left: 62px;
+    line-height: 65px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    background-color: #04593f;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.pay-car-address {
+    width: 100%;
+    text-align: right;
+}
+.pay-car-address p{
+    padding-top: 17px;
+    margin-bottom: 10px;
+    color: #7d7d7d;
+}
+.del {
+    margin: 10px 0;
+    margin-right: 20px;
+    color: #a62126;
+    background-color: #f7f9f3;
+    cursor: pointer; 
+}
+.del-go a{
+    color: #04593f;
+}
+.pay-coupon {
+    margin-top: 47px;
+    width: 100%;
+    text-align: right;
+    color: #7d7d7d;
+}
+.pay-coupon span {
+    margin-left: 8px;
+}
+.pay-coupon p {
+    margin-top: 18px;
+    text-align: right;
+}
+.pay-goods-num {
+    margin-top: 10px;
+}
+.pay-goods-num span {
+    color: rgb(125,125,125);
+    font-size: 12px;
+}
+.pay-goods-num p{
+    text-align: right;
+    color: #000;
+}
+.pay-goods-num p:first-child span {
+    font-size: 14px;
+    color: #04593f;
+    font-weight: bold;
+}
+.pay-goods-num p:nth-child(2) {
+    margin-top: 5px;
+    color: rgb(111, 111, 111);
+}
+.pay-goods-num p:last-child {
+    font-size: 16px;
+    color: #434343;
+    font-weight: bold;
+    text-align: left;
+}
+.pay-count-accounts {
+    border: 0;
+}
+
+
+
+.pay-order-title {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #434343;
+    font-weight: bold;
+}
+.pay-order-table {
+    border: 0;
+}
+
+.pay-order-box {
+    padding-left: 27px;
+    padding-right: 27px;
+}
+
+.line {
+  width: 100%;
+  height: 0;
+  border-bottom: 1px solid #000;
+}
+
+.comfirm-address {
+  text-align: right;
+}
+.address-btn {
+  float: right;
+  width: 130px;
+  height: 40px;
+  background-color: #04593f;
+  color: #fff;
+  font-size: 18px;
+}
+.phone-input div {
+  width: 150px;
+}
+.name-input div {
+  width: 150px;
+}
+.abbreviation-input div {
+  width: 100px;
+}
+.address-input div {
+  width: 400px;
+}
+.editor-address-box {
+  padding: 27px;
+}
+.editor-address-box p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #434343;
+  margin-bottom: 20px;
+}
+
+.pay-content {
+  margin-top: 50px;
+}
+.pay-box {
+  float: right;
+  width: 940px;
+  border: 1px solid #dddee1;
+  border-radius: 3px;
+}
+.pay-box-title {
+  width: 100%;
+  height: 60px;
+  background-color: #04593f;
+  border-radius: 3px;
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  line-height: 60px;
+  padding-left: 30px;
+}

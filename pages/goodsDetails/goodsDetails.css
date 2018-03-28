@@ -1,0 +1,304 @@
+.xiahuaxian {
+  width: 42px;
+  height: 10px;
+  margin: 0 auto;
+  background: #a62126;
+}
+.collect {
+  color: #f7c83c;
+  font-size: 16px;
+  padding-top: 3px;
+}
+.collect-word,
+.collect {
+  cursor: pointer;
+}
+.brand-about {
+  margin-top: 200px;
+}
+.brand-about img {
+  min-width: 1200px;
+  min-height: 1671px;
+}
+.gd-content-nav {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #aaa;
+  font-family: 'nansong';
+}
+.gd-content-nav p {
+    border-left: 0;
+}
+.gd-details-container {
+    display: flex;
+    height: 610px;
+  }
+  .gd-details-left {
+    width: 400px;
+    height: 100%;
+    margin-right: 32px;
+  }
+  .gd-details-imgList {
+    display: flex;
+    /* justify-content: space-between; */
+    width: 100%;
+  }
+  .gd-details-imgList li {
+    /* width: 86px; */
+    /* height: 86px; */
+    width: 25%;
+    height: 100px;
+    padding-right: 10px;
+    box-sizing: border-box;
+  }
+  .gd-details-imgList li:nth-child(4) {
+    padding-right: 0;
+  }
+  .gd-details-right {
+    width: 100%;
+  }
+  .gd-details-bigImage {
+    width: 400px;
+    height: 400px;
+    margin-bottom: 23px;
+    background: #fff;
+  }
+  .gd-details-title {
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+  .gd-details-desc {
+    font-size: 22px;
+    color: #000;
+    font-weight: bold;
+  }
+  .gd-details-name {
+    display: flex;
+    height: 16px;
+  }
+  .gd-details-name span:first-child {
+    font-size: 16px;
+    color: #aaa;
+    margin-right: 11px;
+  }
+  .gd-details-name span:nth-child(2) {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+  }
+  .gd-details-name span:nth-child(3) {
+    padding-top: 3px;
+    font-size: 11px;
+    color: #959595;
+  }
+  .gd-details-price {
+    display: flex;
+    align-items: center;
+    margin-top: 22px;
+    height: 54px;
+    color: #fff;
+    background-color: #a62126;
+  }
+  .gd-details-price span:first-child {
+    font-size: 12px;
+    margin: 0 10px;
+  }
+  .gd-details-price span:nth-child(2) {
+    margin-right: 40px;
+    font-size: 26px;
+  }
+  .gd-details-price span:nth-child(3) {
+    padding: 3px 6px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    font-size: 11px;
+  }
+  .gd-details-price span:nth-child(4) {
+    margin-left: 10px;
+    font-size: 11px;
+  }
+  .order-item {
+    display: flex;
+    align-items: center;
+  }
+  .order-item span:first-child {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #626262;
+  }
+  .capacity {
+    width: 670px;
+    height: 86px;
+    border-bottom: 1px solid rgb(150, 149, 149);
+  }
+  .capacity ul {
+    display: flex;
+    margin-left: 10px;
+  }
+  .capacity ul li {
+    font-size: 12px;
+    color: #626262;
+    margin-right: 10px;
+    padding: 2px 5px;
+    border: 1px solid rgb(150, 149, 149);
+    border-radius: 3px;
+  }
+  .support {
+    margin-top: 32px;
+    margin-bottom: 23px;
+  }
+  .support span:nth-child(2) {
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #11593f;
+  }
+  .address-container {
+    margin-bottom: 23px;
+  }
+  .address {
+    padding: 10px;
+    margin-left: 10px;
+    background: #f7f9f3;
+  }
+  .service {
+    margin-bottom: 22px;
+  }
+  .service span:nth-child(2) {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #626262;
+  }
+  .num {
+    margin-bottom: 28px;
+  }
+  .counter {
+    display: flex;
+    width: 80px;
+    height: 40px;
+    margin-left: 10px;
+  }
+  .counter-left {
+    width: 70%;
+    border: 1px solid rgb(166, 166, 166);
+    border-radius: 5px; 
+    line-height: 30px;
+    font-size: 14px;
+  }
+  .counter-left input {
+    width: 100%;
+    height: 38px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  .counter-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+  }
+  .counter-plus,
+  .counter-reduce {
+    font-size: 11px;
+    margin-left: 3px;
+    border: 1px solid rgb(166, 166, 166);
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .pay,
+  .addCar {
+    float: left;
+    margin-right: 20px;
+    width: 130px;
+    height: 40px;
+  }
+  .btn-pay {
+    background-color: #a62126;
+  }
+  .btn-addCar {
+    background-color: #11593f;
+  }
+  .btn-pay,
+  .btn-addCar {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  /****** advertisement ******/
+
+  .advertisement-title {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    background-image: url("http://pe1s.static.pdr365.com/minorite/goodsDetails/fenge.png");
+  }
+  .advertisement-title-img {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -130px;
+    width: 260px;
+    background-color: #f7f9f3;
+  }
+  .advertisement-desc {
+    margin-top: 76px;
+    margin-bottom: 36px;
+    font-size: 16px;
+    color: #08674b;
+    text-align: center;
+  }
+  .advertisement-img {
+    width: 100%;
+    height: 470px;
+    margin-bottom: 116px;
+  }
+  .gd-description-title {
+    font-size: 36px;
+    color: #11593f;
+    text-align: center;
+    padding-top: 50px;
+    margin-bottom: 53px;
+  }
+  .gd-description-title p {
+    margin: 0;
+    margin-bottom: 34px;
+    font-family: "nansong";
+  }
+  
+  table {
+    border-collapse: collapse; /* 边框合并属性  */
+  }
+  th {
+      height: 50px;
+    border: 1px solid #666666;
+  }
+  td {
+    border: 1px solid #666666;
+  }
+  .about-goods {
+      margin-bottom: 60px;
+  }
+  .component-goods {
+      margin-bottom: 132px;
+  }
+  .goods-description-content {
+      width: 720px;
+      margin: 0 auto;
+      text-align: center;
+  }
+  .goods-description-content pre {
+      margin-top: 0;
+      margin-bottom: 42px;
+      font-size: 18px;
+      color: #040000;
+      white-space: pre-wrap;
+  }
+  .capacity ul .unit-active {
+    border-color: #a62126;
+  }

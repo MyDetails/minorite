@@ -1,0 +1,204 @@
+  /* .index-header {
+    opacity: 0.8;
+  } */
+  /*********** banner ***********/
+  .banner-container {
+    width: 100%;
+  }
+  .banner {
+    width: 100%;
+    overflow: hidden;
+  }
+  .banner li {
+    float: left;
+    width: 100%;
+    height: 0;
+    padding-top: 34.3%; /* 660除以 1920 */
+    position: relative;
+  }
+  .banner li img {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  /******************************* section *******************************/
+  .content {
+    background-color: #f7f9f3;
+    overflow: hidden;
+  }
+  .section {
+    margin-top: 100px;
+  }
+  .section-header {
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #11593f;
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section-title {
+    display: flex;
+    color: #b25052;
+  }
+  .section-title-left {
+    padding-right: 18px;
+  }
+  .section-title-right {
+    padding-left: 18px;
+    border-left: 1px solid #b25052;
+  }
+  .section-title-left p:first-child,
+  .section-title-right p:first-child {
+    margin-top: 0;
+    margin-bottom: 0px;
+    font-size: 14px;
+    text-align: left;
+    font-family: "nansong";
+  }
+  .section-title-left p:last-child,
+  .section-title-right p:last-child {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 11px;
+  }
+  .more a {
+    font-size: 14px;
+    color: #b25052;
+  }
+  
+  /****** section new goods ******/
+  .new-goods-list {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .new-goods-item a {
+    display: block;
+    width: 206px;
+    height: 206px;
+    padding: 8px;
+    background-color: #fff;
+    box-shadow: -5px 5px 20px 4px #dddfd9;
+    border: 2px solid #e8e8e7;
+  }
+  .new-goods-name {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #b25052;
+  }
+  .new-goods-desc,
+  .new-goods-price {
+    margin: 0;
+    font-size: 11px;
+  }
+  
+  /****** section aroma test  ******/
+  .aroma-content {
+    margin-top: 20px;
+    height: 236px;
+  }
+  
+  /****** section news ******/
+  .news-content {
+    margin-top: 20px;
+  }
+  .news-list {
+    display: flex;
+    justify-content: space-between;
+  }
+  .news-list li {
+    position: relative;
+    width: 376px;
+    height: 234px;
+    background-color: #ccc;
+    
+  }
+  .news-list li:hover {
+    transform: translateY(-4px); 
+    box-shadow: -5px 8px 20px 4px #b8bab5;
+    transition: all .4s
+  }
+  .news-desc {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    margin: 0;
+    line-height: 60px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  
+  /****** section agent ******/
+  .agent-content {
+      margin-top: 20px;
+  }
+  .agent-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .agent-item {
+    width: 150px;
+    height: 150px;
+      border: 1px solid #e0e1dc;
+      box-sizing: border-box;
+  }
+  .agent-item img {
+    height: 100%;
+    background-color: #fff;
+    padding: 16px;
+  }
+  .agent-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 20px 2px #c2c3c1;
+      transition: all .2s
+  }
+  
+  /****** section contact us ******/
+  .contact-content {
+      display: flex;
+      justify-content: space-between;
+      height: 150px;
+  }
+  .contact-content-left {
+      width: 500px;
+      padding-top: 60px;
+  }
+  .contact-content-left p {
+      margin: 0;
+      margin-bottom: 5px;
+      font-size: 14px;
+  }
+  .contact-content-right {
+      width: 260px;
+      display: flex;
+      justify-content: space-around;
+  }
+  .wechat-icon,
+  .weibo-icon {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 12px;
+  }
+  .wechat,.weibo {
+      width: 83px;
+      height: 83px;
+  }
+  .contact-weibo,
+  .contact-wechat {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  
+  
+  

@@ -1,0 +1,63 @@
+.title-logo {
+    width: 113px;
+    height: 165px;
+    margin: 0 auto;
+    margin-top: 70px;
+}
+
+.slide-nav-right {
+  display: flex;
+  align-items: center;
+  float: left;
+}
+
+.all-brands-img-list {
+  float: left;
+  display: flex;
+  flex-wrap: wrap;
+  width: 950px;
+}
+.all-brands-img-list li {
+  display: flex;
+  /* justify-content: space-between; */
+  flex-direction: column;
+  align-items: center;
+  width: 25%;
+  height: 310px;
+}
+.all-brands-img-list li .brand-img {
+  width: 100%;
+  height: 220px;
+  padding: 10px;
+}
+.brand-img a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background: #fff;
+}
+.brand-img a img {
+  height: 100%;
+}
+.all-brands-img-list li p {
+  margin: 0;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #11593f;
+  font-size: 20px;
+  color: #a62126;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+.all-brands-img-list li:hover p {
+    border-radius: 8px;
+    background-color: #a62126;
+    border-bottom-color: #a62126;
+    color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+}

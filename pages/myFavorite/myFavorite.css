@@ -1,0 +1,50 @@
+.myFavorite{
+	width: 1200px;
+	height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.myFavorite-box{
+	float: left;
+	width: 940px;
+	height: auto;
+}
+.myFavorite-list{
+	position: relative;
+	float: left;
+	margin-left: 70px;
+	width: 165px;
+	height: 250px;
+	background: #fff;
+}
+.myFavorite-list-img{
+	width: 165px;
+	height: 180px;
+}
+.myFavorite-list-bot{
+	width: 165px;
+	height: 67px;
+	background: red;
+}
+.myFavorite-list-bot-title , .myFavorite-list-bot-pay{
+	width: 165px;
+	text-align: center;
+	height: 33px;
+	line-height: 33px;
+	color: #fff;
+}
+.myFavorite-list-bot-fg{
+	width: 76%;
+	margin-left: 12%;
+	height: 1px;
+	background: #fff;
+}
+.myFavorite-list-img-x{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 18px;
+	height: 18px;
+}

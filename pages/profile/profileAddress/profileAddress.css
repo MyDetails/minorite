@@ -1,0 +1,98 @@
+.profileAddress-content {
+    margin-top: 50px;
+  }
+  .profileAddress-table-container {
+    width: 835px;
+  }
+  .profile-address {
+    margin-top: 50px;
+  }
+  .address-input div {
+    width: 400px;
+  }
+  .editor-address-box {
+    padding: 27px;
+  }
+  .editor-address-box p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #434343;
+    margin-bottom: 20px;
+  }
+  .phone-input div {
+    width: 150px;
+  }
+  .name-input div {
+    width: 150px;
+  }
+  .abbreviation-input div {
+    width: 100px;
+  }
+  .select-address-input div {
+    width: 500px;
+  }
+  .address-list {
+    margin-top: 30px;
+  }
+  .address-list li {
+    float: left;
+    width: 50%;
+    padding: 30px;
+  }
+  .address-list li .ivu-icon-help-circled {
+    display: none;
+  }
+  .address-item {
+    width: 420px;
+    height: 220px;
+    padding: 20px;
+    border-radius: 4px;
+    background: #dee9e1;
+    position: relative;
+  }
+  .address-item p {
+    font-size: 14px;
+    line-height: 32px;
+  }
+  .address-item p:first-child {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .moren-address {
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+    margin-top: 20px;
+    text-align: right;
+  }
+  .moren-address-btn {
+    color: #a62126;
+    background: transparent;
+    margin-right: 40px;
+    cursor: pointer;
+  }
+  .add-address-btn {
+    float: left;
+    width: 80px;
+    height: 40px;
+    color: #fff;
+    font-size: 14px;
+  }
+  .del-address {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 24px;
+    height: 24px;
+    font-size: 22px;
+    text-align: center;
+    cursor: pointer;
+  color: #838383;
+  }
+  .ivu-poptip-footer .ivu-btn-primary {
+    background-color: #0b3b25;
+    border-color: #0b3b25;
+  }
+  .def_bg {
+    background: #C5D9CE;
+  }

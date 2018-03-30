@@ -250,5 +250,30 @@ const personalAroma = {
             })
         }
 
+    },
+    watch: {
+        $route() {
+            //获取香调下面相应的香水
+            this.cat_id = this.$route.query.cat;
+            let pk_parent = "tcss.get.goods.perfume.categories";
+            let url_parent = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_parent + "&parent=347";
+            fetch(url_parent).then(r => r.json()).then(d => {
+                this.personal_aroma_arr = d.obj.data[d.obj.data.length - 1].sons;
+                let arr = this.personal_aroma_arr;
+                arr.forEach(v => {
+                    v.sons.forEach(j => {
+                        if (parseInt(this.cat_id) === j.id) {
+                            let pk_cat = "tcss.get.perfume.fragrance";
+                            let url_cat = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_cat + "&f_c=" + this.cat_id;
+                            fetch(url_cat).then(r => r.json()).then(d => {
+                                if (d.available) {
+                                    this.personalAromaImgList = d.obj.carddata;
+                                }
+                            })
+                        }
+                    });
+                });
+            })
+        }
     }
 }

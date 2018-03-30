@@ -7,7 +7,48 @@ const profileAddress = {
     template: `
             <div class="content">
                 <div class="profileAddress-content main">
-                    <personal-msg></personal-msg>
+                    
+                    <!--profile msg start-->
+                    <div class="personal-msg-container">
+                        <div class="personal-msg-item-container">
+                            <div class="personal-msg-item">
+                                <div class="personal-msg-img">
+                                    <img :src="headImgUrl === '' ||  headImgUrl === null ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + headImgUrl" alt="">
+                                </div>
+                                <div class="personal-msg-content">
+                                    <p class="personal-msg-title">{{profileData.nick}}</p>
+                                    <div class="change-pwd">
+                                        <p>
+                                            <router-link :to="{path: '/profileMsg', query: {tabName: 'tab_name_avatar'}}">更换头像</router-link>
+                                        </p>
+                                        <p>
+                                            <router-link :to="{path: '/profileMsg', query: {tabName: 'tab_name_pwd'}}">修改密码</router-link>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="personal-msg-item-container">
+                            <div class="personal-msg-item">
+                                <div class="personal-msg-content phone-number">
+                                    <p>minorite账号：<span>{{profileData.nick}}</span></p>
+                                    <p>绑定手机号：<span>{{profileData.phone}}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="personal-msg-item-container">
+                            <div class="personal-msg-item  address-details">
+                                <div class="personal-msg-content">
+                                    <p>默认收货地址：</p>
+                                    <p>收&nbsp;&nbsp;货&nbsp;&nbsp;人：<span>{{address.name}}</span></p>
+                                    <p>联系电话：<span>{{address.mobile}}</span></p>
+                                    <!--<p>所&nbsp;&nbsp;在&nbsp;&nbsp;地：<span>北京市 北京市 朝阳区</span></p>-->
+                                    <p style="display:flex;"><span>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><span>{{address.address}}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--profile msg end>
 
                     <!-- content-nav start -->
                     <div class="content-nav profileAddress-content-nav">
@@ -124,7 +165,8 @@ const profileAddress = {
                     {
                         message: "请输入您的邮政编码",
                         tigger: "blur"
-                    }
+                    },
+                    { type: 'string', max: 6, message: '请输入正确的邮编', pattern: /[1-9]\d{5}/, trigger: 'blur' }
                 ],
                 name: [
                     {
@@ -138,7 +180,8 @@ const profileAddress = {
                         required: true,
                         message: "请输入您的手机号",
                         tigger: "blur"
-                    }
+                    },
+                    { type: 'string', max: 11, message: '请输入正确的手机号码', pattern: /1\d{10}/, trigger: 'blur' }
                 ],
                 text: [
                     {
@@ -6097,6 +6140,12 @@ const profileAddress = {
             cityArr: [],
             districtArr: [],
             address_list: [],
+            address: {},
+            profileData: {
+                nick: "",
+                phone: "",
+            },
+            headImgUrl: "",
         }
     },
     mounted() {
@@ -6109,8 +6158,25 @@ const profileAddress = {
                 if (d.available) {
                     this.info_list = d.obj;
                     this.address_list = d.obj.data;
+                    d.obj.data.forEach(v => {
+                        if(v.def) {
+                            this.address = v;
+                        }
+                    });
                 }
             });
+        //获取个人信息
+        let pk_info = "account.info.get";
+        let token = this.getCookie("_lac_k_");
+        let url_info = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_info + "&token=" + token;
+        fetch(url_info, { credentials: "include" })
+            .then(r => r.json())
+            .then(d => {
+                this.profileData.nick = d.obj.nick;
+                let str = d.obj.phone + "";
+                this.profileData.phone = str.substr(0, 3) + "****" + str.substr(7);
+                this.headImgUrl = d.obj.headimgurl;
+            })
     },
     methods: {
         // 获取cookie
@@ -6226,6 +6292,11 @@ const profileAddress = {
                                 if (d.available) {
                                     this.info_list = d.obj;
                                     this.address_list = d.obj.data;
+                                    d.obj.data.forEach(v => {
+                                        if(v.def) {
+                                            this.address = v;
+                                        }
+                                    });
                                 }
                             });
                     } else {

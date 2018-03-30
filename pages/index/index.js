@@ -261,188 +261,188 @@ const index = {
         </Modal>
         <!-- 第八题 -->
         <Modal v-model="modal9" width="1200">
-           <div class="test9-border">
-            <p>8. 你最喜欢的香料？</p>
-            <CheckboxGroup class="test9-group" v-model="loveXiang">
-             <Checkbox label="204001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/1moli.jpg" alt="">
-                    <span>茉莉</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="203007">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/2xunyicao.jpg" alt="">
-                    <span>薰衣草</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="204005">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/3baihe.jpg" alt="">
-                    <span>百合</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="203001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/4meigui.jpg" alt="">
-                    <span>玫瑰</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="204002">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/5chenghua.jpg" alt="">
-                    <span>橙花</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="205005">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/6ziluolanye.jpg" alt="">
-                    <span>紫罗兰叶</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="205008">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/7midiexiang.jpg" alt="">
-                    <span>迷迭香</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="208016">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/8bajiao.jpg" alt="">
-                    <span>八角</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="205004">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/9bohe.jpg" alt="">
-                    <span>薄荷</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="202019">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/10wuhuaguo.jpg" alt="">
-                    <span>无花果</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="206001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/11guanghuoxiang.jpg" alt="">
-                    <span>广藿香</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="209001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/12shexiang.jpg" alt="">
-                    <span>麝香</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="208001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/13xiangcao.jpg" alt="">
-                    <span>香草</span>
-                  </div>
-              </Checkbox>
-            </CheckboxGroup>
-            <span class="text9-xiahua">下滑更多</span>
-            <span class="text9-tips">*本题为多选</span>
-            <button class="test9-prev-btn" @click="pre7">上一题</button>
-            <button class="test9-next-btn" @click="next9">下一题</button>
-           </div>
-           <div slot="footer">
-              <!-- <Button @click="next">Delete</Button> -->
+          <div class="test9-border">
+          <p>8. 你最喜欢的香料？</p>
+          <CheckboxGroup class="test9-group" v-model="loveXiang" @on-change="loveXiangChange">
+            <Checkbox label="204001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('204001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/1moli.jpg" alt="">
+              <span>茉莉</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="203007">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('203007') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/2xunyicao.jpg" alt="">
+              <span>薰衣草</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="204005">
+              <div class="xiangliao" :class="{'xiangliao-active':checkArr.indexOf('204005') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/3baihe.jpg" alt="">
+              <span>百合</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="203001">
+              <div class="xiangliao" :class="{'xiangliao-active':checkArr.indexOf('203001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/4meigui.jpg" alt="">
+              <span>玫瑰</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="204002">
+              <div class="xiangliao" :class="{'xiangliao-active':checkArr.indexOf('204002') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/5chenghua.jpg" alt="">
+              <span>橙花</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="205005">
+              <div class="xiangliao" :class="{'xiangliao-active':checkArr.indexOf('205005') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/6ziluolanye.jpg" alt="">
+              <span>紫罗兰叶</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="205008">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('205008') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/7midiexiang.jpg" alt="">
+              <span>迷迭香</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="208016">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('208016') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/8bajiao.jpg" alt="">
+              <span>八角</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="205004">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('205004') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/9bohe.jpg" alt="">
+              <span>薄荷</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="202019">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('202019') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/10wuhuaguo.jpg" alt="">
+              <span>无花果</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="206001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('206001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/11guanghuoxiang.jpg" alt="">
+              <span>广藿香</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="209001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('209001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/12shexiang.jpg" alt="">
+              <span>麝香</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="208001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr.indexOf('208001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/13xiangcao.jpg" alt="">
+              <span>香草</span>
+              </div>
+            </Checkbox>
+          </CheckboxGroup>
+          <span class="text9-xiahua">下滑更多</span>
+          <span class="text9-tips">*本题为多选</span>
+          <button class="test9-prev-btn" @click="pre7">上一题</button>
+          <button class="test9-next-btn" @click="next9">下一题</button>
+          </div>
+          <div slot="footer">
+            <!-- <Button @click="next">Delete</Button> -->
           </div> 
         </Modal>
         <!-- 第九题 -->
         <Modal v-model="modal10" width="1200">
-           <div class="test9-border">
-            <p>9. 你最不喜欢的香料？</p>
-            <CheckboxGroup class="test9-group" v-model="hateXiang">
+          <div class="test9-border">
+          <p>9. 你最不喜欢的香料？</p>
+          <CheckboxGroup class="test9-group" v-model="hateXiang" @on-change="hateXiangChange">
               <Checkbox label="204001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/1moli.jpg" alt="">
-                    <span>茉莉</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="203007">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/2xunyicao.jpg" alt="">
-                    <span>薰衣草</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="204005">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/3baihe.jpg" alt="">
-                    <span>百合</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="203001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/4meigui.jpg" alt="">
-                    <span>玫瑰</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="204002">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/5chenghua.jpg" alt="">
-                    <span>橙花</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="205005">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/6ziluolanye.jpg" alt="">
-                    <span>紫罗兰叶</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="205008">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/7midiexiang.jpg" alt="">
-                    <span>迷迭香</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="208016">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/8bajiao.jpg" alt="">
-                    <span>八角</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="205004">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/9bohe.jpg" alt="">
-                    <span>薄荷</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="202019">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/10wuhuaguo.jpg" alt="">
-                    <span>无花果</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="206001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/11guanghuoxiang.jpg" alt="">
-                    <span>广藿香</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="209001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/12shexiang.jpg" alt="">
-                    <span>麝香</span>
-                  </div>
-              </Checkbox>
-              <Checkbox label="208001">
-                  <div class="xiangliao">
-                    <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/13xiangcao.jpg" alt="">
-                    <span>香草</span>
-                  </div>
-              </Checkbox>
-            </CheckboxGroup>
-            <span class="text9-xiahua">下滑更多</span>
-            <span class="text9-tips">*本题为多选</span>
-            <button class="test9-prev-btn" @click="pre8">上一题</button>
-            <button class="test9-next-btn" @click="next10">下一题</button>
-           </div>
-           <div slot="footer">
-              <!-- <Button @click="next">Delete</Button> -->
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('204001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/1moli.jpg" alt="">
+              <span>茉莉</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="203007">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('203007') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/2xunyicao.jpg" alt="">
+              <span>薰衣草</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="204005">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('204005') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/3baihe.jpg" alt="">
+              <span>百合</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="203001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('203001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/4meigui.jpg" alt="">
+              <span>玫瑰</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="204002">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('204002') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/5chenghua.jpg" alt="">
+              <span>橙花</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="205005">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('205005') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/6ziluolanye.jpg" alt="">
+              <span>紫罗兰叶</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="205008">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('205008') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/7midiexiang.jpg" alt="">
+              <span>迷迭香</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="208016">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('208016') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/8bajiao.jpg" alt="">
+              <span>八角</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="205004">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('205004') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/9bohe.jpg" alt="">
+              <span>薄荷</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="202019">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('202019') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/10wuhuaguo.jpg" alt="">
+              <span>无花果</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="206001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('206001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/11guanghuoxiang.jpg" alt="">
+              <span>广藿香</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="209001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('209001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/12shexiang.jpg" alt="">
+              <span>麝香</span>
+              </div>
+            </Checkbox>
+            <Checkbox label="208001">
+              <div class="xiangliao"  :class="{'xiangliao-active':checkArr2.indexOf('208001') !== -1}">
+                <img class="xiangliao-img" src="http://pe1s.static.pdr365.com/minorite/onlineAromaTest/13xiangcao.jpg" alt="">
+              <span>香草</span>
+              </div>
+            </Checkbox>
+          </CheckboxGroup>
+          <span class="text9-xiahua">下滑更多</span>
+          <span class="text9-tips">*本题为多选</span>
+          <button class="test9-prev-btn" @click="pre8">上一题</button>
+          <button class="test9-next-btn" @click="next10">下一题</button>
+          </div>
+          <div slot="footer">
+            <!-- <Button @click="next">Delete</Button> -->
           </div> 
         </Modal>
         <!-- 第十题 -->
@@ -455,7 +455,7 @@ const index = {
                 <td>
                   <CheckboxGroup v-model="huaxiang" @on-change="checkGroupChange">
                     <Checkbox v-for="child in item.itemList" :key="child.code" :label="child.code" :disabled="disabled">
-                        <span  @click="cancelChecked(child.code)">{{child.name}}</span>
+                        <span  @click.stop="cancelChecked(child.code)">{{child.name}}</span>
                     </Checkbox>
                   </CheckboxGroup>
                 </td>
@@ -506,6 +506,10 @@ const index = {
 	</div>
 	`, data: function () {
     return {
+      checkArr: [],
+      checkArr2: [],
+      huaxiangArr: [],
+      huaxiang_code: "",
       bannerList: [
         { id: 0, name: "banner01", imgUrl: "http://pe1s.static.pdr365.com/minorite/index/banner01.png" },
         { id: 1, name: "banner02", imgUrl: "http://pe1s.static.pdr365.com/minorite/index/banner01.png" },
@@ -586,6 +590,12 @@ const index = {
     //页面两侧浮动元素
     float();
   }, methods: {
+    loveXiangChange(data) {
+			this.checkArr = data;
+		},
+		hateXiangChange(data) {
+			this.checkArr2 = data;
+		},
     handleRender() {
       this.modal1 = true;
       //获取香料和香调
@@ -735,18 +745,24 @@ const index = {
     },
     //查看选中香气
     checkGroupChange(data) {
-      if (data.length > 3) {
-        this.disabled = true;
-      }
+    //   this.huaxiangArr = data;
+    //   console.log(this.huaxiangArr);
     },
     //取消选中香气
     cancelChecked(code) {
-      this.huaxiang.forEach((v, i) => {
-        if (code == v) {
-          this.huaxiang.splice(i, 1);
-        }
-      });
-      this.disabled = false;
+    //   if (this.huaxiangArr.length > 3) {
+    //     this.disabled = true;
+        
+    //   } 
+    //   this.huaxiang.forEach((v, i) => {
+    //     console.log(v, code);
+    //     if (code == v) {
+    //       this.huaxiang_code = code;
+          
+    //     }
+    //   });
+      
+    //   console.log(this.huaxiang);
     },
     goGoods(id) {
       this.modal12 = false;

@@ -23,8 +23,8 @@ const profileMsg = {
                     <!-- slide-nav end -->
 
                     <div class="profileMsg-box">
-                        <Tabs :animated="false" type="card">
-                            <TabPane label="个人信息">
+                        <Tabs :animated="false" type="card" :value="tabName">
+                            <TabPane label="个人信息" name="tab_name_msg">
                                 <div class="personal-msg">
                                     <Form :model="formRight" label-position="right" :label-width="100">
                                         <FormItem label="昵称：">
@@ -48,7 +48,7 @@ const profileMsg = {
                                     </Form>
                                 </div>
                             </TabPane>
-                            <TabPane label="修改密码">
+                            <TabPane label="修改密码" name="tab_name_pwd">
                                 <div class="personal-msg">
                                     <Form :model="formRight" label-position="right" :label-width="100">
                                         <FormItem label="原密码：">
@@ -65,10 +65,13 @@ const profileMsg = {
                                         <FormItem label="确认新密码：">
                                             <Input v-model="formRight.input8"></Input>
                                         </FormItem>
+                                        <FormItem class="personal-msg-btn">
+                                            <Button type="primary" @click="handleSubmitPwd()">提交</Button>
+                                        </FormItem>
                                     </Form>
                                 </div>
                             </TabPane>
-                            <TabPane label="更换头像">
+                            <TabPane label="更换头像" name="tab_name_avatar">
                                 <div class="personal-msg-tips">
                                     您上传的头像会自动生成三种尺寸，请注意中小尺寸是否清晰
                                 </div>
@@ -111,6 +114,7 @@ const profileMsg = {
             token: "",
             headImgUrl: "",
             phone: "",
+            tabName: "tab_name_msg"
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -121,6 +125,21 @@ const profileMsg = {
         window.scrollTo(0, 0);
     }, mounted() {
         this.container_big();
+        tabName = this.$route.query.tabName;
+        if (tabName) {
+            this.tabName = tabName;
+        } else {
+            this.tabName = "tab_name_msg";
+        }
+    }, watch: {
+        $route() {
+            tabName = this.$route.query.tabName;
+            if (tabName) {
+                this.tabName = tabName;
+            } else {
+                this.tabName = "tab_name_msg";
+            }
+        }
     }, methods: {
         handleSubmit(name) {
             //提交个人信息
@@ -143,12 +162,17 @@ const profileMsg = {
                 }
             });
         },
+        //修改密码
+        handleSubmitPwd() {
+            
+        },
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
             return v ? v[2] : null;
 
         },
+        //个人中心上传头像
         container_big() {
             var qiniu_uptoken_url = appset.domain + "/third/qiniu/get_uptoken?" + Date.parse(new Date());
             var uptoken = "";

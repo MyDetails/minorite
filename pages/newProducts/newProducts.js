@@ -107,6 +107,8 @@ const newProducts = {
             window.scrollTo(0, 0);
         } else if (this.cat_id === '1') {
             window.scrollTo(0, 715);
+        } else if(this.cat_id === null || this.cat_id === undefined || this.cat_id === '') {
+            window.scrollTo(0, 0);
         }
         //获取新品上市
         let pk2 = "tcss.goods.by.cat";

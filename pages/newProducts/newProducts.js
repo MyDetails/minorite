@@ -39,7 +39,7 @@ const newProducts = {
                         </div>
                         
                         <p class="newProducts-list-more">
-                        <router-link :to="{path: '/'}" style="color: #a62126;">更多>></router-link>
+                        <router-link :to="{path: '/newProductsMore'}" style="color: #a62126;">更多>></router-link>
                         </p>
                     </div>
                     <div class="newProducts-b-postion-img" style="top:0;">

@@ -6,8 +6,48 @@ const profileMsg = {
     cache: {},
     template: `
             <div class="content">
+                <!-- profile-msg start -->
                 <div class="profileMsg-content main">
-                    <personal-msg></personal-msg>
+                    <div class="personal-msg-container">
+                        <div class="personal-msg-item-container">
+                            <div class="personal-msg-item">
+                                <div class="personal-msg-img">
+                                    <img :src="headImgUrl === '' ||  headImgUrl === null ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + headImgUrl" alt="">
+                                </div>
+                                <div class="personal-msg-content">
+                                    <p class="personal-msg-title">{{profileData.nick}}</p>
+                                    <div class="change-pwd">
+                                        <p>
+                                            <router-link :to="{path: '/profileMsg', query: {tabName: 'tab_name_avatar'}}">更换头像</router-link>
+                                        </p>
+                                        <p>
+                                            <router-link :to="{path: '/profileMsg', query: {tabName: 'tab_name_pwd'}}">修改密码</router-link>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="personal-msg-item-container">
+                            <div class="personal-msg-item">
+                                <div class="personal-msg-content phone-number">
+                                    <p>minorite账号：<span>{{profileData.nick}}</span></p>
+                                    <p>绑定手机号：<span>{{profileData.phone}}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="personal-msg-item-container">
+                            <div class="personal-msg-item  address-details">
+                                <div class="personal-msg-content">
+                                    <p>默认收货地址：</p>
+                                    <p>收&nbsp;&nbsp;货&nbsp;&nbsp;人：<span>{{address.name}}</span></p>
+                                    <p>联系电话：<span>{{address.mobile}}</span></p>
+                                    <!--<p>所&nbsp;&nbsp;在&nbsp;&nbsp;地：<span>北京市 北京市 朝阳区</span></p>-->
+                                    <p style="display:flex;"><span>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><span>{{address.address}}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- profile-msg end-->
 
                     <!-- content-nav start -->
                     <div class="content-nav profileMsg-content-nav">
@@ -76,9 +116,9 @@ const profileMsg = {
                                     您上传的头像会自动生成三种尺寸，请注意中小尺寸是否清晰
                                 </div>
                                 <div class="demo-avatar change-avatar">
-                                    <Avatar :src="headImgUrl === '' ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + headImgUrl" shape="square" size="large" />
-                                    <Avatar :src="headImgUrl === '' ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + headImgUrl" shape="square" />
-                                    <Avatar :src="headImgUrl === '' ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + headImgUrl" shape="square" size="small" />
+                                    <Avatar :src="qkey === '' ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + qkey" shape="square" size="large" />
+                                    <Avatar :src="qkey === '' ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + qkey" shape="square" />
+                                    <Avatar :src="qkey === '' ? 'http://pe1s.static.pdr365.com/minorite/profileMsg/avatar.png' : 'http://pe1d.static.pdr365.com/' + qkey" shape="square" size="small" />
                                 </div>
 
                                 <!-- 上传按钮 开始 -->
@@ -91,6 +131,9 @@ const profileMsg = {
                                 </div>
                                 <!-- </Upload> -->
                                <!-- 上传按钮 结束-->
+                               <!--提交按钮 开始-->
+                                    <Button type="primary" @click="confirmAvatar" style="width:80px;height:38px;color:#fff;font-size:14px;background-color:#04593f;margin-top:24px;margin-left:170px;">提交</Button>
+                                <!--提交按钮 结束-->
                                 
                             </TabPane>
                         </Tabs>
@@ -112,9 +155,14 @@ const profileMsg = {
             },
             qkey: "",
             token: "",
-            headImgUrl: "",
             phone: "",
-            tabName: "tab_name_msg"
+            tabName: "tab_name_msg",
+            address: {},
+            profileData: {
+                nick: "",
+                phone: "",
+            },
+            headImgUrl: "",
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -124,6 +172,28 @@ const profileMsg = {
         //组件加载完成会自动调用此方法
         window.scrollTo(0, 0);
     }, mounted() {
+        //获取收货地址
+        let pk = "account.get.addresses";
+        let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk;
+        fetch(url, { credentials: "include" })
+            .then(r => r.json())
+            .then(d => {
+                if (d.available) {
+                    this.address = d.obj.data[0];
+                }
+            });
+        //获取个人信息
+        let pk_info = "account.info.get";
+        let token = this.getCookie("_lac_k_");
+        let url_info = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_info + "&token=" + token;
+        fetch(url_info, { credentials: "include" })
+            .then(r => r.json())
+            .then(d => {
+                this.profileData.nick = d.obj.nick;
+                let str = d.obj.phone + "";
+                this.profileData.phone = str.substr(0, 3) + "****" + str.substr(7);
+                this.headImgUrl = d.obj.headimgurl;
+            })
         this.container_big();
         tabName = this.$route.query.tabName;
         if (tabName) {
@@ -141,6 +211,11 @@ const profileMsg = {
             }
         }
     }, methods: {
+        // 获取cookie
+		getCookie(name) {
+			let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+			return v ? v[2] : null;
+		},
         handleSubmit(name) {
             //提交个人信息
             let pk = "account.info.update";
@@ -164,12 +239,16 @@ const profileMsg = {
         },
         //修改密码
         handleSubmitPwd() {
-            
+
         },
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
             return v ? v[2] : null;
+
+        },
+        //确认上传头像
+        handleSubmitAvatar() {
 
         },
         //个人中心上传头像
@@ -233,16 +312,8 @@ const profileMsg = {
                                 // $("#goods_picturelink_big_img").attr("width", "120px");
                                 // $("#goods_picturelink_big_img").attr("height", "150px");
                                 // $("#goods_picturelink_big").val(res.key);
-
-                                //获取用户头像
                                 this.qkey = res.key;
-                                var pk = "account.info.avatar";
-                                var url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&headimg=" + this.qkey + "&token=" + this.token;
-                                fetch(url, { credentials: "include" }).then(r => r.json()).then(d => {
-                                    if (d.available) {
-                                        this.headImgUrl = d.obj.headimgurl;
-                                    }
-                                });
+
                             },
                             'Error': function (up, err, errTip) {
                                 console.log('Error')
@@ -264,6 +335,17 @@ const profileMsg = {
                             }
                         }
                     });
+                }
+            });
+        },
+        confirmAvatar() {
+            //获取用户头像
+            var pk = "account.info.avatar";
+            var url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&headimg=" + this.qkey + "&token=" + this.token;
+            fetch(url, { credentials: "include" }).then(r => r.json()).then(d => {
+                if (d.available) {
+                    this.headImgUrl = d.obj.headimgurl;
+                    this.$Message.success('上传头像成功');
                 }
             });
         }

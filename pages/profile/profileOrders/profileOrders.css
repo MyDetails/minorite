@@ -4,3 +4,29 @@
 .profileOrders-table-container {
   width: 835px;
 }
+/****** modal gopay search ******/
+.order-confirm-modal .ivu-modal-content {
+  height: 180px;
+  background: #ededec;
+  border-radius: 5px;
+}
+.order-confirm-modal .ivu-modal-close {
+  display: none;
+}
+.order-confirm-modal .ivu-btn-primary {
+  background: #04593f;
+  border-color: #04593f;
+}
+
+/* .header-search .ivu-modal-content {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+}
+.header-search .ivu-modal-body {
+  padding: 0;
+}
+.header-search .ivu-input {
+  height: 40px;
+  border-radius: 4px;
+} */

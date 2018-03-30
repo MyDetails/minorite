@@ -117,9 +117,6 @@ const pay = {
                             </div>
                         </div>
                     </div>
-                    <Modal class="order-confirm-modal" v-model="confirmModal" title="提示" ok-text="付款成功" cancel-text="遇到问题" @on-ok="asyncOk" width="360px;">
-                        <p>是否已完成付款？</p>
-                    </Modal>
                 </div>
                 <form action="/front/using/alipay_new.jsp" id="submit_alipay" method="post" target="_blank">
 
@@ -137,8 +134,7 @@ const pay = {
                 text: "",
                 province: "",
                 city: "",
-                county: "",
-                o_id:"",
+                county: ""
             },
             info_list: {},
             ruleValidate: {
@@ -2276,8 +2272,6 @@ const pay = {
             form_flag: "1",
             order_num: "",
             order_time: 0,
-            o_id: "",
-            confirmModal: false,
         };
     }, mounted() {
         //获取token
@@ -2382,6 +2376,7 @@ const pay = {
                 this.$Message.error("请选择收货地址");
             } else {
                 let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&oss=" + oss + "&buy_deliver_code=2000" + "&store_id=" + store_id + "&buy_pay_code=" + buy_pay_code;
+
                 if (buy_pay_code == 'wxpay') {
                     fetch(url, { credentials: "include" })
                         .then(r => r.json())
@@ -2389,17 +2384,15 @@ const pay = {
                             if (d.available) {
                                 this.order_num = d.obj.on;
                                 this.order_time = d.obj.aTime;
-                                this.o_id = d.obj.id;
                                 let pk_code = "tcss.build.wx.pay";
                                 let oss_code = d.obj.id + "," + "1000";
-
                                 let token = this.token;
                                 let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&t_t=NATIVE&pk=" + pk_code + "&oss=" + oss_code + "&prefer_way=0&market_item_id=0&acmid=0&quanid=0" + "&token=" + token;
                                 fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
                                     if (d.available) {
                                         console.log(d);
                                         let code_url = d.obj.data.code_url;
-                                        this.$router.push({ name: "wxPay", params: { totalPrice: this.totalPrice, code_url: code_url, order_num: this.order_num, order_time: this.order_time, o_id: this.o_id } });
+                                        this.$router.push({ name: "wxPay", params: { totalPrice: this.totalPrice, code_url: code_url, order_num: this.order_num, order_time: this.order_time } });
                                     }
                                 });
                             }
@@ -2536,7 +2529,6 @@ const pay = {
                         if (d.available) {
                             let pk_code = "order.pay.alipay.unifiedorders";
                             let oss_code = d.obj.id + "," + "1000";
-                            this.o_id = d.obj.id;
                             this.formOss = oss_code;
                             let token = this.token;
                             let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
@@ -2551,7 +2543,6 @@ const pay = {
                                     input.val(data);
                                     form.append(input);
                                     form.submit();
-                                    this.custom();
                                 }
                             })
                         }
@@ -2604,22 +2595,6 @@ const pay = {
                 });
             }
         },
-        asyncOk() {
-            let pk_code = "order.check.status";
-            let o_id = this.o_id;
-            let token = this.token;
-            let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&o_id=" + o_id + "&oc=1000&token=" + token;
-            $.get(url_code, d => {
-                if (d.available && d.obj.data) {
-                    location.href = appset.domain + "/front/pageapp#/profileOrders";
-                }else{
-                    this.$Message.info('您还未完成付款');
-                }
-            })
-        },
-        custom () {
-            this.confirmModal = true;
-        }
 
     },
     beforeMount: function () {

@@ -51,7 +51,13 @@ const profileOrders = {
                             </TabPane>
                         </Tabs>
                     </div>
+                    <Modal class="order-confirm-modal" v-model="confirmModal" title="提示" ok-text="付款成功" cancel-text="遇到问题" @on-ok="asyncOk" width="360px;">
+                        <p>是否已完成付款？</p>
+                    </Modal>
                 </div>
+                <form action="/front/using/alipay_new.jsp" id="submit_alipay" method="post" target="_blank">
+
+                </form>
             </div>
 	`, data: function () {
         return {
@@ -74,6 +80,7 @@ const profileOrders = {
             no_send_order: [],
             no_receive_order: [],
             done_order: [],
+            confirmModal: false,
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -114,7 +121,11 @@ const profileOrders = {
                                     orderTime: this.timeFormat(d.obj[i].aTime),
                                     orderStatus: "待付款",
                                     order: order,
-                                    os: d.obj[i].os
+                                    os: d.obj[i].os,
+                                    payType: d.obj[i].payType,
+                                    payAmount: d.obj[i].payAmount / 100,
+                                    on: d.obj[i].on,
+                                    aTime: d.obj[i].aTime,
                                 }
                             ];
                         } else if (d.obj[i].os == "1000") {
@@ -126,7 +137,8 @@ const profileOrders = {
                                     orderTime: this.timeFormat(d.obj[i].aTime),
                                     orderStatus: "待发货",
                                     order: order,
-                                    os: d.obj[i].os
+                                    os: d.obj[i].os,
+                                    
                                 }
                             ];
                         } else if (d.obj[i].os == "2000") {
@@ -264,7 +276,85 @@ const profileOrders = {
                 title: "状态",
                 key: "orderStatus",
                 width: 92,
-                align: "center"
+                align: "center",
+                render: (h, params) => {
+                    if (params.row.os == "0000") {
+                        return h("div", [ h( "p", {}, "待付款"),
+                            h(
+                                "Button",
+                                {
+                                    props: {
+                                        size: "small"
+                                    },
+                                    style: {
+                                        background: "#f7f9f3",
+                                        border: "0",
+                                        color: "#04593f"
+                                    },
+                                    on: {
+                                        click: () => {
+                                            var payType = params.row.payType;
+                                            var payType = params.row.payType;
+                                            if (payType == 'wxpay') {
+                                                let pk_code = "tcss.build.wx.pay";
+                                                let oss_code = params.row.orderId + "," + "1000";
+                                                // let token = this.token;
+                                                //获取token
+                                                let token = this.getCookie("_lac_k_");
+                                                let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&t_t=NATIVE&pk=" + pk_code + "&oss=" + oss_code + "&prefer_way=0&market_item_id=0&acmid=0&quanid=0" + "&token=" + token;
+                                                fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
+                                                    if (d.available) {
+                                                        console.log(d);
+                                                        let code_url = d.obj.data.code_url;
+                                                        this.$router.push({ name: "wxPay", params: { totalPrice: params.row.payAmount, code_url: code_url, order_num: params.row.on, order_time: params.row.aTime, o_id: params.row.orderId } });
+                                                    }
+                                                });
+                                            }else{
+                                                let pk_code = "order.pay.alipay.unifiedorders";
+                                                let oss_code = params.row.orderId + "," + "1000";
+                                                this.formOss = oss_code;
+                                                let token = this.getCookie("_lac_k_");
+                                                let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
+                                                $.get(url_code, d => {
+                                                    if (d.available) {
+                                                        this.custom();
+                                                        let url_jsp = "/front/using/alipay_new.jsp";
+                                                        let data = this.formOss;
+                                                        let form = $("#submit_alipay");
+                                                        form.attr({ "action": url_jsp });
+                                                        let input = $("<input type='hidden' id='alipay_param' name='alipay_param' />")
+                                                        input.attr({ "method": "post" });
+                                                        input.val(data);
+                                                        form.append(input);
+                                                        form.submit();
+                                                    }
+                                                })
+                                            }
+                                            console.log(params.row);
+                                        }
+                                    }
+                                },
+                                "去支付"
+                            )
+                        ]);
+                    } else if(params.row.os == "1000") {
+                        return h("div", {}, [
+                            h("p", {}, "待发货")
+                        ])
+                    } else if(params.row.os == "2000") {
+                        return h("div", {}, [
+                            h("p", {}, "待收货")
+                        ])
+                    } else if(params.row.os == "3000") {
+                        return h("div", {}, [
+                            h("p", {}, "已收货")
+                        ])
+                    } else if(params.row.os == "8001") {
+                        return h("div", {}, [
+                            h("p", {}, "申请退款")
+                        ])
+                    }
+                }
             },
             {
                 title: "物流",
@@ -343,6 +433,22 @@ const profileOrders = {
                 ":" +
                 this.add0(seconds)
             );
+        },
+        asyncOk() {
+            let pk_code = "order.check.status";
+            let o_id = this.o_id;
+            let token = this.token;
+            let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&o_id=" + o_id + "&oc=1000&token=" + token;
+            $.get(url_code, d => {
+                if (d.available && d.obj.data) {
+                    location.href = appset.domain + "/front/pageapp#/profileOrders";
+                }else{
+                   this.$Message.info('您还未完成付款');
+                }
+            })
+        },
+        custom () {
+            this.confirmModal = true;
         }
     }
 

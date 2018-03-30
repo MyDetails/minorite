@@ -23,6 +23,7 @@ const routes = [
 	{ name: 'wxPay', path: '/wxPay', component: wxPay },
 	{ name: 'newsList', path: '/newsList', component: newsList },
 	{ name: 'duoshou', path: '/duoshou', component: duoshou },
+	{ name: 'newProductsMore', path: '/newProductsMore', component: newProductsMore },
 	{ path: '/profileMsg', component: profileMsg },
 	{ path: '/profileOrders', component: profileOrders },
 	{ path: '/profileCoupons', component: profileCoupons },
@@ -1575,8 +1576,8 @@ Vue.component('profileNav', {
 	`,
 	data: function () {
 		return {
-			personalSelected: 0,
-			personalShow: 0,
+			personalSelected: -1,
+			personalShow: -1,
 			personalDetails: [
 				{
 					id: 1,

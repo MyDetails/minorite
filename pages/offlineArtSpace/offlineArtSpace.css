@@ -77,18 +77,18 @@
     background: url("http://pe1s.static.pdr365.com/minorite/offlineArtSpace/artSpace02.png") no-repeat;
   }
 
-    /*页面两侧浮动元素*/
-    .oa-parallax-item-l-c {
-      position: absolute;
-      right: 0;
-      top: 450px;
-      width: 216px;
-      height: 380px;
-    }
-    .oa-parallax-item-r-c {
-      position: absolute;
-      right: 0;
-      top: 200px;
-      width: 216px;
-      height: 300px;
-    }
+/*页面两侧浮动元素*/
+.oa-parallax-item-l-c {
+  position: absolute;
+  right: 0;
+  top: 80px;
+  width: 216px;
+  height: 280px;
+}
+.oa-parallax-item-r-c {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 216px;
+  height: 280px;
+}

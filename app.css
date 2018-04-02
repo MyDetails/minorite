@@ -313,6 +313,12 @@ pre {
 .slide-nav-hidden .fragrance-nav {
   margin-left: 28px;
 }
+.brands-hover:hover {
+  background-color: #c47676;
+  color: #fff;
+  border-radius: 3px;
+  padding: 2px 5px;
+}
 
 
 
@@ -1698,12 +1704,12 @@ background-color: #04593f;
   position: absolute;
 }
 .slide_left {
-  width: 216px;
+  width: 230px;
   left: -250px;
   top: 0;
 }
 .slide_right {
-  width: 216px;
+  width: 230px;
   right: -250px;
   top: 0;
 }

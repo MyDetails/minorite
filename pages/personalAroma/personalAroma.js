@@ -22,33 +22,35 @@ const personalAroma = {
 
                 <!-- slide-nav start -->
 
+                
+                
                 <ul class="slide-nav">
 					<li class="slide-nav-item" v-for="(item,index) in slideNavList" :key="item.id">
 						<p :class="slideSelected == index ? 'slide-nav-active' : ''" @click="clickNav(index)">
-							<span v-if="item.childList"> {{slideSelected == index ? "-" : "+"}} </span>
+							<span v-if="item.childList"> {{item.flag ? "-" : "+"}} </span>
 							<router-link v-if="item.name" :to="{path: '/' + item.name}">{{item.title}}</router-link>
 							<span v-else>{{item.title}}</span>
 						</p>
-						<ol v-if="slideSelected == index" class="slide-nav-hidden">
+						<ol v-if="item.flag" class="slide-nav-hidden">
 							<li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
-								<router-link v-if="index==1 && childItem.id" :to="{path: '/brand', query: {brand: childItem.id}}">
+								<router-link class="brands-hover" v-if="index==1 && childItem.id" :to="{path: '/brand', query: {brand: childItem.id}}">
 									{{childItem.name || childItem.catNameEn}}
 								</router-link>
 								<p v-if="index==2" :class="childSelected == childIndex ? 'fragrance-nav-active' : ''" @click="childClickNav(childIndex)">
-									<span v-if="childItem.itemList"> {{childSelected == childIndex ? "-" : "+"}} </span>
+									<span v-if="childItem.sons"> {{clickShow[childIndex] ? "-" : "+"}} </span>
 									<span>{{childItem.catNameCn}}</span>
 								</p>
-								<ol v-if="index==2 && childSelected == childIndex" class="slide-nav-hidden fragrance-nav">
+								<ol v-if="index==2 && clickShow[childIndex]" class="slide-nav-hidden fragrance-nav">
 									<li v-for="(_Item, _Index) in childItem.sons" :key="_Item.id">
-										<a @click="goPersonalAroma(_Item.id)">
-											{{_Item.catNameCn}}
-										</a>
+                                        <a class="brands-hover" @click="goPersonalAroma(_Item.id)">
+                                            {{_Item.catNameCn}}
+                                        </a>
 									</li>
 								</ol>
-								<router-link v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
+								<router-link class="brands-hover" v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
 									{{childItem.title}}
 								</router-link>
-								<router-link v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
+								<router-link class="brands-hover" v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
 									{{childItem.title}}
 								</router-link>
 							</li>
@@ -71,19 +73,19 @@ const personalAroma = {
                             <p>¥{{item.goods_price / 100}}</p>
                         </li>
                     </ul>
-                    <ul class="page-list">
+                    <!--<ul class="page-list">
                         <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
-                    </ul>
+                    </ul>-->
                 </div>
 
                 <div class="slide slide_left">
                     <div class="parallax-item pa-parallax-item-l-c" data-speed="0.2"> 
-                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_3.png">
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/float_left_1.png">
                     </div>
                 </div>
                 <div class="slide slide_right">
                     <div class="parallax-item pa-parallax-item-r-c" data-speed="0.2"> 
-                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_4.png">
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_02.png">
                     </div>
                 </div>
 
@@ -92,72 +94,80 @@ const personalAroma = {
 	`, data: function () {
         return {
             slideSelected: -1,
-            slideShow: -1,
             childSelected: 0,
-            childIndex: 0,
+			clickArr: [],
             slideNavList: [
-                {
-                    id: 0,
-                    // name: "newProducts",
-                    title: "新品上市",
-                    childList: [
-                        { cid: 1, name: "newProducts", title: "新品上市", params: "0", checked: true },
-                        { cid: 2, name: "newProducts", title: "销售排行", params: "1" }
-                    ]
-                },
-                {
-                    id: 1,
-                    // name: "allBrands",
-                    title: "所有品牌",
-                    childList: []
-                },
-                {
-                    id: 2,
-                    // name: "personalAroma",
-                    title: "个人香水",
-                    childList: []
-                },
-                {
-                    id: 3,
-                    // name: "furnitureAroma",
-                    title: "家居香氛",
-                    childList: [
-                        { cid: 31, name: "furnitureAroma", title: "香包", params: "0", checked: true },
-                        { cid: 32, name: "furnitureAroma", title: "喷雾", params: "1" },
-                        { cid: 33, name: "furnitureAroma", title: "蜡烛", params: "2" }
-                    ]
-                },
-                {
-                    id: 4,
-                    name: "giftsBox",
-                    title: "礼盒套装"
-                },
-                {
-                    id: 5,
-                    name: "onlieAromaTest",
-                    title: "线上香气测试"
-                },
-                {
-                    id: 6,
-                    name: "offlineArtSpace",
-                    title: "线下艺术空间"
-                },
-                {
-                    id: 7,
-                    // name: "vipClub",
-                    title: "优惠活动",
-                    childList: [
-                        { cid: 71, name: "vipClub", go: "vipClub", title: "优惠指南", checked: true },
-                        { cid: 72, name: "testAroma", go: "testAroma", title: "双周七七", },
-                        { cid: 73, name: "testAroma", go: "testAroma", title: "试香包", }
-                    ]
-                },
-                {
-                    id: 8,
-                    name: "vipClub",
-                    title: "VIP俱乐部"
-                }
-            ],
+				{
+					id: 0,
+					// name: "newProducts",
+					title: "新品上市",
+					flag: false,
+					childList: [
+						{ cid: 1, name: "newProducts", title: "新品上市", params: "0", checked: true },
+						{ cid: 2, name: "newProducts", title: "销售排行", params: "1" }
+					]
+				},
+				{
+					id: 1,
+					// name: "allBrands",
+					title: "所有品牌",
+					flag: false,
+					childList: []
+				},
+				{
+					id: 2,
+					// name: "personalAroma",
+					title: "个人香水",
+					flag: false,
+					childList: []
+				},
+				{
+					id: 3,
+					// name: "furnitureAroma",
+					title: "家居香氛",
+					flag: false,
+					childList: [
+						{ cid: 31, name: "furnitureAroma", title: "香包", params: "0", checked: true },
+						{ cid: 32, name: "furnitureAroma", title: "喷雾", params: "1" },
+						{ cid: 33, name: "furnitureAroma", title: "蜡烛", params: "2" }
+					]
+				},
+				{
+					id: 4,
+					name: "giftsBox",
+					flag: false,
+					title: "礼盒套装"
+				},
+				{
+					id: 5,
+					name: "onlieAromaTest",
+					flag: false,
+					title: "线上香气测试"
+				},
+				{
+					id: 6,
+					name: "offlineArtSpace",
+					flag: false,
+					title: "线下艺术空间"
+				},
+				{
+					id: 7,
+					// name: "vipClub",
+					title: "优惠活动",
+					flag: false,
+					childList: [
+						{ cid: 71, name: "duoshou", go: "duoshou", title: "剁手指南", checked: true },
+						{ cid: 72, name: "testAroma", go: "testAroma", title: "双周七七", },
+						{ cid: 73, name: "testAroma", go: "testAroma", title: "试香包", }
+					]
+				},
+				{
+					id: 8,
+					name: "vipClub",
+					flag: false,
+					title: "VIP俱乐部"
+				}
+			],
             personalAromaImgList: [],
             classList: ["fade-middle", "fade-end", "show"],
             currentPage: 3,
@@ -167,7 +177,16 @@ const personalAroma = {
     }, computed: {
         pageList: function () {
             return this.personalAromaImgList.length;
-        }
+        },
+        clickShow() {
+			return this.slideNavList[2].childList.map((item, index) => {
+				if(this.clickArr.indexOf(index) === -1) {
+					return false;
+				} else {
+					return true;
+				}
+			})
+		}
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
         document.title = "个人香水";
@@ -217,11 +236,16 @@ const personalAroma = {
     }, methods: {
         clickNav(index) {
             this.slideSelected = index;
-            this.slideShow = index;
+			this.slideNavList[index].flag = !this.slideNavList[index].flag;
         },
         childClickNav(childIndex) {
             this.childSelected = childIndex;
-            this.childShow = childIndex;
+			let index = this.clickArr.indexOf(childIndex);
+			if(index === -1) {
+				this.clickArr.push(childIndex);
+			} else {
+				this.clickArr.splice(index, 1);
+			}
         },
         pageActive(index) {
             this.currentPage = index;

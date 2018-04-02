@@ -38,12 +38,12 @@ const offlineArtSpace = {
                     <!--浮动元素开始-->
                     <div class="slide slide_left">
                         <div class="parallax-item oa-parallax-item-l-c" data-speed="0.2"> 
-                            <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_3.png" style="height:780px;">
+                            <img src="http://pe1s.static.pdr365.com/minorite/newProducts/float_left_1.png">
                         </div>
                     </div>
                     <div class="slide slide_right">
                         <div class="parallax-item oa-parallax-item-r-c" data-speed="0.2"> 
-                            <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_4.png">
+                            <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_02.png">
                         </div>
                     </div>
                     <!--浮动元素结束-->

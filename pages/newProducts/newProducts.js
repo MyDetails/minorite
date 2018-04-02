@@ -73,7 +73,7 @@ const newProducts = {
 
                 <div class="slide slide_left">
                     <div class="parallax-item np-parallax-item-center" data-speed="0.2"> 
-                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_01.png">
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/float_left_1.png">
                     </div>
                 </div>
                 <div class="slide slide_right">
@@ -81,7 +81,7 @@ const newProducts = {
                         <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_02.png">
                     </div>
                     <div class="parallax-item np-parallax-item-bottom" data-speed="0.2"> 
-                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_03.png">
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/float_right_2.png">
                     </div>
                 </div>
 

@@ -45,15 +45,15 @@ const allBrands = {
                         <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_1.png">
                     </div>
                     <div class="parallax-item ab-parallax-item-l-b" data-speed="0.2"> 
-                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_3.png">
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/float_left_1.png">
                     </div>
                 </div>
                 <div class="slide slide_right">
                     <div class="parallax-item ab-parallax-item-r-t" data-speed="0.2"> 
-                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_2.png">
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/newProducts_float_02.png">
                     </div>
                     <div class="parallax-item ab-parallax-item-r-b" data-speed="0.2"> 
-                        <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_4.png">
+                        <img src="http://pe1s.static.pdr365.com/minorite/newProducts/float_right_2.png">
                     </div>
                 </div>
                 

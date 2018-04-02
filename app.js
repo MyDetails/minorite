@@ -1318,7 +1318,7 @@ Vue.component('SlideNav', {
 						</p>
 						<ol v-if="item.flag" class="slide-nav-hidden">
 							<li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
-								<router-link v-if="index==1 && childItem.id" :to="{path: '/brand', query: {brand: childItem.id}}">
+								<router-link class="brands-hover" v-if="index==1 && childItem.id" :to="{path: '/brand', query: {brand: childItem.id}}">
 									{{childItem.name || childItem.catNameEn}}
 								</router-link>
 								<p v-if="index==2" :class="childSelected == childIndex ? 'fragrance-nav-active' : ''" @click="childClickNav(childIndex)">
@@ -1327,15 +1327,15 @@ Vue.component('SlideNav', {
 								</p>
 								<ol v-if="index==2 && clickShow[childIndex]" class="slide-nav-hidden fragrance-nav">
 									<li v-for="(_Item, _Index) in childItem.sons" :key="_Item.id">
-										<router-link :to="{path: '/personalAroma', query: {cat: _Item.id}}">
+										<router-link class="brands-hover" :to="{path: '/personalAroma', query: {cat: _Item.id}}">
 											{{_Item.catNameCn}}
 										</router-link>
 									</li>
 								</ol>
-								<router-link v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
+								<router-link class="brands-hover" v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
 									{{childItem.title}}
 								</router-link>
-								<router-link v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
+								<router-link class="brands-hover" v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
 									{{childItem.title}}
 								</router-link>
 							</li>

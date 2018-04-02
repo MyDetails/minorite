@@ -38,7 +38,7 @@ const brand = {
 						</p>
 						<ol v-if="slideSelected == index" class="slide-nav-hidden">
 							<li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
-								<a v-if="index==1 && childItem.id" @click="goBrand(childItem.id)">
+								<a class="brands-hover" v-if="index==1 && childItem.id" @click="goBrand(childItem.id)">
 									{{childItem.name || childItem.catNameEn}}
 								</a>
 								<p v-if="index==2" :class="childSelected == childIndex ? 'fragrance-nav-active' : ''" @click="childClickNav(childIndex)">

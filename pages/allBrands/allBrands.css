@@ -79,15 +79,15 @@
 .ab-parallax-item-r-t {
   position: absolute;
   right: 0;
-  top: 380px;
+  top: 280px;
   bottom: 0;
   width: 216px;
-  height: 620px;
+  height: 380px;
 }
 .ab-parallax-item-r-b {
   position: absolute;
   right: 0;
-  top: 1800px;
+  top: 1500px;
   bottom: 0;
   width: 216px;
   height: 620px;

@@ -329,14 +329,14 @@
 .np-parallax-item-bottom {
   position: absolute;
   right: 0;
-  top: 1500px;
+  top: 2000px;
   width: 216px;
   height: 400px;
 }
 .np-parallax-item-center {
   position: absolute;
   right: 0;
-  top: 900px;
+  top: 1100px;
   bottom: 0;
   width: 216px;
   height: 620px;

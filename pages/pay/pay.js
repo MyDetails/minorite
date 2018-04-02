@@ -137,7 +137,7 @@ const pay = {
                 text: "",
                 province: "",
                 city: "",
-                county: "",
+                county: "东城区",
                 o_id:"",
             },
             info_list: {},
@@ -160,7 +160,8 @@ const pay = {
                     {
                         message: "请输入您的邮政编码",
                         tigger: "blur"
-                    }
+                    },
+                    { type: 'string', max: 6, message: '请输入正确的邮编', pattern: /[1-9]\d{5}/, trigger: 'blur' }
                 ],
                 name: [
                     {
@@ -174,7 +175,8 @@ const pay = {
                         required: true,
                         message: "请输入您的手机号",
                         tigger: "blur"
-                    }
+                    },
+                    { type: 'string', max: 11, message: '请输入正确的手机号码', pattern: /1\d{10}/, trigger: 'blur' }
                 ],
                 text: [
                     {
@@ -2345,13 +2347,13 @@ const pay = {
 
                     let pk = "account.add.modify.address";
                     let time = new Date().getTime();
-                    let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&address=" + address + "&cel=" + num + "&name=" + name;
+                    let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&address=" + address + "&cel=" + num + "&name=" + name + "&def=" + "0" + "&id=";
                     fetch(url, { method: "POST", credentials: "include" })
                         .then(r => r.json())
                         .then(d => {
                             if (d.available == true) {
                                 this.$Message.success("创建收货地址成功！");
-                                router.go(0);
+                                setTimeout(() => { router.go(0); }, 500);
                                 window.scrollTo(0, 0);
                             } else {
                                 this.$Message.error("创建收货地址失败，请重新创建！");
@@ -2586,7 +2588,7 @@ const pay = {
             if (this.districtArr && this.districtArr.length > 0 && this.districtArr[1].name) {
                 this.district = this.districtArr[1].name;
             } else {
-                this.district = '';
+                this.district = '东城区';
             }
         },
         getAddressId(id) {

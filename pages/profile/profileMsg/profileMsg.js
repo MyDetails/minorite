@@ -95,15 +95,15 @@ const profileMsg = {
                                             <Input v-model="formRight.input6"></Input>
                                         </FormItem>
                                         <FormItem label="新密码：">
-                                            <Input v-model="formRight.input7"></Input>
+                                            <Input v-model="formRight.input7" @on-change="changePwd" placeholder="请输入6-16位字符"></Input>
                                         </FormItem>
                                         <FormItem>
-                                            <Button type="default">弱</Button>
-                                            <Button type="default">中</Button>
-                                            <Button type="default">强</Button>
+                                            <Button type="default" :class="pwd_level === 'low' ? 'bg-red' : '' ">弱</Button>
+                                            <Button type="default" :class="pwd_level === 'middle' ? 'bg-orange' : '' ">中</Button>
+                                            <Button type="default" :class="pwd_level === 'high' ? 'bg-green' : '' ">强</Button>
                                         </FormItem>
                                         <FormItem label="确认新密码：">
-                                            <Input v-model="formRight.input8"></Input>
+                                            <Input v-model="formRight.input8" ></Input>
                                         </FormItem>
                                         <FormItem class="personal-msg-btn">
                                             <Button type="primary" @click="handleSubmitPwd()">提交</Button>
@@ -149,6 +149,8 @@ const profileMsg = {
                 input4: "",
                 input5: "",
                 input6: "",
+                input7: "",
+                input8: "",
             },
             formItem: {
                 radio: "1"
@@ -163,6 +165,7 @@ const profileMsg = {
                 phone: "",
             },
             headImgUrl: "",
+            pwd_level: "",
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -212,10 +215,10 @@ const profileMsg = {
         }
     }, methods: {
         // 获取cookie
-		getCookie(name) {
-			let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
-			return v ? v[2] : null;
-		},
+        getCookie(name) {
+            let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+            return v ? v[2] : null;
+        },
         handleSubmit(name) {
             //提交个人信息
             let pk = "account.info.update";
@@ -241,11 +244,25 @@ const profileMsg = {
         handleSubmitPwd() {
 
         },
+        changePwd() {
+            let reg1 = /^[0-9A-Za-z]{6,16}$/; //弱密码
+            let reg2 = /^(?=.{6,16})[0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*$/; //中密码
+            let reg3 = /^(?=.{6,16})([0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*){2,}$/; //强密码
+            let val = this.formRight.input7;
+            if (reg1.test(val) || val.length > 0 && val.length < 6) {
+                this.pwd_level = "low";
+            } else if (reg2.test(val)) {
+                this.pwd_level = "middle";
+            } else if (reg3.test(val)) {
+                this.pwd_level = "high";
+            } else {
+                this.pwd_level = "";
+            }
+        },
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
             return v ? v[2] : null;
-
         },
         //确认上传头像
         handleSubmitAvatar() {

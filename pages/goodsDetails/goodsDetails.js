@@ -105,7 +105,7 @@ const goodsDetails = {
 						<p>更别致的香水跨境电商</p>
 					</div>
 					<div class="advertisement-img">
-						<img src="http://pe1s.static.pdr365.com/minorite/goodsDetails/g_banner.png" alt="">
+						<img src="http://pe1s.static.pdr365.com/minorite/goodsDetails/g_banner1.png" alt="">
 					</div>
 				</div>
 				<!-- advertisement end -->
@@ -138,7 +138,7 @@ const goodsDetails = {
 					<div class="brand-desc" v-html="brand.catContent"></div>
 
 					<div class="brand-about">
-						<img src="http://pe1s.static.pdr365.com/minorite/goodsDetails/brandAbout.png" alt="">
+						<img src="http://pe1s.static.pdr365.com/minorite/goodsDetails/gd_xize.png" alt="">
 					</div>
 				</div>
 				<!-- goods description end -->

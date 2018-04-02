@@ -27,7 +27,7 @@ const giftsBox = {
 						<ul class="giftsBox-img-list">
 							<li v-for="item in giftsBoxImgList" :key="item.goods.id">
 								<div class="giftsBox-img">
-								<router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;">
+								<router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;padding:10px;">
 									<img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
 								</router-link>
 								</div>

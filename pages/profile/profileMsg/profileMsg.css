@@ -58,3 +58,15 @@
     margin-top: 20px;
     margin-left: 20px;
   }
+  .personal-msg .bg-red {
+    background: #EB4124;
+    color: #fff;
+  }
+  .personal-msg .bg-orange {
+    background: #FD9828;
+    color: #fff;
+  }
+  .personal-msg .bg-green {
+    background: #26BD6E;
+    color: #fff;
+  }

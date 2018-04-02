@@ -31,7 +31,7 @@ const testAroma = {
                                     <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
                                 </router-link>
                                 </div>
-                                <p>{{item.cat.catNameEn}}</p>
+                                <p v-if="item.cat">{{item.cat.catNameEn}}</p>
                                 <p>{{item.goods.goods_name}}</p>
                                 <p>¥{{item.goods.goods_price / 100}}</p>
                             </li>
@@ -77,7 +77,7 @@ const testAroma = {
     }, mounted() {
         //获取试香包
         let pk_xb = "tcss.goods.by.cat";
-        let url_xb = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_xb + "&cat=412";
+        let url_xb = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_xb + "&cat=352";
         fetch(url_xb)
             .then(r => r.json())
             .then(d => {

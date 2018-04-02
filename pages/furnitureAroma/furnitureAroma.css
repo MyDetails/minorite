@@ -82,12 +82,15 @@
   .furnitureAroma-img {
     /* height: 190px; */
   }
+  .furnitureAroma-img a {
+    padding: 10px;
+  }
   .furnitureAroma-img-list li p {
     margin: 0;
   }
   .furnitureAroma-img-list li p:first-of-type {
     margin-top: 10px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     color: #a62126;
   }

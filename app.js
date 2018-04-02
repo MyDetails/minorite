@@ -90,9 +90,13 @@ Vue.component('AppHeader', {
 														<!-- profile -->
 														<div class="search-car-icon profile"  @mouseover="login"  @click="goProfile">
 															<Avatar shape="square" icon="ios-person-outline" size="small" />
-															<ol v-show="loginShow" class="profile-hidden">
-															<li @click.stop="loginRender"> 立即登录 </li>
-															<li @click.stop="signRender"> 立即注册 </li>
+															<ol v-show="loginShow && loginStatus === 'login'" class="profile-hidden">
+																<li @click.stop="loginRender"> 立即登录 </li>
+																<li @click.stop="signRender"> 立即注册 </li>
+															</ol>
+															<ol v-show="loginShow && loginStatus === 'logout'" class="profile-hidden">
+																<li @click.stop="goProfile"> 个人中心 </li>
+																<li @click.stop="goLogout"> 退出登录 </li>
 															</ol>
 														</div>
 													</div>
@@ -849,6 +853,7 @@ Vue.component('AppHeader', {
 			selected: -1,
 			show: -1,
 			loginShow: false,
+			loginStatus: "",
 			domain: "http://www.minorite.com.cn",
 			recommendData: [],
 			spicesData: [],
@@ -859,32 +864,32 @@ Vue.component('AppHeader', {
 			search: "",
 			searchData: [
 				{
-				  title: "香料",
-				  children: [
-					{
-					  title: "东方木质调",
-					  count: 10000
-					},
-					{
-					  title: "绿调",
-					  count: 10600
-					}
-				  ]
+					title: "香料",
+					children: [
+						{
+							title: "东方木质调",
+							count: 10000
+						},
+						{
+							title: "绿调",
+							count: 10600
+						}
+					]
 				},
 				{
-				  title: "香料",
-				  children: [
-					{
-					  title: "薰衣草",
-					  count: 60100
-					},
-					{
-					  title: "玫瑰",
-					  count: 30010
-					}
-				  ]
+					title: "香料",
+					children: [
+						{
+							title: "薰衣草",
+							count: 60100
+						},
+						{
+							title: "玫瑰",
+							count: 30010
+						}
+					]
 				},
-			  ]
+			]
 		}
 	},
 	mounted() {
@@ -913,7 +918,7 @@ Vue.component('AppHeader', {
 		},
 		goMore() {
 			this.modalSearch = false;
-			this.$router.push({path: '/allBrands'});
+			this.$router.push({ path: '/allBrands' });
 		},
 		handleRender(item) {
 			if (item.clickName == "onlineAromaTest") {
@@ -1067,6 +1072,12 @@ Vue.component('AppHeader', {
 		},
 		login() {
 			this.loginShow = true;
+			let login = this.getCookie('_lac_k_');
+			if (login) {
+				this.loginStatus = "logout";
+			} else {
+				this.loginStatus = "login";
+			}
 		},
 		//登录弹窗
 		loginRender() {
@@ -1110,6 +1121,10 @@ Vue.component('AppHeader', {
 				this.modalLogin = true;
 			};
 		},
+		//退出登录
+		goLogout() {
+			this.clearCookie('_lac_k_');
+		},
 		//设置cookie
 		setCookie(name, value, days) {
 			var d = new Date();
@@ -1121,6 +1136,14 @@ Vue.component('AppHeader', {
 		getCookie(name) {
 			var v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
 			return v ? v[2] : null;
+		},
+		//清除cookie    
+		clearCookie(name) {
+			this.setCookie(name, "", -1);
+			this.$Message.success('成功退出登录');
+			setTimeout(() => {
+				this.$router.push({path: '/'});
+			},600);
 		},
 		//用户登录
 		loginSubmit(name) {
@@ -1218,7 +1241,7 @@ Vue.component('AppHeader', {
 		//个人香水导航
 		modalGoPersonalAroma(id) {
 			this.modalPersonalAroma = false;
-			this.$router.push({ path: '/personalAroma', query: {cat: id}});
+			this.$router.push({ path: '/personalAroma', query: { cat: id } });
 		}
 	}
 });
@@ -1347,7 +1370,7 @@ Vue.component('SlideNav', {
 	data: function () {
 		return {
 			slideSelected: -1,
-            childSelected: 0,
+			childSelected: 0,
 			clickArr: [],
 			slideNavList: [
 				{
@@ -1426,7 +1449,7 @@ Vue.component('SlideNav', {
 	computed: {
 		clickShow() {
 			return this.slideNavList[2].childList.map((item, index) => {
-				if(this.clickArr.indexOf(index) === -1) {
+				if (this.clickArr.indexOf(index) === -1) {
 					return false;
 				} else {
 					return true;
@@ -1459,7 +1482,7 @@ Vue.component('SlideNav', {
 		childClickNav(childIndex) {
 			this.childSelected = childIndex;
 			let index = this.clickArr.indexOf(childIndex);
-			if(index === -1) {
+			if (index === -1) {
 				this.clickArr.push(childIndex);
 			} else {
 				this.clickArr.splice(index, 1);

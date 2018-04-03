@@ -1714,7 +1714,7 @@ background-color: #04593f;
   top: 0;
 }
 
-/**** css的对勾 ****/
+/**** 测试题第9题css的对勾 ****/
 .xiangliao-active::after {
   content: "\00a0";
   display: inline-block;

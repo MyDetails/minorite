@@ -81,7 +81,6 @@ const brand = {
                         <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
                     </ul>
                 </div>
-
             </div>
 		</div>
 	</div>

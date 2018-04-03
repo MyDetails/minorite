@@ -103,7 +103,7 @@ const profileMsg = {
                                             <Button type="default" :class="pwd_level === 'high' ? 'bg-green' : '' ">强</Button>
                                         </FormItem>
                                         <FormItem label="确认新密码：">
-                                            <Input v-model="formRight.input8" ></Input>
+                                            <Input v-model="formRight.input8"></Input>
                                         </FormItem>
                                         <FormItem class="personal-msg-btn">
                                             <Button type="primary" @click="handleSubmitPwd()">提交</Button>
@@ -259,6 +259,13 @@ const profileMsg = {
                 this.pwd_level = "";
             }
         },
+        //确认密码
+        // checkPwd() {
+        //     if(this.formRight.input8 !== this.formRight.input7) {
+
+        //     }
+        // },
+        
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");

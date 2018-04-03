@@ -108,12 +108,16 @@
     font-size: 26px;
   }
   .gd-details-price span:nth-child(3) {
+    margin-right: 20px;
+    font-size: 12px;
+  }
+  .gd-details-price span:nth-child(4) {
     padding: 3px 6px;
     border: 1px solid #fff;
     border-radius: 5px;
     font-size: 11px;
   }
-  .gd-details-price span:nth-child(4) {
+  .gd-details-price span:nth-child(5) {
     margin-left: 10px;
     font-size: 11px;
   }
@@ -301,4 +305,54 @@
   }
   .capacity ul .unit-active {
     border-color: #a62126;
+  }
+
+  .gd_slide_right {
+    width: 600px;
+    right: -500px;
+    top: 0;
+  }
+  .gd-parallax-item-l-t {
+    position: absolute;
+    right: -80px;
+    top: 700;
+    width: 240px;
+    height: 1000px;
+  }
+  .gd-parallax-item-l-c {
+    position: absolute;
+    right: 0;
+    top: 3600px;
+    width: 216px;
+    height: 800px;
+  }
+  .gd-parallax-item-l-b {
+    position: absolute;
+    right: 0;
+    top: 7000px;
+    width: 216px;
+    height: 800px;
+  }
+  .gd-parallax-item-r-t {
+    position: absolute;
+    right: 140px;
+    top: 1500px;
+    width: 600px;
+    height: 1300px;
+  }
+  .gd-parallax-item-r-b {
+    position: absolute;
+    right: 300px;
+    top: 4700px;
+    width: 216px;
+    height: 620px;
+  }
+
+
+ .gd-cascader .ivu-cascader-menu .ivu-cascader-menu-item-active {
+    color: #155840;
+    font-weight: bold;
+  }
+  .gd-cascader .ivu-select-dropdown {
+    background-color: #F7F9F3;
   }

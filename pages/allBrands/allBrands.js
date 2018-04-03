@@ -40,6 +40,7 @@ const allBrands = {
                     </ul>
                 </div>
 
+                <!-- 浮动元素 开始 -->
                 <div class="slide slide_left">
                     <div class="parallax-item ab-parallax-item-l-t" data-speed="0.2"> 
                         <img src="http://pe1s.static.pdr365.com/minorite/allBrands/allBrands_float_1.png">
@@ -56,6 +57,7 @@ const allBrands = {
                         <img src="http://pe1s.static.pdr365.com/minorite/newProducts/float_right_2.png">
                     </div>
                 </div>
+                <!-- 浮动元素 结束 -->
                 
                 
             </div>

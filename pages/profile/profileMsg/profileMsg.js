@@ -92,10 +92,10 @@ const profileMsg = {
                                 <div class="personal-msg">
                                     <Form :model="formRight" label-position="right" :label-width="100">
                                         <FormItem label="原密码：">
-                                            <Input v-model="formRight.input6"></Input>
+                                            <Input type="password" v-model="formRight.input6"></Input>
                                         </FormItem>
                                         <FormItem label="新密码：">
-                                            <Input v-model="formRight.input7" @on-change="changePwd" placeholder="请输入6-16位字符"></Input>
+                                            <Input type="password" v-model="formRight.input7" @on-change="changePwd" placeholder="请输入6-16位字符"></Input>
                                         </FormItem>
                                         <FormItem>
                                             <Button type="default" :class="pwd_level === 'low' ? 'bg-red' : '' ">弱</Button>
@@ -103,7 +103,7 @@ const profileMsg = {
                                             <Button type="default" :class="pwd_level === 'high' ? 'bg-green' : '' ">强</Button>
                                         </FormItem>
                                         <FormItem label="确认新密码：">
-                                            <Input v-model="formRight.input8"></Input>
+                                            <Input type="password" v-model="formRight.input8"></Input>
                                         </FormItem>
                                         <FormItem class="personal-msg-btn">
                                             <Button type="primary" @click="handleSubmitPwd()">提交</Button>

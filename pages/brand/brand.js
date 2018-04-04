@@ -5,8 +5,8 @@
 const brand = {
     cache: {},
     template: `
-	<div><!-- 固定 容器-->
-		<div class="content">
+    <div><!-- 固定 容器-->
+        <div class="content">
             <div class="main brand-main">
                 <div class="brand-title">
                     <div class="brand-title-left">
@@ -30,38 +30,38 @@ const brand = {
 
                 <!-- slide-nav start -->
                 <ul class="slide-nav">
-					<li class="slide-nav-item" v-for="(item,index) in slideNavList" :key="item.id">
-						<p :class="slideSelected == index ? 'slide-nav-active' : ''" @click="clickNav(index)">
-							<span v-if="item.childList"> {{slideSelected == index ? "-" : "+"}} </span>
-							<router-link v-if="item.name" :to="{path: '/' + item.name}">{{item.title}}</router-link>
-							<span v-else>{{item.title}}</span>
-						</p>
-						<ol v-if="slideSelected == index" class="slide-nav-hidden">
-							<li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
-								<a class="brands-hover" v-if="index==1 && childItem.id" @click="goBrand(childItem.id)">
-									{{childItem.name || childItem.catNameEn}}
-								</a>
-								<p v-if="index==2" :class="childSelected == childIndex ? 'fragrance-nav-active' : ''" @click="childClickNav(childIndex)">
-									<span v-if="childItem.itemList"> {{childSelected == childIndex ? "-" : "+"}} </span>
-									<span>{{childItem.catNameCn}}</span>
-								</p>
-								<ol v-if="index==2 && childSelected == childIndex" class="slide-nav-hidden fragrance-nav">
-									<li v-for="(_Item, _Index) in childItem.sons" :key="_Item.id">
-										<router-link :to="{path: '/personalAroma', query: {cat: _Item.id}}">
-											{{_Item.catNameCn}}
-										</router-link>
-									</li>
-								</ol>
-								<router-link v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
-									{{childItem.title}}
-								</router-link>
-								<router-link v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
-									{{childItem.title}}
-								</router-link>
-							</li>
-						</ol>
-					</li>
-				</ul>
+                    <li class="slide-nav-item" v-for="(item,index) in slideNavList" :key="item.id">
+                        <p :class="slideSelected == index ? 'slide-nav-active' : ''" @click="clickNav(index)">
+                            <span v-if="item.childList"> {{slideSelected == index ? "-" : "+"}} </span>
+                            <router-link v-if="item.name" :to="{path: '/' + item.name}">{{item.title}}</router-link>
+                            <span v-else>{{item.title}}</span>
+                        </p>
+                        <ol v-if="slideSelected == index" class="slide-nav-hidden">
+                            <li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
+                                <a class="brands-hover" v-if="index==1 && childItem.id" :class="childItem.id === brand_active_id ? 'brand-active' : ''" @click="goBrand(childItem.id)">
+                                    {{childItem.name || childItem.catNameEn}}
+                                </a>
+                                <p v-if="index==2" :class="childSelected == childIndex ? 'fragrance-nav-active' : ''" @click="childClickNav(childIndex)">
+                                    <span v-if="childItem.itemList"> {{childSelected == childIndex ? "-" : "+"}} </span>
+                                    <span>{{childItem.catNameCn}}</span>
+                                </p>
+                                <ol v-if="index==2 && childSelected == childIndex" class="slide-nav-hidden fragrance-nav">
+                                    <li v-for="(_Item, _Index) in childItem.sons" :key="_Item.id">
+                                        <router-link :to="{path: '/personalAroma', query: {cat: _Item.id}}">
+                                            {{_Item.catNameCn}}
+                                        </router-link>
+                                    </li>
+                                </ol>
+                                <router-link v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
+                                    {{childItem.title}}
+                                </router-link>
+                                <router-link v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
+                                    {{childItem.title}}
+                                </router-link>
+                            </li>
+                        </ol>
+                    </li>
+                </ul>
                 <!-- slide-nav end -->
 
                 <div class="slide-nav-right">
@@ -82,8 +82,8 @@ const brand = {
                     </ul>
                 </div>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
     `,
     data: function () {
         return {
@@ -98,7 +98,7 @@ const brand = {
                     // name: "newProducts",
                     title: "新品上市",
                     childList: [
-                        { cid: 1, name: "newProducts", title: "新品上市", params: "0", checked: true },
+                        { cid: 1, name: "newProducts", title: "新品上架", params: "0", checked: true },
                         { cid: 2, name: "newProducts", title: "销售排行", params: "1" }
                     ]
                 },
@@ -161,7 +161,7 @@ const brand = {
             brandGoodsList: [],
             classList: ["fade-middle", "fade-end", "show"],
             currentPage: 0,
-
+            brand_active_id: "",
         };
     },
     computed: {
@@ -225,9 +225,11 @@ const brand = {
         pageActive(index) {
             this.currentPage = index;
         },
+        //点击侧导航品牌
         goBrand(id) {
             this.$router.push({ path: "/brand", query: { brand: id } });
             this.pageId = this.$route.query.brand;
+            this.brand_active_id = id;
             //获取品牌
             let url1 =
                 appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=tcss.get.goods.perfume.categories&parent=333";

@@ -107,7 +107,7 @@ const newProducts = {
             window.scrollTo(0, 0);
         } else if (this.cat_id === '1') {
             window.scrollTo(0, 715);
-        } else if(this.cat_id === null || this.cat_id === undefined || this.cat_id === '') {
+        } else if (this.cat_id === null || this.cat_id === undefined || this.cat_id === '') {
             window.scrollTo(0, 0);
         }
         //获取新品上市
@@ -144,5 +144,16 @@ const newProducts = {
             this.currentPage = index;
         }
 
+    }, watch: {
+        $route() {
+            this.cat_id = this.$route.query.cat;
+            if (this.cat_id === '0') {
+                window.scrollTo(0, 0);
+            } else if (this.cat_id === '1') {
+                $('body,html').animate({scrollTop: 1500},800)
+            } else if (this.cat_id === null || this.cat_id === undefined || this.cat_id === '') {
+                window.scrollTo(0, 0);
+            }
+        }
     }
 }

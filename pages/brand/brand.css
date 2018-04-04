@@ -128,3 +128,9 @@
   height: 30px;
   color: #1b1b1b;
 }
+.slide-nav-hidden .brand-active {
+  background-color: #c47676;
+  color: #fff;
+  border-radius: 3px;
+  padding: 2px 5px;
+}

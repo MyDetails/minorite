@@ -1379,7 +1379,7 @@ Vue.component('SlideNav', {
 					title: "新品上市",
 					flag: false,
 					childList: [
-						{ cid: 1, name: "newProducts", title: "新品上市", params: "0", checked: true },
+						{ cid: 1, name: "newProducts", title: "新品上架", params: "0", checked: true },
 						{ cid: 2, name: "newProducts", title: "销售排行", params: "1" }
 					]
 				},

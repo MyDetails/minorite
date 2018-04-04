@@ -453,7 +453,7 @@ const index = {
               <tr v-for="item in fragranceData" :key="item.code">
                 <th>{{item.name}}</th>
                 <td>
-                  <CheckboxGroup v-model="huaxiang" @on-change="checkGroupChange">
+                  <CheckboxGroup v-model="huaxiang">
                     <Checkbox v-for="child in item.itemList" :key="child.code" :label="child.code" :disabled="disabled">
                         <span  @click.stop="cancelChecked(child.code)">{{child.name}}</span>
                     </Checkbox>
@@ -550,7 +550,8 @@ const index = {
       spicesData: [],
       fragranceData: [],
       spicesList: [],
-      disabled: false
+      disabled: false,
+      huaxiangCheck: [],
     };
   }, beforeRouteEnter(to, from, next) {
     //当组件加载时自动调用此函数 函数结尾必须next();
@@ -584,18 +585,18 @@ const index = {
     let url_news = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_news;
     fetch(url_news).then(r => r.json()).then(d => {
       if (d.available) {
-        this.newsList = d.obj.carddata.slice(0,3);
+        this.newsList = d.obj.carddata.slice(0, 3);
       }
     });
     //页面两侧浮动元素
     float();
   }, methods: {
     loveXiangChange(data) {
-			this.checkArr = data;
-		},
-		hateXiangChange(data) {
-			this.checkArr2 = data;
-		},
+      this.checkArr = data;
+    },
+    hateXiangChange(data) {
+      this.checkArr2 = data;
+    },
     handleRender() {
       this.modal1 = true;
       //获取香料和香调
@@ -703,6 +704,9 @@ const index = {
     next11() {
       this.modal11 = false;
       this.modal12 = true;
+      if (this.huaxiangCheck.length > 0) {
+        this.huaxiang = this.huaxiangCheck;
+      }
 
       let aromaValueList = [
         this.testAromaValue01,
@@ -743,31 +747,35 @@ const index = {
     format(val) {
       return val + "%";
     },
-    //查看选中香气
-    checkGroupChange(data) {
-    //   this.huaxiangArr = data;
-    //   console.log(this.huaxiangArr);
-    },
     //取消选中香气
     cancelChecked(code) {
-    //   if (this.huaxiangArr.length > 3) {
-    //     this.disabled = true;
-        
-    //   } 
-    //   this.huaxiang.forEach((v, i) => {
-    //     console.log(v, code);
-    //     if (code == v) {
-    //       this.huaxiang_code = code;
-          
-    //     }
-    //   });
-      
-    //   console.log(this.huaxiang);
+      let index = this.huaxiangCheck.indexOf(code);
+      if (this.huaxiangCheck.length < 3) {
+        if (index === -1) {
+          this.huaxiangCheck.push(code);
+        } else {
+          this.huaxiangCheck.splice(index, 1);
+        }
+      } else if (this.huaxiangCheck.length === 3 || this.huaxiangCheck.length > 3) {
+        this.disabled = true;
+        if (index !== -1) {
+          this.huaxiangCheck.splice(index, 1);
+        }
+      }
     },
     goGoods(id) {
       this.modal12 = false;
       this.$router.push({ path: '/goodsDetails', query: { goodsId: id } });
     }
 
-  }
+  },
+  watch: {
+		huaxiangCheck() {
+			if (this.huaxiangCheck.length > 3) {
+				this.disabled = true;
+			} else {
+				this.disabled = false;
+			}
+		}
+	}
 }

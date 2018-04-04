@@ -420,9 +420,9 @@ Vue.component('AppHeader', {
 											<tr v-for="item in fragranceData" :key="item.code">
 												<th>{{item.name}}</th>
 												<td>
-												<CheckboxGroup v-model="huaxiang" @on-change="checkGroupChange">
+												<CheckboxGroup v-model="huaxiang">
 													<Checkbox v-for="child in item.itemList" :key="child.code" :label="child.code" :disabled="disabled">
-														<span  @click="cancelChecked(child.code)">{{child.name}}</span>
+														<span  @click.stop="cancelChecked(child.code)">{{child.name}}</span>
 													</Checkbox>
 												</CheckboxGroup>
 												</td>
@@ -889,7 +889,8 @@ Vue.component('AppHeader', {
 						}
 					]
 				},
-			]
+			],
+			huaxiangCheck: [],
 		}
 	},
 	mounted() {
@@ -1019,6 +1020,9 @@ Vue.component('AppHeader', {
 		next11() {
 			this.modal11 = false;
 			this.modal12 = true;
+			if(this.huaxiangCheck.length > 0) {
+				this.huaxiang = this.huaxiangCheck;
+			}
 
 			let aromaValueList = [
 				this.testAromaValue01,
@@ -1142,8 +1146,8 @@ Vue.component('AppHeader', {
 			this.setCookie(name, "", -1);
 			this.$Message.success('成功退出登录');
 			setTimeout(() => {
-				this.$router.push({path: '/'});
-			},600);
+				this.$router.push({ path: '/' });
+			}, 600);
 		},
 		//用户登录
 		loginSubmit(name) {
@@ -1218,20 +1222,21 @@ Vue.component('AppHeader', {
 				}
 			});
 		},
-		//查看选中香气
-		checkGroupChange(data) {
-			// if (data.length > 3) {
-			// 	this.disabled = true;
-			// }
-		},
-		//取消选中香气
+		//选中香气
 		cancelChecked(code) {
-			// this.huaxiang.forEach((v, i) => {
-			// 	if (code == v) {
-			// 		this.huaxiang.splice(i, 1);
-			// 	}
-			// });
-			// this.disabled = false;
+			let index = this.huaxiangCheck.indexOf(code);
+			if (this.huaxiangCheck.length < 3) {
+				if (index === -1) {
+					this.huaxiangCheck.push(code);
+				} else {
+					this.huaxiangCheck.splice(index, 1);
+				}
+			} else if(this.huaxiangCheck.length === 3 || this.huaxiangCheck.length > 3) {
+				this.disabled = true;
+				if(index !== -1) {
+					this.huaxiangCheck.splice(index, 1);	
+				}
+			}
 		},
 		//测试结果点击跳转到商品详情页
 		goGoods(id) {
@@ -1242,6 +1247,15 @@ Vue.component('AppHeader', {
 		modalGoPersonalAroma(id) {
 			this.modalPersonalAroma = false;
 			this.$router.push({ path: '/personalAroma', query: { cat: id } });
+		}
+	},
+	watch: {
+		huaxiangCheck() {
+			if (this.huaxiangCheck.length > 3) {
+				this.disabled = true;
+			} else {
+				this.disabled = false;
+			}
 		}
 	}
 });

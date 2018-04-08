@@ -100,7 +100,7 @@ const personalAroma = {
 				{
 					id: 0,
 					// name: "newProducts",
-					title: "新品上市",
+					title: "新品上架",
 					flag: false,
 					childList: [
 						{ cid: 1, name: "newProducts", title: "新品上架", params: "0", checked: true },

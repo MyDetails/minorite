@@ -12,25 +12,29 @@ const routes = [
 	{ path: '/personalAroma', component: personalAroma },
 	{ path: '/testAroma', component: testAroma },
 	{ path: '/vipClub', component: vipClub },
+	{ path: '/pay', component: pay },
+	{ name: 'wxPay', path: '/wxPay', component: wxPay },
+	{ name: 'newsList', path: '/newsList', component: newsList },
+	{ name: 'duoshou', path: '/duoshou', component: duoshou },
+	{ name: 'newProductsMore', path: '/newProductsMore', component: newProductsMore },
+	{ name: 'searchRes', path: '/searchRes', component: searchRes },
+
+
+	{ path: '/profileMsg', component: profileMsg },
+	{ path: '/profileOrders', component: profileOrders },
+	{ path: '/profileCoupons', component: profileCoupons },
+	{ path: '/profileLogistics', component: profileLogistics },
+	{ path: '/profileCar', component: profileCar },
+	{ path: '/profileCollect', component: profileCollect },
+	{ path: '/profileAddress', component: profileAddress },
+	{ path: '/profileVip', component: profileVip },
+
 	{ path: '/footerSecurity', component: footerSecurity },
 	{ path: '/footerSend', component: footerSend },
 	{ path: '/footerService', component: footerService },
 	{ path: '/footerChange', component: footerChange },
 	{ path: '/footerJoin', component: footerJoin },
 	{ path: '/footerCooperation', component: footerCooperation },
-	{ path: '/profileCar', component: profileCar },
-	{ path: '/pay', component: pay },
-	{ name: 'wxPay', path: '/wxPay', component: wxPay },
-	{ name: 'newsList', path: '/newsList', component: newsList },
-	{ name: 'duoshou', path: '/duoshou', component: duoshou },
-	{ name: 'newProductsMore', path: '/newProductsMore', component: newProductsMore },
-	{ path: '/profileMsg', component: profileMsg },
-	{ path: '/profileOrders', component: profileOrders },
-	{ path: '/profileCoupons', component: profileCoupons },
-	{ path: '/profileLogistics', component: profileLogistics },
-	{ path: '/profileCollect', component: profileCollect },
-	{ path: '/profileAddress', component: profileAddress },
-	{ path: '/profileVip', component: profileVip },
 
 ];
 
@@ -689,8 +693,8 @@ Vue.component('AppHeader', {
 									<!-- header search start -->
 									<Modal class="header-search" v-model="modalSearch" width="800">
 									<div class="modalSearch-container">
-										<AutoComplete v-model="search" icon="ios-search" placeholder="请输入关键词" style="width:800px">
-											<div class="demo-auto-complete-item" v-for="item in searchData">
+										<AutoComplete v-model="search" :data="autocompleteData" :filter-method="filterMethod" @on-search="handleSearch" placeholder="请输入关键词" style="width:800px;">
+											<div v-if="searchResShow" class="demo-auto-complete-item" v-for="item in searchData">
 												<div class="demo-auto-complete-group">
 													<span>{{ item.title }}</span>
 													<a  @click="goMore">更多</a>
@@ -700,8 +704,11 @@ Vue.component('AppHeader', {
 													<span class="demo-auto-complete-count">{{ option.count }} 人关注</span>
 												</Option>
 											</div>
-											<a class="demo-auto-complete-more" @click="goMore">查看所有结果</a>
+											<a v-if="searchResShow" class="demo-auto-complete-more" @click="goMore">查看所有结果</a>
 										</AutoComplete>
+										<div @click="goToSearch" style="position:absolute;top:0;right:0;text-align:center;font-size:20px;cursor:pointer;">
+											<Icon type="ios-search"></Icon>
+										</div>
 									</div>
 									<div slot="footer">
 										<!-- <Button @click="next">Delete</Button> -->
@@ -818,7 +825,7 @@ Vue.component('AppHeader', {
 				{
 					id: 0,
 					name: "newProducts",
-					title: "新品上市",
+					title: "新品上架",
 					childName: [
 						{ name: "newProducts", params: "0", title: "新品上架" },
 						{ name: "newProducts", params: "1", title: "销售排行" }
@@ -864,33 +871,66 @@ Vue.component('AppHeader', {
 			search: "",
 			searchData: [
 				{
-					title: "香料",
+					title: "香水",
 					children: [
 						{
-							title: "东方木质调",
+							title: "自由之蓬",
 							count: 10000
 						},
 						{
-							title: "绿调",
+							title: "无花之花",
 							count: 10600
 						}
 					]
 				},
 				{
-					title: "香料",
+					title: "香调",
 					children: [
 						{
-							title: "薰衣草",
+							title: "花香调",
 							count: 60100
 						},
 						{
-							title: "玫瑰",
+							title: "木香调",
+							count: 30010
+						}
+					]
+				},
+			],
+			searchDataCover: [
+				{
+					title: "香水",
+					children: [
+						{
+							title: "自由之蓬",
+							count: 10000
+						},
+						{
+							title: "无花之花",
+							count: 10600
+						}
+					]
+				},
+				{
+					title: "香调",
+					children: [
+						{
+							title: "花香调",
+							count: 60100
+						},
+						{
+							title: "木香调",
 							count: 30010
 						}
 					]
 				},
 			],
 			huaxiangCheck: [],
+			autocompleteData: ['水香调', '芳香调', '果香调', '柑橘调', '绿调', '柔和花香调', '普通花香调',
+				'柔和东方调', '木质东方调', '花香东方调', '普通东方调', '苔藓木香调', '普通木香调',
+				'干燥木香调', '圣洁之水', '自由之蓬', '圣兽之皮', '无花之花', '堡垒之殇', '血色之木',
+				'森林之噬', '骚动之云', '柔美之穿', '俊美之兽', '大地之士'],
+			searchResShow: true,
 		}
 	},
 	mounted() {
@@ -899,6 +939,15 @@ Vue.component('AppHeader', {
 		this.timeStamp = new Date().getTime();
 	},
 	methods: {
+		handleSearch(value) {
+			if (value === '') {
+				this.searchResShow = true;
+				this.searchData = this.searchDataCover
+			} else {
+				this.searchResShow = false;
+				this.searchData = this.autocompleteData;
+			}
+		},
 		loveXiangChange(data) {
 			this.checkArr = data;
 		},
@@ -913,10 +962,20 @@ Vue.component('AppHeader', {
 			this.selected = -1;
 			this.show = -1;
 		},
+		//弹出搜索框
 		searchRender() {
 			this.modalSearch = true;
-			let pk = "";
 		},
+		//搜索关键词
+		filterMethod(value, option) {
+			return option.indexOf(value) !== -1;
+		},
+		//点击搜索
+		goToSearch() {
+			this.modalSearch = false;
+			this.$router.push({ path: '/searchRes', query: { searchRes: this.search } });
+		},
+		//更多品牌
 		goMore() {
 			this.modalSearch = false;
 			this.$router.push({ path: '/allBrands' });
@@ -1020,7 +1079,7 @@ Vue.component('AppHeader', {
 		next11() {
 			this.modal11 = false;
 			this.modal12 = true;
-			if(this.huaxiangCheck.length > 0) {
+			if (this.huaxiangCheck.length > 0) {
 				this.huaxiang = this.huaxiangCheck;
 			}
 
@@ -1181,20 +1240,24 @@ Vue.component('AppHeader', {
 		},
 		//获取短信验证码
 		getVerifyCode() {
-			this.sendCode = false;
-			this.auth_time = 60;
-			let time_reduce = setInterval(v => {
-				this.auth_time--;
-				if (this.auth_time <= 0) {
-					this.sendCode = true;
-					clearInterval(time_reduce);
-				}
-			}, 1000);
 			let mobile = this.signFormInline.mobile;
 			let verify_code = this.signFormInline.verify_code;
 			let time = new Date().getTime();
 			let url = appset.domain + "/front/sms/request_code/?" + time + "&mobile=" + mobile + "&verify_code=" + verify_code;
-			fetch(url, { credentials: "include" }).then(r => r.json()).then(d => console.log(d))
+			fetch(url, { credentials: "include" }).then(r => r.json()).then(d => {
+				if (d.available) {
+					this.sendCode = false;
+					this.auth_time = 60;
+					let time_reduce = setInterval(v => {
+						this.auth_time--;
+						if (this.auth_time <= 0) {
+							this.sendCode = true;
+							clearInterval(time_reduce);
+						}
+					}, 1000);
+					console.log(d);
+				}
+			})
 		},
 		//用户注册
 		signSubmit(name) {
@@ -1231,10 +1294,10 @@ Vue.component('AppHeader', {
 				} else {
 					this.huaxiangCheck.splice(index, 1);
 				}
-			} else if(this.huaxiangCheck.length === 3 || this.huaxiangCheck.length > 3) {
+			} else if (this.huaxiangCheck.length === 3 || this.huaxiangCheck.length > 3) {
 				this.disabled = true;
-				if(index !== -1) {
-					this.huaxiangCheck.splice(index, 1);	
+				if (index !== -1) {
+					this.huaxiangCheck.splice(index, 1);
 				}
 			}
 		},
@@ -1390,7 +1453,7 @@ Vue.component('SlideNav', {
 				{
 					id: 0,
 					// name: "newProducts",
-					title: "新品上市",
+					title: "新品上架",
 					flag: false,
 					childList: [
 						{ cid: 1, name: "newProducts", title: "新品上架", params: "0", checked: true },
@@ -1603,7 +1666,7 @@ Vue.component('profileNav', {
 					</p>
 					<ol v-if="personalSelected == index" class="slide-nav-hidden">
 						<li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
-							<router-link :to="{path: '/' + childItem.name}">
+							<router-link :to="{path: '/' + childItem.name}" style="font-family:'nansong'">
 								{{childItem.title}}
 							</router-link>
 						</li>

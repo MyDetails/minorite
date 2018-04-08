@@ -133,7 +133,7 @@ const newProducts = {
 
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
-        document.title = "新品上市";
+        document.title = "新品上架";
         next();
     }, methods: {
         clickNav(index) {

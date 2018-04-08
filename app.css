@@ -48,6 +48,7 @@ input:-webkit-autofill {
 }
 input[type="button"] {
   appearance: none;
+  outline: none;
   -moz-appearance: none;
   -webkit-appearance: none;
 }
@@ -680,6 +681,7 @@ table {
 }
 .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
   background-color: #c6d9cf;
+  border-color: #c6d9cf;
 }
 .ivu-tabs-nav .ivu-tabs-tab:hover {
   color: #04593f;
@@ -687,6 +689,7 @@ table {
 .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab-active {
     color: #fff;
     background-color: #04593f;
+    border-color: #04593f;
 }
 .ivu-tabs-bar {
   border-color: #04593f;

@@ -79,12 +79,15 @@ const goodsDetails = {
 								</div>
 							</div>
 							<div v-if="skuStock" style="margin-left:20px;">库存：{{skuStock}}</div>
+							<div v-else-if="skuStock===0 || skuStock === '' || skuStock === undefined" style="margin-left:20px;">库存不足</div>
 						</div>
 						<div class="pay">
-							<input type="button" value="立即购买" class="btn-pay" @click="goPay">
+							<input v-if="skuStock===0 || skuStock === '' || skuStock === undefined" type="button" value="立即购买" class="btn-pay" @click="nopay">
+							<input v-else type="button" value="立即购买" class="btn-pay" @click="goPay">
 						</div>
 						<div class="addCar">
-							<input type="button" value="加入购物车" class="btn-addCar" @click="addToCar">
+							<input v-if="skuStock===0 || skuStock === '' || skuStock === undefined" type="button" value="加入购物车" class="btn-addCar" @click="nocar">
+							<input v-else type="button" value="加入购物车" class="btn-addCar" @click="addToCar">
 						</div>
 					</div>
 				</div>
@@ -4670,7 +4673,7 @@ const goodsDetails = {
 		this.timeStamp = new Date().getTime();
 		//获取商品详情
 		let pk_goods_details = "tcss.get.goods.details.perfume";
-		let url_goods_details = appset.domain + "/front/ypc/rt/?" + "pk=" + pk_goods_details + "&goods_id=" + this.goodsId;
+		let url_goods_details = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_goods_details + "&goods_id=" + this.goodsId;
 		fetch(url_goods_details)
 			.then(r => r.json())
 			.then(d => {
@@ -4888,6 +4891,13 @@ const goodsDetails = {
 				this.goMethods = "car";
 				this.modalLogin = true;
 			}
+		},
+		//库存不足
+		nopay() {
+			this.$Message.error('库存不足，无法购买');
+		},
+		nocar() {
+			this.$Message.error('库存不足，无法加入购物车');
 		},
 		// 收藏商品
 		collect() {

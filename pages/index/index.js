@@ -105,7 +105,7 @@ const index = {
 							<a :href="'http://www.minorite.com.cn/front/brand/info/?' + Date.parse(new Date()) + '&dlid=' + item.id" style="display:block;">
 								<img :src="'http://pe1d.static.pdr365.com/' + item.imgUrl" alt="" style="height:100%;">
 							</a>
-							<!--<p class="news-desc">{{item.description}}</p>-->
+							<p class="news-desc">{{item.title}}</p>
 						</li>
 					</ul>
 				</div>

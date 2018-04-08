@@ -96,7 +96,7 @@ const brand = {
                 {
                     id: 0,
                     // name: "newProducts",
-                    title: "新品上市",
+                    title: "新品上架",
                     childList: [
                         { cid: 1, name: "newProducts", title: "新品上架", params: "0", checked: true },
                         { cid: 2, name: "newProducts", title: "销售排行", params: "1" }

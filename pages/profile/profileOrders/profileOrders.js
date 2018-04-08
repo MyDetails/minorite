@@ -23,30 +23,30 @@ const profileOrders = {
                     <!-- slide-nav end -->
 
                     <div class="profileOrders-box">
-                        <Tabs :animated="false" type="card">
-                            <TabPane label="全部订单">
+                        <Tabs :animated="false" type="card" @on-click="tabOrderStatus">
+                            <TabPane label="全部订单" name="order_all">
                                 <div class="profileOrders-table-container">
                                     <Table border :columns="columns1" v-for="item in orderData" :key="item.id" :data="item"></Table>
                                 </div>
                             </TabPane>
-                            <TabPane label="待付款">
+                            <TabPane label="待付款" name="order_no_pay">
                                 <div class="profileOrders-table-container">
-                                    <Table border :columns="columns1" :data="no_pay_order"></Table> 
+                                    <Table border :columns="columns1" v-for="item in no_pay_order" :key="item.id" :data="item"></Table> 
                                 </div>
                             </TabPane>
-                            <TabPane label="待发货">
+                            <TabPane label="待发货" name="order_no_send">
                                 <div class="profileOrders-table-container">
-                                    <Table border :columns="columns1" :data="no_send_order"></Table> 
+                                    <Table border :columns="columns1"  v-for="item in no_send_order" :key="item.id" :data="item"></Table> 
                                 </div>
                             </TabPane>
-                            <TabPane label="待收货">
+                            <TabPane label="待收货" name="order_no_receive">
                                 <div class="profileOrders-table-container">
-                                    <Table border :columns="columns1" :data="no_receive_order"></Table> 
+                                    <Table border :columns="columns1"  v-for="item in no_receive_order" :key="item.id" :data="item"></Table> 
                                 </div>
                             </TabPane>
-                            <TabPane label="已完成">
+                            <TabPane label="已完成" name="order_done">
                                 <div class="profileOrders-table-container">
-                                    <Table border :columns="columns1" :data="done_order"></Table> 
+                                    <Table border :columns="columns1"  v-for="item in done_order" :key="item.id" :data="item"></Table> 
                                 </div>
                             </TabPane>
                         </Tabs>
@@ -409,12 +409,15 @@ const profileOrders = {
                 }
             });
         },
+        //查看物流
         goLogistics(index) {
             this.$router.push({ path: "/profileLogistics" });
         },
+        //十进制
         add0(m) {
             return m < 10 ? "0" + m : m;
         },
+        //格式化时间
         timeFormat(timestamp) {
             //timestamp是整数，否则要parseInt转换,不会出现少个0的情况
             var time = new Date(timestamp);
@@ -438,6 +441,7 @@ const profileOrders = {
                 this.add0(seconds)
             );
         },
+        //待支付订单状态提示
         asyncOk() {
             let pk_code = "order.check.status";
             let o_id = this.o_id;
@@ -451,9 +455,123 @@ const profileOrders = {
                 }
             })
         },
+        //确认支付弹窗
         custom() {
             this.confirmModal = true;
-        }
+        },
+        //未完成订单
+        tabOrderStatus(name) {
+            let pk = "tcss.account.goods.orders";
+            let token = this.getCookie("_lac_k_");
+            if (name === 'order_no_pay') {
+                let statuses = "0000";
+                let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
+                fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
+                    let order_list = [];
+                    for (var i = 0; i < d.obj.length; i++) {
+                        var order = [];
+                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                            order.push(d.obj[i].o_goods[j]);
+                        }
+                        var data = [
+                            {
+                                orderId: d.obj[i].id,
+                                receivePerson: d.obj[i].mobile,
+                                orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                orderTime: this.timeFormat(d.obj[i].aTime),
+                                orderStatus: "待付款",
+                                order: order,
+                                os: d.obj[i].os,
+                                payType: d.obj[i].payType,
+                                payAmount: d.obj[i].payAmount / 100,
+                                on: d.obj[i].on,
+                                aTime: d.obj[i].aTime,
+                            }
+                        ];
+                        order_list.push(data);
+                    }
+                    this.no_pay_order = order_list;
+                });
+            } else if (name === 'order_no_send') {
+                let statuses = "1000";
+                let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
+                fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
+                    let order_list = [];
+                    for (var i = 0; i < d.obj.length; i++) {
+                        var order = [];
+                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                            order.push(d.obj[i].o_goods[j]);
+                        }
+                        var data = [
+                            {
+                                orderId: d.obj[i].id,
+                                receivePerson: d.obj[i].mobile,
+                                orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                orderTime: this.timeFormat(d.obj[i].aTime),
+                                orderStatus: "待发货",
+                                order: order,
+                                os: d.obj[i].os,
+                            }
+                        ];
+                        order_list.push(data);
+                    }
+                    this.no_send_order = order_list;
+                });
+            } else if (name === 'order_no_receive') {
+                let statuses = "2000";
+                let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
+                fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
+                    let order_list = [];
+                    for (var i = 0; i < d.obj.length; i++) {
+                        var order = [];
+                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                            order.push(d.obj[i].o_goods[j]);
+                        }
+                        var data = [
+                            {
+                                orderId: d.obj[i].id,
+                                receivePerson: d.obj[i].mobile,
+                                orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                orderTime: this.timeFormat(d.obj[i].aTime),
+                                orderStatus: "待收货",
+                                order: order,
+                                os: d.obj[i].os,
+                            }
+                        ];
+                        order_list.push(data);
+                    }
+                    this.no_send_order = order_list;
+                });
+            } else if (name === 'order_done') {
+                let statuses = "3000";
+                let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
+                fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
+                    let order_list = [];
+                    for (var i = 0; i < d.obj.length; i++) {
+                        var order = [];
+                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                            order.push(d.obj[i].o_goods[j]);
+                        }
+                        var data = [
+                            {
+                                orderId: d.obj[i].id,
+                                receivePerson: d.obj[i].mobile,
+                                orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                orderTime: this.timeFormat(d.obj[i].aTime),
+                                orderStatus: "已完成",
+                                order: order,
+                                os: d.obj[i].os,
+                            }
+                        ];
+                        order_list.push(data);
+                    }
+                    this.no_send_order = order_list;
+                });
+            }
+
+
+        },
+
     }
 
 }

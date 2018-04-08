@@ -121,7 +121,7 @@ const furnitureAroma = {
 
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
-        document.title = "家具香氛";
+        document.title = "家居香氛";
         next();
     }, created() {
         //组件加载完成会自动调用此方法
@@ -131,7 +131,54 @@ const furnitureAroma = {
 
     }, watch: {
         $route() {
-            router.go(0);
+            this.cat_id = this.$route.query.cat;
+            if (this.cat_id === undefined) {
+                //获取香包
+                let pk_xb = "tcss.goods.by.cat";
+                let url_xb = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_xb + "&cat=362";
+                fetch(url_xb)
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.available) {
+                            this.furnitureAromaImgList = d.obj;
+                        }
+                    });
+            } else if (this.cat_id === '0') {
+                //获取香包
+                let pk_xb = "tcss.goods.by.cat";
+                let url_xb = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_xb + "&cat=362";
+                fetch(url_xb)
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.available) {
+                            this.furnitureAromaImgList = d.obj;
+                        }
+                    });
+            } else if (this.cat_id === '1') {
+                //获取喷雾
+                let pk_pw = "tcss.goods.by.cat";
+                let url_pw = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_pw + "&cat=363";
+                fetch(url_pw)
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.available) {
+                            this.furnitureAromaImgList = d.obj;
+                        }
+                    });
+            } else if (this.cat_id === '2') {
+                //获取蜡烛
+                let pk_lz = "tcss.goods.by.cat";
+                let url_lz = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_lz + "&cat=364";
+                fetch(url_lz)
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.available) {
+                            this.furnitureAromaImgList = d.obj;
+                        }
+                    });
+            }
+            //浮动元素
+            float();
         }
     }
 }

@@ -1660,13 +1660,13 @@ Vue.component('profileNav', {
 			<ul class="slide-nav">
 				<li class="slide-nav-item" v-for="(item,index) in personalDetails" :key="item.id">
 					<p :class="personalSelected == index ? 'slide-nav-active' : ''" @click="clickNav(index)">
-						<span v-if="item.childList"> {{personalSelected == index ? "-" : "+"}} </span>
+						<span v-if="item.childList"> {{item.flag ? "-" : "+"}} </span>
 						<router-link v-if="item.name" :to="{path: '/' + item.name}">{{item.title}}</router-link>
 						<span v-else>{{item.title}}</span>
 					</p>
-					<ol v-if="personalSelected == index" class="slide-nav-hidden">
+					<ol v-if="item.flag" class="slide-nav-hidden">
 						<li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
-							<router-link :to="{path: '/' + childItem.name}" style="font-family:'nansong'">
+							<router-link :to="{path: '/' + childItem.name, query: {tabName: childItem.params}}" style="font-family:'nansong'">
 								{{childItem.title}}
 							</router-link>
 						</li>
@@ -1688,18 +1688,20 @@ Vue.component('profileNav', {
 					id: 2,
 					// name: "profileOrders",
 					title: "我的订单",
+					flag: false,
 					childList: [
 						{
 							cid: 1,
 							name: "profileOrders",
 							title: "全部订单",
 							imgUrl: "",
-							checked: true
+							checked: true,
+							params: "order_all"
 						},
-						{ cid: 2, name: "profileOrders", title: "待付款", imgUrl: "" },
-						{ cid: 3, name: "profileOrders", title: "待发货", imgUrl: "" },
-						{ cid: 4, name: "profileOrders", title: "待收货", imgUrl: "" },
-						{ cid: 5, name: "profileOrders", title: "已完成", imgUrl: "" }
+						{ cid: 2, name: "profileOrders", title: "待付款", imgUrl: "", params: "order_no_pay" },
+						{ cid: 3, name: "profileOrders", title: "待发货", imgUrl: "", params: "order_no_send" },
+						{ cid: 4, name: "profileOrders", title: "待收货", imgUrl: "", params: "order_no_receive" },
+						{ cid: 5, name: "profileOrders", title: "已完成", imgUrl: "", params: "order_done" }
 					]
 				},
 				{
@@ -1734,6 +1736,7 @@ Vue.component('profileNav', {
 		clickNav(index) {
 			this.personalSelected = index;
 			this.personalSelected = index;
+			this.personalDetails[index].flag = !this.personalDetails[index].flag;
 		}
 	}
 })

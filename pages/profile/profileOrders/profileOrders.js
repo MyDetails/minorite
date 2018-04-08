@@ -23,7 +23,7 @@ const profileOrders = {
                     <!-- slide-nav end -->
 
                     <div class="profileOrders-box">
-                        <Tabs :animated="false" type="card" @on-click="tabOrderStatus">
+                        <Tabs :animated="false" :value="tabName" type="card" @on-click="tabOrderStatus">
                             <TabPane label="全部订单" name="order_all">
                                 <div class="profileOrders-table-container">
                                     <Table border :columns="columns1" v-for="item in orderData" :key="item.id" :data="item"></Table>
@@ -81,6 +81,7 @@ const profileOrders = {
             no_receive_order: [],
             done_order: [],
             confirmModal: false,
+            tabName: "order_all",
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -92,97 +93,14 @@ const profileOrders = {
     }, mounted() {
         let pk = "tcss.account.goods.orders";
         let token = this.getCookie("_lac_k_");
-        let statuses = "";
-        let url_first =
-            appset.domain + "/front/ypc/rt/?" +
-            Date.parse(new Date()) +
-            "&pk=" +
-            pk +
-            "&statuses=" +
-            statuses +
-            "&token=" +
-            token;
-        fetch(url_first, { credentials: "include" })
-            .then(r => r.json())
-            .then(d => {
-                if (d.available) {
-                    let order_list = [];
-                    for (var i = 0; i < d.obj.length; i++) {
-                        var order = [];
-                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
-                            order.push(d.obj[i].o_goods[j]);
-                        }
-                        if (d.obj[i].os == "0000") {
-                            var data = [
-                                {
-                                    orderId: d.obj[i].id,
-                                    receivePerson: d.obj[i].mobile,
-                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                    orderTime: this.timeFormat(d.obj[i].aTime),
-                                    orderStatus: "待付款",
-                                    order: order,
-                                    os: d.obj[i].os,
-                                    payType: d.obj[i].payType,
-                                    payAmount: d.obj[i].payAmount / 100,
-                                    on: d.obj[i].on,
-                                    aTime: d.obj[i].aTime,
-                                }
-                            ];
-                        } else if (d.obj[i].os == "1000") {
-                            var data = [
-                                {
-                                    orderId: d.obj[i].id,
-                                    receivePerson: d.obj[i].mobile,
-                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                    orderTime: this.timeFormat(d.obj[i].aTime),
-                                    orderStatus: "待发货",
-                                    order: order,
-                                    os: d.obj[i].os,
+        tabName = this.$route.query.tabName;
+        if (tabName) {
+            this.tabName = tabName;
+        } else {
+            this.tabName = "order_all";
+        }
+        this.tabOrderStatus(this.tabName);
 
-                                }
-                            ];
-                        } else if (d.obj[i].os == "2000") {
-                            var data = [
-                                {
-                                    orderId: d.obj[i].id,
-                                    receivePerson: d.obj[i].mobile,
-                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                    orderTime: this.timeFormat(d.obj[i].aTime),
-                                    orderStatus: "待收货",
-                                    order: order,
-                                    os: d.obj[i].os
-                                }
-                            ];
-                        } else if (d.obj[i].os == "3000") {
-                            var data = [
-                                {
-                                    orderId: d.obj[i].id,
-                                    receivePerson: d.obj[i].mobile,
-                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                    orderTime: this.timeFormat(d.obj[i].aTime),
-                                    orderStatus: "已收货",
-                                    order: order,
-                                    os: d.obj[i].os
-                                }
-                            ];
-                        } else if (d.obj[i].os == "8001") {
-                            var data = [
-                                {
-                                    orderId: d.obj[i].id,
-                                    receivePerson: d.obj[i].mobile,
-                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                    orderTime: this.timeFormat(d.obj[i].aTime),
-                                    orderStatus: "申请退款",
-                                    order: order,
-                                    os: d.obj[i].os
-                                }
-                            ];
-                        }
-                        order_list.push(data);
-                    }
-                    this.orderData = order_list;
-                }
-            });
         this.columns1 = [
             {
                 title: "订单编号",
@@ -459,11 +377,95 @@ const profileOrders = {
         custom() {
             this.confirmModal = true;
         },
-        //未完成订单
+        //根据tab标签的名称展示相应内容
         tabOrderStatus(name) {
             let pk = "tcss.account.goods.orders";
             let token = this.getCookie("_lac_k_");
-            if (name === 'order_no_pay') {
+            if (name === 'order_all') {
+                let statuses = "";
+                let url_first = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
+                fetch(url_first, { credentials: "include" })
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.available) {
+                            let order_list = [];
+                            for (var i = 0; i < d.obj.length; i++) {
+                                var order = [];
+                                for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                                    order.push(d.obj[i].o_goods[j]);
+                                }
+                                if (d.obj[i].os == "0000") {
+                                    var data = [
+                                        {
+                                            orderId: d.obj[i].id,
+                                            receivePerson: d.obj[i].mobile,
+                                            orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                            orderTime: this.timeFormat(d.obj[i].aTime),
+                                            orderStatus: "待付款",
+                                            order: order,
+                                            os: d.obj[i].os,
+                                            payType: d.obj[i].payType,
+                                            payAmount: d.obj[i].payAmount / 100,
+                                            on: d.obj[i].on,
+                                            aTime: d.obj[i].aTime,
+                                        }
+                                    ];
+                                } else if (d.obj[i].os == "1000") {
+                                    var data = [
+                                        {
+                                            orderId: d.obj[i].id,
+                                            receivePerson: d.obj[i].mobile,
+                                            orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                            orderTime: this.timeFormat(d.obj[i].aTime),
+                                            orderStatus: "待发货",
+                                            order: order,
+                                            os: d.obj[i].os,
+
+                                        }
+                                    ];
+                                } else if (d.obj[i].os == "2000") {
+                                    var data = [
+                                        {
+                                            orderId: d.obj[i].id,
+                                            receivePerson: d.obj[i].mobile,
+                                            orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                            orderTime: this.timeFormat(d.obj[i].aTime),
+                                            orderStatus: "待收货",
+                                            order: order,
+                                            os: d.obj[i].os
+                                        }
+                                    ];
+                                } else if (d.obj[i].os == "3000") {
+                                    var data = [
+                                        {
+                                            orderId: d.obj[i].id,
+                                            receivePerson: d.obj[i].mobile,
+                                            orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                            orderTime: this.timeFormat(d.obj[i].aTime),
+                                            orderStatus: "已收货",
+                                            order: order,
+                                            os: d.obj[i].os
+                                        }
+                                    ];
+                                } else if (d.obj[i].os == "8001") {
+                                    var data = [
+                                        {
+                                            orderId: d.obj[i].id,
+                                            receivePerson: d.obj[i].mobile,
+                                            orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                            orderTime: this.timeFormat(d.obj[i].aTime),
+                                            orderStatus: "申请退款",
+                                            order: order,
+                                            os: d.obj[i].os
+                                        }
+                                    ];
+                                }
+                                order_list.push(data);
+                            }
+                            this.orderData = order_list;
+                        }
+                    });
+            } else if (name === 'order_no_pay') {
                 let statuses = "0000";
                 let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
                 fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
@@ -572,6 +574,17 @@ const profileOrders = {
 
         },
 
+    },
+    watch: {
+        $route() {
+            tabName = this.$route.query.tabName;
+            if (tabName) {
+                this.tabName = tabName;
+            } else {
+                this.tabName = "order_all";
+            }
+            this.tabOrderStatus(this.tabName);
+        }
     }
 
 }

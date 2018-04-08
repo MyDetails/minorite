@@ -132,7 +132,7 @@ const profileMsg = {
                                 <!-- </Upload> -->
                                <!-- 上传按钮 结束-->
                                <!--提交按钮 开始-->
-                                    <Button type="primary" @click="confirmAvatar" style="width:80px;height:38px;color:#fff;font-size:14px;background-color:#04593f;margin-top:24px;margin-left:170px;">提交</Button>
+                                    <Button type="primary" @click="confirmAvatar" style="width:80px;height:38px;color:#fff;font-size:14px;background-color:#04593f;border-color:#04593f;margin-top:24px;margin-left:170px;">提交</Button>
                                 <!--提交按钮 结束-->
                                 
                             </TabPane>
@@ -204,16 +204,7 @@ const profileMsg = {
         } else {
             this.tabName = "tab_name_msg";
         }
-    }, watch: {
-        $route() {
-            tabName = this.$route.query.tabName;
-            if (tabName) {
-                this.tabName = tabName;
-            } else {
-                this.tabName = "tab_name_msg";
-            }
-        }
-    }, methods: {
+    },  methods: {
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -372,6 +363,16 @@ const profileMsg = {
                     this.$Message.success('上传头像成功');
                 }
             });
+        }
+    },
+    watch: {
+        $route() {
+            tabName = this.$route.query.tabName;
+            if (tabName) {
+                this.tabName = tabName;
+            } else {
+                this.tabName = "tab_name_msg";
+            }
         }
     }
 }

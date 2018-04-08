@@ -356,3 +356,6 @@
   .gd-cascader .ivu-select-dropdown {
     background-color: #F7F9F3;
   }
+  .gd-cascader .ivu-select-dropdown {
+    overflow: scroll;
+  }

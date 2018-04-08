@@ -57,6 +57,7 @@ pre {
   font-family: 'Avenir', Helvetica, Arial, 'Microsoft Yahei', sans-serif;
 }
 
+
 /******************************* HEADER *******************************/
 /* .header-block {
   width: 100%;
@@ -674,6 +675,7 @@ table {
   border-color: #c6d9cf;
 }
 
+
 /****** 个人中心tab栏公共样式 ******/
 .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
   border-radius: 3px;
@@ -713,6 +715,10 @@ height: 38px;
 color: #fff;
 font-size: 14px;
 background-color: #04593f;
+border-color: #04593f;
+}
+.personal-msg .ivu-radio-checked .ivu-radio-inner {
+  border-color: #7da999;
 }
 
 /* 个人中心--更换头像 */

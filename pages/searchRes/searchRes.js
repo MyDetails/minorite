@@ -79,13 +79,11 @@ const searchRes = {
 	}, mounted() {
         //获取搜索结果
         let res = this.$route.query.searchRes;
-        console.log(res);
         let pk = "tcss.goods_search";
 			url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&key=" + res;
 			fetch(url).then(r => r.json()).then(d => {
-				console.log(d);
 				if(d.available) {
-					this.giftsBoxImgList = d.obj;
+					this.giftsBoxImgList = d.obj.carddata;
 				}
 			});
 		//页面两侧浮动元素
@@ -99,5 +97,21 @@ const searchRes = {
 			this.currentPage = index;
 		}
 
+	},
+	watch: {
+		$route() {
+			//获取搜索结果
+			let res = this.$route.query.searchRes;
+			let pk = "tcss.goods_search";
+				url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&key=" + res;
+				fetch(url).then(r => r.json()).then(d => {
+					console.log(d);
+					if(d.available) {
+						this.giftsBoxImgList = d.obj.carddata;
+					}
+				});
+			//页面两侧浮动元素
+			float();
+		}
 	}
 }

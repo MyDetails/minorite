@@ -13,7 +13,7 @@ const goodsDetails = {
 					<p>
 						<span>首页</span> > 
 						<span>所有品牌</span> > 
-						<span>{{brand.catNameEn}}</span> > 
+						<span>{{brand.catNameEn}}</span> >
 						<span>{{goodsDetails.goods_name}}</span>
 					</p>
 				</div>
@@ -23,11 +23,11 @@ const goodsDetails = {
 				<div class="gd-details-container">
 					<div class="gd-details-left">
 						<div class="gd-details-bigImage">
-							<img :src="'http://pe1d.static.pdr365.com/' + bigImg" alt="">
+							<img :src="'http://pe1d.static.pdr365.com/' + bigImg" alt="" style="height:100%;">
 						</div>
 						<ul class="gd-details-imgList">
 							<li v-for="(item, index) in goodsImgList" :key="index">
-								<img :src="'http://pe1d.static.pdr365.com/' + item.imgUrl" alt="">
+								<img v-if="item.imgUrl" :src="'http://pe1d.static.pdr365.com/' + item.imgUrl" alt="" style="height:100%;">
 							</li>
 						</ul>
 					</div>
@@ -4698,7 +4698,17 @@ const goodsDetails = {
 				this.skuId = this.unitList[0].id;
 				this.skuUnit = this.unitList[0].unit;
 				this.skuStock = this.unitList[0].stock;
-				this.brand = d.obj.data.category;
+				// this.brand = d.obj.data.category;
+				if(d.obj.data.category !== null) {
+					this.brand = d.obj.data.category;
+				} else {
+					let obj = {
+						catContent: d.obj.data.goods.content,
+						catNameEn: "试香包"
+
+					};
+					this.brand = obj; 
+				}
 			});
 
 		//页面两侧浮动元素

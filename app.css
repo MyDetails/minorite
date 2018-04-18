@@ -1773,7 +1773,9 @@ border-color: #04593f;
   height: 40px;
   line-height: 40px;
 }
-/* header modal search*/
+.modalSearch-container .ivu-input:focus {
+  border-color: #f7f9f3;
+}
 .demo-auto-complete-item {
   padding: 4px 18px;
   border-bottom: 1px solid #f6f6f6;

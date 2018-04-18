@@ -93,6 +93,7 @@ const profileCar = {
         if (car) {
             this.carList = JSON.parse(car);
         }
+        console.log(this.carList);
         this.carList.forEach((v, i) => {
             let carItem = {
                 goods_id: v.goods_id,

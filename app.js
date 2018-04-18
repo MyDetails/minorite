@@ -692,19 +692,14 @@ Vue.component('AppHeader', {
 
 									<!-- header search start -->
 									<Modal class="header-search" v-model="modalSearch" width="800">
-									<div class="modalSearch-container">
-										<AutoComplete v-model="search" :data="autocompleteData" :filter-method="filterMethod" @on-search="handleSearch" placeholder="请输入关键词" style="width:800px;">
-											<div v-if="searchResShow" class="demo-auto-complete-item" v-for="item in searchData">
-												<div class="demo-auto-complete-group">
-													<span>{{ item.title }}</span>
-													<a  @click="goMore">更多</a>
-												</div>
-												<Option v-for="option in item.children" :value="option.title" :key="option.title">
-													<span class="demo-auto-complete-title">{{ option.title }}</span>
-													<span class="demo-auto-complete-count">{{ option.count }} 人关注</span>
+									<div class="modalSearch-container"  @keyup.enter="goToSearch">
+										<AutoComplete v-model="search" :data="autocompleteData" :filter-method="filterMethod" @on-search="handleSearch"  placeholder="请输入关键词" style="width:800px;">
+											<div v-if="searchResShow" class="demo-auto-complete-item">
+												<Option  v-for="(item, index) in searchData" :value="item" :key="index">
+													<span class="demo-auto-complete-title">{{ item }}</span>
 												</Option>
 											</div>
-											<a v-if="searchResShow" class="demo-auto-complete-more" @click="goMore">查看所有结果</a>
+											<a v-if="searchResShow" class="demo-auto-complete-more" @click="delHistory" style="color:rgb(7, 104, 59);">清除历史记录</a>
 										</AutoComplete>
 										<div @click="goToSearch" style="position:absolute;top:0;right:0;text-align:center;font-size:20px;cursor:pointer;">
 											<Icon type="ios-search"></Icon>
@@ -850,7 +845,7 @@ Vue.component('AppHeader', {
 					id: 7,
 					title: "优惠活动",
 					childName: [
-						{ name: "duoshou", go: "duoshou", title: "剁手指南" },
+						{ name: "duoshou", go: "duoshou", title: "优惠指南" },
 						{ name: "testAroma", go: "testAroma", title: "双周七七" },
 						{ name: "testAroma", go: "testAroma", title: "试香包" },
 					]
@@ -869,66 +864,12 @@ Vue.component('AppHeader', {
 			disabled: false,
 			modalSearch: false,
 			search: "",
-			searchData: [
-				{
-					title: "香水",
-					children: [
-						{
-							title: "自由之蓬",
-							count: 10000
-						},
-						{
-							title: "无花之花",
-							count: 10600
-						}
-					]
-				},
-				{
-					title: "香调",
-					children: [
-						{
-							title: "花香调",
-							count: 60100
-						},
-						{
-							title: "木香调",
-							count: 30010
-						}
-					]
-				},
-			],
-			searchDataCover: [
-				{
-					title: "香水",
-					children: [
-						{
-							title: "自由之蓬",
-							count: 10000
-						},
-						{
-							title: "无花之花",
-							count: 10600
-						}
-					]
-				},
-				{
-					title: "香调",
-					children: [
-						{
-							title: "花香调",
-							count: 60100
-						},
-						{
-							title: "木香调",
-							count: 30010
-						}
-					]
-				},
-			],
+			searchData: [],
+			searchDataCover: [],
 			huaxiangCheck: [],
 			autocompleteData: ['水香调', '芳香调', '果香调', '柑橘调', '绿调', '柔和花香调', '普通花香调',
 				'柔和东方调', '木质东方调', '花香东方调', '普通东方调', '苔藓木香调', '普通木香调',
-				'干燥木香调', '圣洁之水', '自由之蓬', '圣兽之皮', '无花之花', '堡垒之殇', '血色之木',
+				'干燥木香调', '圣洁之水', '自由之篷', '圣兽之皮', '无花之花', '堡垒之殇', '血色之木',
 				'森林之噬', '骚动之云', '柔美之穿', '俊美之兽', '大地之士'],
 			searchResShow: true,
 		}
@@ -937,15 +878,27 @@ Vue.component('AppHeader', {
 		// let carList = JSON.parse(sessionStorage.getItem('carList'));
 		// this.carLength = carList.length;
 		this.timeStamp = new Date().getTime();
+		let history_key = JSON.parse(localStorage.getItem('history_key'));
+		if (history_key) {
+			this.searchData = history_key;
+			this.searchDataCover = history_key;
+		}
 	},
 	methods: {
 		handleSearch(value) {
-			if (value === '') {
-				this.searchResShow = true;
-				this.searchData = this.searchDataCover
-			} else {
+			// if (value === '') {
+			// 	this.searchResShow = true;
+			// 	this.searchData = this.searchDataCover
+			// } else {
+			// 	this.searchResShow = false;
+			// 	this.searchData = this.autocompleteData;
+			// }
+			if (value) {
 				this.searchResShow = false;
 				this.searchData = this.autocompleteData;
+			} else {
+				this.searchResShow = true;
+				this.searchData = this.searchDataCover
 			}
 		},
 		loveXiangChange(data) {
@@ -964,7 +917,19 @@ Vue.component('AppHeader', {
 		},
 		//弹出搜索框
 		searchRender() {
+			this.search = '';
 			this.modalSearch = true;
+			let history_key = JSON.parse(localStorage.getItem('history_key'));
+			if (history_key) {
+				this.searchData = history_key;
+				this.searchDataCover = history_key;
+			}
+			let pk = "tcss.goods_code";
+			let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk;
+			fetch(url).then(r => r.json()).then(d => {
+				console.log(d);
+				this.autocompleteData = d.obj.carddata;
+			});
 		},
 		//搜索关键词
 		filterMethod(value, option) {
@@ -973,12 +938,26 @@ Vue.component('AppHeader', {
 		//点击搜索
 		goToSearch() {
 			this.modalSearch = false;
-			this.$router.push({ path: '/searchRes', query: { searchRes: this.search } });
+			if (this.search) {
+				let history_key = JSON.parse(localStorage.getItem('history_key'));
+				if (history_key) {
+					history_key.push(this.search);
+					localStorage.setItem('history_key', JSON.stringify(history_key));
+				} else {
+					let arr = [];
+					arr.push(this.search);
+					localStorage.setItem('history_key', JSON.stringify(arr));
+				}
+
+				this.$router.push({ path: '/searchRes', query: { searchRes: this.search } });
+			}
 		},
-		//更多品牌
-		goMore() {
-			this.modalSearch = false;
-			this.$router.push({ path: '/allBrands' });
+		//清除搜索历史记录
+		delHistory() {
+			// this.modalSearch = false;
+			localStorage.removeItem('history_key');
+			this.searchData = null;
+			this.searchDataCover = null;
 		},
 		handleRender(item) {
 			if (item.clickName == "onlineAromaTest") {

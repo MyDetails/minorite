@@ -32,20 +32,20 @@ const brand = {
                 <ul class="slide-nav">
                     <li class="slide-nav-item" v-for="(item,index) in slideNavList" :key="item.id">
                         <p :class="slideSelected == index ? 'slide-nav-active' : ''" @click="clickNav(index)">
-                            <span v-if="item.childList"> {{slideSelected == index ? "-" : "+"}} </span>
+                            <span v-if="item.childList"> {{item.flag ? "-" : "+"}} </span>
                             <router-link v-if="item.name" :to="{path: '/' + item.name}">{{item.title}}</router-link>
                             <span v-else>{{item.title}}</span>
                         </p>
-                        <ol v-if="slideSelected == index" class="slide-nav-hidden">
+                        <ol v-if="item.flag" class="slide-nav-hidden">
                             <li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
                                 <a class="brands-hover" v-if="index==1 && childItem.id" :class="childItem.id === brand_active_id ? 'brand-active' : ''" @click="goBrand(childItem.id)">
                                     {{childItem.name || childItem.catNameEn}}
                                 </a>
                                 <p v-if="index==2" :class="childSelected == childIndex ? 'fragrance-nav-active' : ''" @click="childClickNav(childIndex)">
-                                    <span v-if="childItem.itemList"> {{childSelected == childIndex ? "-" : "+"}} </span>
+                                    <span v-if="childItem.sons"> {{clickShow[childIndex] ? "-" : "+"}} </span>
                                     <span>{{childItem.catNameCn}}</span>
                                 </p>
-                                <ol v-if="index==2 && childSelected == childIndex" class="slide-nav-hidden fragrance-nav">
+                                <ol v-if="index==2 && clickShow[childIndex]" class="slide-nav-hidden fragrance-nav">
                                     <li v-for="(_Item, _Index) in childItem.sons" :key="_Item.id">
                                         <router-link :to="{path: '/personalAroma', query: {cat: _Item.id}}">
                                             {{_Item.catNameCn}}
@@ -68,7 +68,7 @@ const brand = {
                     <ul class="brand-img-list">
                         <li v-for="item in brandGoodsList" :key="item.goods.id">
                         <div class="brand-img">
-                        <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}">
+                        <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="background:#fff;">
                             <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
                         </router-link>
                         </div>
@@ -89,14 +89,14 @@ const brand = {
         return {
             pageId: "",
             slideSelected: -1,
-            slideShow: -1,
-            childSelected: 0,
-            childIndex: 0,
+			childSelected: 0,
+			clickArr: [],
             slideNavList: [
                 {
                     id: 0,
                     // name: "newProducts",
                     title: "新品上架",
+                    flag: false,
                     childList: [
                         { cid: 1, name: "newProducts", title: "新品上架", params: "0", checked: true },
                         { cid: 2, name: "newProducts", title: "销售排行", params: "1" }
@@ -106,18 +106,21 @@ const brand = {
                     id: 1,
                     // name: "allBrands",
                     title: "所有品牌",
+                    flag: false,
                     childList: []
                 },
                 {
                     id: 2,
                     // name: "personalAroma",
                     title: "个人香水",
+                    flag: false,
                     childList: []
                 },
                 {
                     id: 3,
                     // name: "furnitureAroma",
                     title: "家居香氛",
+                    flag: false,
                     childList: [
                         { cid: 31, name: "furnitureAroma", title: "香包", params: "0", checked: true },
                         { cid: 32, name: "furnitureAroma", title: "喷雾", params: "1" },
@@ -127,22 +130,26 @@ const brand = {
                 {
                     id: 4,
                     name: "giftsBox",
+                    flag: false,
                     title: "礼盒套装"
                 },
                 {
                     id: 5,
                     name: "onlieAromaTest",
+                    flag: false,
                     title: "线上香气测试"
                 },
                 {
                     id: 6,
                     name: "offlineArtSpace",
+                    flag: false,
                     title: "线下艺术空间"
                 },
                 {
                     id: 7,
                     // name: "vipClub",
                     title: "优惠活动",
+                    flag: false,
                     childList: [
                         { cid: 71, name: "vipClub", go: "vipClub", title: "优惠指南", checked: true },
                         { cid: 72, name: "testAroma", go: "testAroma", title: "双周七七", },
@@ -152,6 +159,7 @@ const brand = {
                 {
                     id: 8,
                     name: "vipClub",
+                    flag: false,
                     title: "VIP俱乐部"
                 }
             ],
@@ -167,6 +175,15 @@ const brand = {
     computed: {
         pageList: function () {
             return this.brandImgList.length;
+        },
+        clickShow() {
+            return this.slideNavList[2].childList.map((item, index) => {
+                if (this.clickArr.indexOf(index) === -1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            })
         }
     },
     beforeRouteEnter(to, from, next) {
@@ -220,7 +237,16 @@ const brand = {
     methods: {
         clickNav(index) {
             this.slideSelected = index;
-            this.slideShow = index;
+            this.slideNavList[index].flag = !this.slideNavList[index].flag;
+        },
+        childClickNav(childIndex) {
+            this.childSelected = childIndex;
+            let index = this.clickArr.indexOf(childIndex);
+            if (index === -1) {
+                this.clickArr.push(childIndex);
+            } else {
+                this.clickArr.splice(index, 1);
+            }
         },
         pageActive(index) {
             this.currentPage = index;

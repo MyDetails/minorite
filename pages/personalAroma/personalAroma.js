@@ -62,15 +62,15 @@ const personalAroma = {
 
                 <div class="slide-nav-right">
                     <ul class="personalAroma-img-list">
-                        <li v-for="item in personalAromaImgList" :key="item.id">
+                        <li v-for="item in personalAromaImgList" :key="item.goods.id">
                             <div class="personalAroma-img">
-                                <router-link :to="{path: '/goodsDetails', query: {goodsId: item.id}}" style="display:block;padding:10px;">
-                                    <img :src="'http://pe1d.static.pdr365.com/' + item.goods_picturelink_big" alt="">
+                                <router-link :to="{path: '/goodsDetails', query: {goodsId: item.id}}" style="display:block;padding:10px;background:#fff;">
+                                    <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
                                 </router-link>
                             </div>
-                            <!--<p>{{item.goods_name}}</p>-->
-                            <p>{{item.goods_name}}</p>
-                            <p>¥{{item.goods_price / 100}}</p>
+                            <p>{{item.cat.catNameCn}}</p>
+                            <p>{{item.goods.goods_name}}</p>
+                            <p>¥{{item.goods.goods_price / 100}}</p>
                         </li>
                     </ul>
                     <!--<ul class="page-list">

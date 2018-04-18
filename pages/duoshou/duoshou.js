@@ -11,13 +11,13 @@ const duoshou = {
                 <div class="content-nav footer-nav-content">
                     <p>
                         <span>首页</span> >
-                        <span>剁手指南</span>
+                        <span>优惠指南</span>
                     </p>
                 </div>
                 <!-- conent-nav end -->
 
                 <div class="title">
-                    <h3>剁手指南</h3>
+                    <h3>优惠指南</h3>
                 </div>
 
                 <!-- word-space start -->

@@ -212,7 +212,6 @@ const profileOrders = {
                                 on: {
                                     click: () => {
                                         var payType = params.row.payType;
-                                        var payType = params.row.payType;
                                         if (payType == 'wxpay') {
                                             let pk_code = "tcss.build.wx.pay";
                                             let oss_code = params.row.orderId + "," + "1000";
@@ -259,7 +258,7 @@ const profileOrders = {
                             "去支付"
                         )
                         ]);
-                    } else if (params.row.os == "1000") {
+                    } else if (params.row.os == "1000" || params.row.os == "1001") {
                         return h("div", {}, [
                             h("p", {}, "待发货")
                         ])
@@ -410,7 +409,7 @@ const profileOrders = {
                                             aTime: d.obj[i].aTime,
                                         }
                                     ];
-                                } else if (d.obj[i].os == "1000") {
+                                } else if (d.obj[i].os == "1000" || d.obj[i].os == "1001") {
                                     var data = [
                                         {
                                             orderId: d.obj[i].id,
@@ -495,7 +494,7 @@ const profileOrders = {
                     this.no_pay_order = order_list;
                 });
             } else if (name === 'order_no_send') {
-                let statuses = "1000";
+                let statuses = "1001";
                 let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
                 fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
                     let order_list = [];
@@ -542,7 +541,7 @@ const profileOrders = {
                         ];
                         order_list.push(data);
                     }
-                    this.no_send_order = order_list;
+                    this.no_receive_order = order_list;
                 });
             } else if (name === 'order_done') {
                 let statuses = "3000";

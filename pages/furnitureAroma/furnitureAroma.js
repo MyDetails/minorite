@@ -27,7 +27,7 @@ const furnitureAroma = {
                         <ul class="furnitureAroma-img-list">
                             <li v-for="item in furnitureAromaImgList" :key="item.goods.id">
                                 <div class="furnitureAroma-img">
-                                    <router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;">
+                                    <router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;background:#fff;">
                                         <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
                                     </router-link>
                                 </div>

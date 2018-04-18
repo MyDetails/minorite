@@ -6,6 +6,7 @@ const profileMsg = {
     cache: {},
     template: `
             <div class="content">
+                <div class="header-block"></div><!-- 导航栏占位符 -->
                 <!-- profile-msg start -->
                 <div class="profileMsg-content main">
                     <div class="personal-msg-container">
@@ -236,9 +237,10 @@ const profileMsg = {
 
         },
         changePwd() {
-            let reg1 = /^[0-9A-Za-z]{6,16}$/; //弱密码
-            let reg2 = /^(?=.{6,16})[0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*$/; //中密码
-            let reg3 = /^(?=.{6,16})([0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*){2,}$/; //强密码
+            let reg1 = /^[0-9]{6,16}$/; //弱密码
+            let reg2 = /^[0-9A-Za-z]{6,16}$/; //中密码
+            let reg3 = /^(?=.{6,16})[0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*$/; //强密码
+            // let reg4 = /^(?=.{6,16})([0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*){2,}$/; //超级强密码
             let val = this.formRight.input7;
             if (reg1.test(val) || val.length > 0 && val.length < 6) {
                 this.pwd_level = "low";

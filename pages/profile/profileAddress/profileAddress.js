@@ -6,6 +6,7 @@ const profileAddress = {
     cache: {},
     template: `
             <div class="content">
+                <div class="header-block"></div><!-- 导航栏占位符 -->
                 <div class="profileAddress-content main">
                     
                     <!--profile msg start-->

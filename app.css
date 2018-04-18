@@ -59,16 +59,17 @@ pre {
 
 
 /******************************* HEADER *******************************/
-/* .header-block {
+.header-block {
   width: 100%;
   height: 71px;
-  background-color: rgba(11, 59, 37, .8);
-} */
+  /* background-color: rgba(11, 59, 37, .5); */
+  opacity: 0;
+}
 .header {
-  /* position: fixed;
+  position: fixed;
   left: 0;
-  top: 0; */
-  position: relative;
+  top: 0;
+  /* position: relative; */
   width: 100%;
   height: 71px;
   display: flex;
@@ -1801,4 +1802,14 @@ border-color: #04593f;
   padding: 4px;
   text-align: center;
   font-size: 12px;
+}
+
+/*********** modal get coupons  ***********/
+.modal-get-coupons .ivu-modal-content {
+  height: 490px;
+  background: rgba(255,255,255,.8);
+  border-radius: 0;
+}
+.modal-get-coupons .ivu-modal-body {
+  padding: 80px 80px;
 }

@@ -2,6 +2,7 @@ const myFavorite = {
 	template: `
 	<transition name="slide-fade"><!-- 想要使用入场动画时添加此标签  动画样式可以写在组件css或者app.css中-->
 	<div class="myFavorite"><!-- 固定 容器-->
+		<div class="header-block"></div><!-- 导航栏占位符 -->
 		<div class="myFavorite-box">
 			<div class="myFavorite-list">
 				<img class="myFavorite-list-img" src="">

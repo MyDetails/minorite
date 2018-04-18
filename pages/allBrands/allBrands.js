@@ -6,6 +6,7 @@ const allBrands = {
     cache: {},
     template: `
         <div class="content brand-content">
+            <div class="header-block"></div><!-- 导航栏占位符 -->
             <div class="main" style="position:relative;">
                 <div class="title-logo">
                     <img src="http://pe1s.static.pdr365.com/minorite/allBrands/all-brands-logo.png" alt="">

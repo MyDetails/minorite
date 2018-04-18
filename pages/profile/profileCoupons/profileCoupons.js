@@ -6,6 +6,7 @@ const profileCoupons = {
     cache: {},
     template: `
              <div class="content">
+                <div class="header-block"></div><!-- 导航栏占位符 -->
                 <div class="profileCoupons-content main">
                     <personal-msg></personal-msg>
 

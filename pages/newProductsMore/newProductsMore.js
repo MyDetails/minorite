@@ -6,6 +6,7 @@ const newProductsMore = {
     cache: {},
     template: `
             <div class="content">
+                <div class="header-block"></div><!-- 导航栏占位符 -->
                 <div class="main" style="position:relative;">
                     <div class="newProducts-more-logo">
                             <img src="http://pe1s.static.pdr365.com/new-arrival_03.png" alt="">

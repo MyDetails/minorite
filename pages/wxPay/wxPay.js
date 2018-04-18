@@ -1,6 +1,7 @@
 const wxPay = {
 	template: `
 			<div class="content">
+				<div class="header-block"></div><!-- 导航栏占位符 -->
 				<div class="wxPay-content main">
 					<personal-msg></personal-msg>
 

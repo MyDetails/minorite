@@ -6,6 +6,7 @@ const profileCollect = {
     cache: {},
     template: `
             <div class="content">
+                <div class="header-block"></div><!-- 导航栏占位符 -->
                 <div class="profileCollect-content main">
                     <personal-msg></personal-msg>
 

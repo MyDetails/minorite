@@ -7,6 +7,7 @@ const goodsDetails = {
 	template: `
 	<div>
 		<div class="content">
+			<div class="header-block"></div><!-- 导航栏占位符 -->
 			<div class="main" style="position:relative;">
 				<!-- content-nav start -->
 				<div class="content-nav gd-content-nav">

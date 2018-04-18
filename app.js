@@ -8,7 +8,6 @@ const routes = [
 	{ path: '/goodsDetails', component: goodsDetails },
 	{ path: '/newProducts', component: newProducts },
 	{ path: '/offlineArtSpace', component: offlineArtSpace },
-	{ path: '/onlineAromaTest', component: onlineAromaTest },
 	{ path: '/personalAroma', component: personalAroma },
 	{ path: '/testAroma', component: testAroma },
 	{ path: '/vipClub', component: vipClub },
@@ -51,7 +50,6 @@ router.beforeEach((to, from, next) => {
 Vue.component('AppHeader', {
 	template: `
 						<div>
-							<div class="header-block"></div>
 									<div class="header index-header">
 											<div class="main main-nav">
 													<!-- logo -->

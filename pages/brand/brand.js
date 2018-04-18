@@ -7,6 +7,7 @@ const brand = {
     template: `
     <div><!-- 固定 容器-->
         <div class="content">
+            <div class="header-block"></div><!-- 导航栏占位符 -->
             <div class="main brand-main">
                 <div class="brand-title">
                     <div class="brand-title-left">

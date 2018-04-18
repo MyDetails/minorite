@@ -8,11 +8,23 @@ const index = {
 	<div><!-- 固定 容器-->
 		<!-- banner start -->
 		<div class="banner-container">
-			<ul class="banner">
+			<!--<ul class="banner">
 				<li class="banner-li">
 					<img class="banner-img" src="http://pe1s.static.pdr365.com/minorite/index/banner0001.png">
 				</li>
-			</ul>
+      </ul>-->
+      <Carousel v-model="bannerValue" radius-dot autoplay :autoplay-speed="bannerSetting.autoplaySpeed" :arrow="bannerSetting.arrow" :easing="bannerSetting.easing">
+        <CarouselItem>
+            <div class="demo-carousel">
+              <img class="banner-img" src="http://pe1s.static.pdr365.com/minorite/index/banner0001.png">
+            </div>
+        </CarouselItem>
+        <CarouselItem>
+            <div class="demo-carousel" @click="couponsShow">
+              <img class="banner-img" src="http://pe1s.static.pdr365.com/minorite/index/banner0002.png" style="cursor:pointer;">
+            </div>
+        </CarouselItem>
+    </Carousel>
 		</div
 		<!-- banner end -->
 
@@ -499,6 +511,54 @@ const index = {
               <!-- <Button @click="next">Delete</Button> -->
           </div> 
         </Modal>
+        <!-- 领取优惠券 开始 -->
+        <Modal class="modal-get-coupons" v-model="get_coupons" width="1200">
+           <div class="get-coupons">
+              <ul class="coupons-list">
+                <li>
+                  <span>¥<b>500</b></span>
+                  <span>指定香水优惠券</span>
+                  <span>有效期:4.30-5.30</span>
+                  <input type="button" value="立即领取"></input>
+                </li>
+                <li>
+                  <span>¥<b>100</b></span>
+                  <span>指定香水优惠券</span>
+                  <span>有效期:4.30-5.30</span>
+                  <input type="button" value="立即领取"></input>
+                </li>
+                <li>
+                  <span>¥<b>200</b></span>
+                  <span>满2000减200</span>
+                  <span>有效期:4.30-5.30</span>
+                  <input type="button" value="立即领取"></input>
+                </li>
+                <li>
+                  <span>¥<b>800</b></span>
+                  <span>限apsu使用</span>
+                  <span>有效期:4.30-5.30</span>
+                  <input type="button" value="立即领取"></input>
+                </li>
+                <li>
+                  <span>¥<b>900</b></span>
+                  <span>指定香水优惠券</span>
+                  <span>有效期:4.30-5.30</span>
+                  <input type="button" value="立即领取"></input>
+                </li>
+                <li class="coupons-item-active">
+                  <span>¥<b>1000</b></span>
+                  <span>指定香水优惠券</span>
+                  <span>有效期:4.30-5.30</span>
+                  <input type="button" disabled="disabled" value="已领取"></input>
+                </li>
+
+              </ul>
+           </div>
+           <div slot="footer">
+              <!-- <Button @click="next">Delete</Button> -->
+          </div> 
+        </Modal>
+        <!-- 领取优惠券 结束 -->
         
         <!-- onlineAromaTest end -->
         
@@ -552,6 +612,13 @@ const index = {
       spicesList: [],
       disabled: false,
       huaxiangCheck: [],
+      bannerValue: 0,
+      bannerSetting: {
+        autoplaySpeed: 5000,
+        easing: 'ease',
+        arrow: 'never',
+      },
+      get_coupons: false,
     };
   }, beforeRouteEnter(to, from, next) {
     //当组件加载时自动调用此函数 函数结尾必须next();
@@ -591,6 +658,9 @@ const index = {
     //页面两侧浮动元素
     float();
   }, methods: {
+    couponsShow() {
+      this.get_coupons = true;
+    },
     loveXiangChange(data) {
       this.checkArr = data;
     },

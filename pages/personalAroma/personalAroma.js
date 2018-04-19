@@ -64,8 +64,8 @@ const personalAroma = {
                 <div class="slide-nav-right">
                     <ul class="personalAroma-img-list">
                         <li v-for="item in personalAromaImgList" :key="item.goods.id">
-                            <div class="personalAroma-img">
-                                <router-link :to="{path: '/goodsDetails', query: {goodsId: item.id}}" style="display:block;padding:10px;background:#fff;">
+                            <div class="personalAroma-img" style="padding:10px;">
+                                <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="display:block;background:#fff;">
                                     <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
                                 </router-link>
                             </div>

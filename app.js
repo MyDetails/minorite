@@ -884,13 +884,6 @@ Vue.component('AppHeader', {
 	},
 	methods: {
 		handleSearch(value) {
-			// if (value === '') {
-			// 	this.searchResShow = true;
-			// 	this.searchData = this.searchDataCover
-			// } else {
-			// 	this.searchResShow = false;
-			// 	this.searchData = this.autocompleteData;
-			// }
 			if (value) {
 				this.searchResShow = false;
 				this.searchData = this.autocompleteData;
@@ -977,136 +970,7 @@ Vue.component('AppHeader', {
 				this.modalPersonalAroma = true;
 			}
 		},
-		pre1() {
-			this.modal2 = true;
-			this.modal3 = false;
-		},
-		pre2() {
-			this.modal3 = true;
-			this.modal4 = false;
-		},
-		pre3() {
-			this.modal4 = true;
-			this.modal5 = false;
-		},
-		pre4() {
-			this.modal5 = true;
-			this.modal6 = false;
-		},
-		pre5() {
-			this.modal6 = true;
-			this.modal7 = false;
-		},
-		pre6() {
-			this.modal7 = true;
-			this.modal8 = false;
-		},
-		pre7() {
-			this.modal8 = true;
-			this.modal9 = false;
-		},
-		pre8() {
-			this.modal9 = true;
-			this.modal10 = false;
-		},
-		pre9() {
-			this.modal10 = true;
-			this.modal11 = false;
-		},
-		next1() {
-			this.modal1 = false;
-			this.modal2 = true;
-		},
-		next2() {
-			this.modal2 = false;
-			this.modal3 = true;
-		},
-		next3() {
-			this.modal3 = false;
-			this.modal4 = true;
-		},
-		next4() {
-			this.modal4 = false;
-			this.modal5 = true;
-		},
-		next5() {
-			this.modal5 = false;
-			this.modal6 = true;
-		},
-		next6() {
-			this.modal6 = false;
-			this.modal7 = true;
-		},
-		next7() {
-			this.modal7 = false;
-			this.modal8 = true;
-		},
-		next8() {
-			this.modal8 = false;
-			this.modal9 = true;
-		},
-		next9() {
-			this.modal9 = false;
-			this.modal10 = true;
-		},
-		next10() {
-			this.modal10 = false;
-			this.modal11 = true;
-		},
-		next11() {
-			this.modal11 = false;
-			this.modal12 = true;
-			if (this.huaxiangCheck.length > 0) {
-				this.huaxiang = this.huaxiangCheck;
-			}
-
-			let aromaValueList = [
-				this.testAromaValue01,
-				this.testAromaValue02,
-				this.testAromaValue03,
-				this.testAromaValue04,
-				this.testAromaValue05,
-				this.testAromaValue06,
-				this.testAromaValue07
-			];
-			let aromaValue = aromaValueList.map(v => {
-				return v / 100;
-			});
-			let aromaValueStr = aromaValue.join(";") + ";";
-			let loveXiang = this.loveXiang.join() + ";";
-			let hateXiang = this.hateXiang.join() + ";";
-			let huaxiang = this.huaxiang.join() + ";";
-
-			let pk = "tcss.recommend.perfume";
-			let time = new Date().getTime();
-			let url =
-				appset.domain + "/front/ypc/rt?" +
-				time +
-				"&pk=" +
-				pk +
-				"&rules=" +
-				aromaValueStr +
-				loveXiang +
-				hateXiang +
-				huaxiang;
-			fetch(url, { credentials: "include" })
-				.then(r => r.json())
-				.then(d => {
-					if (d.available && d.obj.success) {
-						this.recommendData = d.obj.carddata;
-					}
-				});
-		},
-		//重新测试
-		restTest() {
-			this.modal12 = false;
-			this.modal1 = true;
-		},
-		//购买自选
-		testPay() {
-			this.modal12 = false;
-			this.$router.push({ path: '/allBrands' });
-		},
+		
 		format(val) {
 			return val + "%";
 		},
@@ -1287,7 +1151,137 @@ Vue.component('AppHeader', {
 		modalGoPersonalAroma(id) {
 			this.modalPersonalAroma = false;
 			this.$router.push({ path: '/personalAroma', query: { cat: id } });
-		}
+		},
+		pre1() {
+			this.modal2 = true;
+			this.modal3 = false;
+		},
+		pre2() {
+			this.modal3 = true;
+			this.modal4 = false;
+		},
+		pre3() {
+			this.modal4 = true;
+			this.modal5 = false;
+		},
+		pre4() {
+			this.modal5 = true;
+			this.modal6 = false;
+		},
+		pre5() {
+			this.modal6 = true;
+			this.modal7 = false;
+		},
+		pre6() {
+			this.modal7 = true;
+			this.modal8 = false;
+		},
+		pre7() {
+			this.modal8 = true;
+			this.modal9 = false;
+		},
+		pre8() {
+			this.modal9 = true;
+			this.modal10 = false;
+		},
+		pre9() {
+			this.modal10 = true;
+			this.modal11 = false;
+		},
+		next1() {
+			this.modal1 = false;
+			this.modal2 = true;
+		},
+		next2() {
+			this.modal2 = false;
+			this.modal3 = true;
+		},
+		next3() {
+			this.modal3 = false;
+			this.modal4 = true;
+		},
+		next4() {
+			this.modal4 = false;
+			this.modal5 = true;
+		},
+		next5() {
+			this.modal5 = false;
+			this.modal6 = true;
+		},
+		next6() {
+			this.modal6 = false;
+			this.modal7 = true;
+		},
+		next7() {
+			this.modal7 = false;
+			this.modal8 = true;
+		},
+		next8() {
+			this.modal8 = false;
+			this.modal9 = true;
+		},
+		next9() {
+			this.modal9 = false;
+			this.modal10 = true;
+		},
+		next10() {
+			this.modal10 = false;
+			this.modal11 = true;
+		},
+		next11() {
+			this.modal11 = false;
+			this.modal12 = true;
+			if (this.huaxiangCheck.length > 0) {
+				this.huaxiang = this.huaxiangCheck;
+			}
+
+			let aromaValueList = [
+				this.testAromaValue01,
+				this.testAromaValue02,
+				this.testAromaValue03,
+				this.testAromaValue04,
+				this.testAromaValue05,
+				this.testAromaValue06,
+				this.testAromaValue07
+			];
+			let aromaValue = aromaValueList.map(v => {
+				return v / 100;
+			});
+			let aromaValueStr = aromaValue.join(";") + ";";
+			let loveXiang = this.loveXiang.join() + ";";
+			let hateXiang = this.hateXiang.join() + ";";
+			let huaxiang = this.huaxiang.join() + ";";
+
+			let pk = "tcss.recommend.perfume";
+			let time = new Date().getTime();
+			let url =
+				appset.domain + "/front/ypc/rt?" +
+				time +
+				"&pk=" +
+				pk +
+				"&rules=" +
+				aromaValueStr +
+				loveXiang +
+				hateXiang +
+				huaxiang;
+			fetch(url, { credentials: "include" })
+				.then(r => r.json())
+				.then(d => {
+					if (d.available && d.obj.success) {
+						this.recommendData = d.obj.carddata;
+					}
+				});
+		},
+		//重新测试
+		restTest() {
+			this.modal12 = false;
+			this.modal1 = true;
+		},
+		//购买自选
+		testPay() {
+			this.modal12 = false;
+			this.$router.push({ path: '/allBrands' });
+		},
 	},
 	watch: {
 		huaxiangCheck() {
@@ -1606,7 +1600,13 @@ Vue.component('PersonalMsg', {
 			.then(r => r.json())
 			.then(d => {
 				if (d.available) {
-					this.address = d.obj.data[0];
+					this.info_list = d.obj;
+					this.address_list = d.obj.data;
+					d.obj.data.forEach(v => {
+						if(v.def) {
+							this.address = v;
+						}
+					});
 				}
 			});
 		//获取个人信息

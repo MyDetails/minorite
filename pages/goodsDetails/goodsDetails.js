@@ -172,73 +172,73 @@ const goodsDetails = {
 
 		<!-- login start -->
 		<Modal class="modalLogin" v-model="modalLogin" width="370">
-		<div class="modalLogin-container">
-		<p>用户登录</p>
-		<Form ref="loginFormInline" :model="loginFormInline" :rules="loginRuleInline" inline>
-			<FormItem prop="user">
-				<Input type="text" v-model="loginFormInline.mobile" placeholder="手机号码/昵称">
-				</Input>
-			</FormItem>
-			<FormItem prop="password">
-				<Input type="password" v-model="loginFormInline.password" placeholder="密码">
-				</Input>
-			</FormItem>
-			<FormItem>
-				<Button type="primary" @click="loginSubmit('loginFormInline')">进 入</Button>
-			</FormItem>
-		</Form>
-		<div class="goSign-container">
-		<div class="goSign" @click="goSignRender">注册</div>
-		<div class="forgetPwd">忘记密码?</div>
-		</div>
-		</div>
-		<div slot="footer">
-			<!-- <Button @click="next">Delete</Button> -->
-		</div> 
+			<div class="modalLogin-container">
+				<p>用户登录</p>
+				<Form ref="loginFormInline" :model="loginFormInline" :rules="loginRuleInline" inline>
+					<FormItem prop="user">
+						<Input type="text" v-model="loginFormInline.mobile" placeholder="手机号码/昵称">
+						</Input>
+					</FormItem>
+					<FormItem prop="password">
+						<Input type="password" v-model="loginFormInline.password" placeholder="密码">
+						</Input>
+					</FormItem>
+					<FormItem>
+						<Button type="primary" @click="loginSubmit('loginFormInline')">进 入</Button>
+					</FormItem>
+				</Form>
+				<div class="goSign-container">
+				<div class="goSign" @click="goSignRender">注册</div>
+				<div class="forgetPwd">忘记密码?</div>
+				</div>
+			</div>
+			<div slot="footer">
+				<!-- <Button @click="next">Delete</Button> -->
+			</div> 
 		</Modal> 
 		<!-- login end -->
 
 		<!-- sign start -->
 		<Modal class="modalLogin modalSign" v-model="modalSign" width="370">
-		<div class="modalLogin-container">
-		<p class="modalSign-title">注册minorité账号</p>
-		<div class="goSign-container">
-		<Form ref="signFormInline" :model="signFormInline" :rules="signRuleInline" inline>
-			<FormItem class="sign-input" prop="phoneNumber">
-				<span>+86</span>
-				<Input type="text" v-model="signFormInline.mobile" placeholder="手机号码"> </Input>
-			</FormItem>
-			<FormItem class="sign-input" prop="yzm">
-				<span>
-					<img :src="'http://www.minorite.com.cn/common/imgcode/generate/?' + timeStamp" @click="getImgCode" style="height:100%;">
-				</span>
-				<Input type="text" v-model="signFormInline.verify_code" placeholder="输入验证码"></Input>
-			</FormItem>
-			<FormItem class="sign-input" prop="dxyzm">
-				<span v-show="sendCode" @click="getVerifyCode" style="color:#000;"> 发送验证码 </span>
-				<span v-show="!sendCode">{{auth_time}} 秒后重新发送</span>
-				<Input type="text" v-model="signFormInline.code" placeholder="输入短信验证码"></Input>
-			</FormItem>
-			<FormItem class="sign-input" prop="password">
-				<Icon type="ios-locked-outline"></Icon>
-				<Input type="password" v-model="signFormInline.password" placeholder="请输入密码"></Input>
-			</FormItem>
-			<FormItem>
-				<div style="line-height:20px;margin-top:10px;">
-				点击立即注册，即表示您统一并愿意遵守<a href="/#/footerService" target="_blank">服务条款</a>和<a href="/#/footerSecurity" target="_blank">安全和隐私</a>
+			<div class="modalLogin-container">
+				<p class="modalSign-title">注册minorité账号</p>
+				<div class="goSign-container">
+					<Form ref="signFormInline" :model="signFormInline" :rules="signRuleInline" inline>
+						<FormItem class="sign-input" prop="phoneNumber">
+							<span>+86</span>
+							<Input type="text" v-model="signFormInline.mobile" placeholder="手机号码"> </Input>
+						</FormItem>
+						<FormItem class="sign-input" prop="yzm">
+							<span>
+								<img :src="'http://www.minorite.com.cn/common/imgcode/generate/?' + timeStamp" @click="getImgCode" style="height:100%;">
+							</span>
+							<Input type="text" v-model="signFormInline.verify_code" placeholder="输入验证码"></Input>
+						</FormItem>
+						<FormItem class="sign-input" prop="dxyzm">
+							<span v-show="sendCode" @click="getVerifyCode" style="color:#000;"> 发送验证码 </span>
+							<span v-show="!sendCode">{{auth_time}} 秒后重新发送</span>
+							<Input type="text" v-model="signFormInline.code" placeholder="输入短信验证码"></Input>
+						</FormItem>
+						<FormItem class="sign-input" prop="password">
+							<Icon type="ios-locked-outline"></Icon>
+							<Input type="password" v-model="signFormInline.password" placeholder="请输入密码"></Input>
+						</FormItem>
+						<FormItem>
+							<div style="line-height:20px;margin-top:10px;">
+							点击立即注册，即表示您统一并愿意遵守<a href="/#/footerService" target="_blank">服务条款</a>和<a href="/#/footerSecurity" target="_blank">安全和隐私</a>
+							</div>
+						</FormItem>
+						<FormItem>
+							<Button type="primary" @click="signSubmit('signFormInline')">立即注册</Button>
+							<div class="goSign" style="font-size:14px" @click="goLoginRender">登录</div>
+						</FormItem>
+							
+					</Form>
 				</div>
-			</FormItem>
-			<FormItem>
-				<Button type="primary" @click="signSubmit('signFormInline')">立即注册</Button>
-				<div class="goSign" style="font-size:14px" @click="goLoginRender">登录</div>
-			</FormItem>
-				
-		</Form>
-		</div>
-		</div>
-		<div slot="footer">
-			<!-- <Button @click="next">Delete</Button> -->
-		</div> 
+			</div>
+			<div slot="footer">
+				<!-- <Button @click="next">Delete</Button> -->
+			</div> 
 		</Modal> 
 		<!-- sign end -->
 	</div>

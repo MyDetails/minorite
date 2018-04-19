@@ -183,7 +183,13 @@ const profileMsg = {
             .then(r => r.json())
             .then(d => {
                 if (d.available) {
-                    this.address = d.obj.data[0];
+                    this.info_list = d.obj;
+                    this.address_list = d.obj.data;
+                    d.obj.data.forEach(v => {
+                        if (v.def) {
+                            this.address = v;
+                        }
+                    });
                 }
             });
         //获取个人信息
@@ -205,7 +211,7 @@ const profileMsg = {
         } else {
             this.tabName = "tab_name_msg";
         }
-    },  methods: {
+    }, methods: {
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -220,17 +226,33 @@ const profileMsg = {
             let sex = this.formItem.radio;
             let token = this.getCookie("_lac_k_");
             this.token = token;
-            let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&nick=" + nick + "&namecn=" + namecn + "&userno=" + userno + "&sex=" + sex;
-            fetch(url, {
-                method: "POST",
-                credentials: "include"
-            }).then(r => r.json()).then(d => {
-                if (d.available) {
-                    this.$Message.success("保存成功");
-                } else {
-                    this.$Message.success("保存失败");
-                }
-            });
+            if (nick !== '' && namecn !== '' && userno !== '') {
+                let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&nick=" + nick + "&namecn=" + namecn + "&userno=" + userno + "&sex=" + sex;
+                fetch(url, {
+                    method: "POST",
+                    credentials: "include"
+                }).then(r => r.json()).then(d => {
+                    if (d.available) {
+                        //获取个人信息
+                        let pk_info = "account.info.get";
+                        let token = this.getCookie("_lac_k_");
+                        let url_info = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_info + "&token=" + token;
+                        fetch(url_info, { credentials: "include" })
+                            .then(r => r.json())
+                            .then(d => {
+                                this.profileData.nick = d.obj.nick;
+                                let str = d.obj.phone + "";
+                                this.profileData.phone = str.substr(0, 3) + "****" + str.substr(7);
+                                this.headImgUrl = d.obj.headimgurl;
+                            })
+                        this.$Message.success("保存成功");
+                    } else {
+                        this.$Message.success("保存失败");
+                    }
+                });
+            } else {
+                this.$Message.error("提交内容不能为空");
+            }
         },
         //修改密码
         handleSubmitPwd() {
@@ -258,7 +280,7 @@ const profileMsg = {
 
         //     }
         // },
-        
+
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");

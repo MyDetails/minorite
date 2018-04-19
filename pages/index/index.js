@@ -511,46 +511,28 @@ const index = {
               <!-- <Button @click="next">Delete</Button> -->
           </div> 
         </Modal>
+        
+        
+        <!-- onlineAromaTest end -->
+
         <!-- 领取优惠券 开始 -->
         <Modal class="modal-get-coupons" v-model="get_coupons" width="1200">
            <div class="get-coupons">
               <ul class="coupons-list">
-                <li>
-                  <span>¥<b>500</b></span>
-                  <span>指定香水优惠券</span>
-                  <span>有效期:4.30-5.30</span>
-                  <input type="button" value="立即领取"></input>
+                <li v-for="item in coupons_list" :key="item.id" :class="item.getStatus ? 'coupons-item-active' : ''">
+                  <span>¥<b>{{item.cr.crval / 100}}</b></span>
+                  <span>{{item.info}}</span>
+                  <span v-if="item.validatePeriod !== '0'">有效期至:{{item.validatePeriod}}</span>
+                  <span v-else>永久有效</span>
+                  <input type="button" :disabled="item.getStatus" @click="getCoupons(item.id, item.couponNo)" :value="item.getStatus ? '已领取' : '立即领取'"></input>
                 </li>
-                <li>
-                  <span>¥<b>100</b></span>
-                  <span>指定香水优惠券</span>
-                  <span>有效期:4.30-5.30</span>
-                  <input type="button" value="立即领取"></input>
-                </li>
-                <li>
-                  <span>¥<b>200</b></span>
-                  <span>满2000减200</span>
-                  <span>有效期:4.30-5.30</span>
-                  <input type="button" value="立即领取"></input>
-                </li>
-                <li>
-                  <span>¥<b>800</b></span>
-                  <span>限apsu使用</span>
-                  <span>有效期:4.30-5.30</span>
-                  <input type="button" value="立即领取"></input>
-                </li>
-                <li>
-                  <span>¥<b>900</b></span>
-                  <span>指定香水优惠券</span>
-                  <span>有效期:4.30-5.30</span>
-                  <input type="button" value="立即领取"></input>
-                </li>
-                <li class="coupons-item-active">
+                
+                <!--<li class="coupons-item-active">
                   <span>¥<b>1000</b></span>
                   <span>指定香水优惠券</span>
                   <span>有效期:4.30-5.30</span>
                   <input type="button" disabled="disabled" value="已领取"></input>
-                </li>
+                </li>-->
 
               </ul>
            </div>
@@ -559,13 +541,86 @@ const index = {
           </div> 
         </Modal>
         <!-- 领取优惠券 结束 -->
-        
-        <!-- onlineAromaTest end -->
+
+        <!-- login start -->
+		<Modal class="modalLogin" v-model="modalLogin" width="370">
+			<div class="modalLogin-container">
+				<p>用户登录</p>
+				<Form ref="loginFormInline" :model="loginFormInline" :rules="loginRuleInline" inline>
+					<FormItem prop="user">
+						<Input type="text" v-model="loginFormInline.mobile" placeholder="手机号码/昵称">
+						</Input>
+					</FormItem>
+					<FormItem prop="password">
+						<Input type="password" v-model="loginFormInline.password" placeholder="密码">
+						</Input>
+					</FormItem>
+					<FormItem>
+						<Button type="primary" @click="loginSubmit('loginFormInline')">进 入</Button>
+					</FormItem>
+				</Form>
+				<div class="goSign-container">
+				<div class="goSign" @click="goSignRender">注册</div>
+				<div class="forgetPwd">忘记密码?</div>
+				</div>
+			</div>
+			<div slot="footer">
+				<!-- <Button @click="next">Delete</Button> -->
+			</div> 
+		</Modal> 
+		<!-- login end -->
+
+		<!-- sign start -->
+		<Modal class="modalLogin modalSign" v-model="modalSign" width="370">
+			<div class="modalLogin-container">
+				<p class="modalSign-title">注册minorité账号</p>
+				<div class="goSign-container">
+					<Form ref="signFormInline" :model="signFormInline" :rules="signRuleInline" inline>
+						<FormItem class="sign-input" prop="phoneNumber">
+							<span>+86</span>
+							<Input type="text" v-model="signFormInline.mobile" placeholder="手机号码"> </Input>
+						</FormItem>
+						<FormItem class="sign-input" prop="yzm">
+							<span>
+								<img :src="'http://www.minorite.com.cn/common/imgcode/generate/?' + timeStamp" @click="getImgCode" style="height:100%;">
+							</span>
+							<Input type="text" v-model="signFormInline.verify_code" placeholder="输入验证码"></Input>
+						</FormItem>
+						<FormItem class="sign-input" prop="dxyzm">
+							<span v-show="sendCode" @click="getVerifyCode" style="color:#000;"> 发送验证码 </span>
+							<span v-show="!sendCode">{{auth_time}} 秒后重新发送</span>
+							<Input type="text" v-model="signFormInline.code" placeholder="输入短信验证码"></Input>
+						</FormItem>
+						<FormItem class="sign-input" prop="password">
+							<Icon type="ios-locked-outline"></Icon>
+							<Input type="password" v-model="signFormInline.password" placeholder="请输入密码"></Input>
+						</FormItem>
+						<FormItem>
+							<div style="line-height:20px;margin-top:10px;">
+							点击立即注册，即表示您统一并愿意遵守<a href="/#/footerService" target="_blank">服务条款</a>和<a href="/#/footerSecurity" target="_blank">安全和隐私</a>
+							</div>
+						</FormItem>
+						<FormItem>
+							<Button type="primary" @click="signSubmit('signFormInline')">立即注册</Button>
+							<div class="goSign" style="font-size:14px" @click="goLoginRender">登录</div>
+						</FormItem>
+							
+					</Form>
+				</div>
+			</div>
+			<div slot="footer">
+				<!-- <Button @click="next">Delete</Button> -->
+			</div> 
+		</Modal> 
+		<!-- sign end -->
         
         
 	</div>
 	`, data: function () {
     return {
+      timeStamp: "",
+      sendCode: true,
+      auth_time: 0,
       checkArr: [],
       checkArr2: [],
       huaxiangArr: [],
@@ -606,6 +661,75 @@ const index = {
       modal12: false,
       modalLogin: false,
       modalSign: false,
+      loginFormInline: {
+        mobile: "",
+        password: ""
+      },
+      loginRuleInline: {
+        mobile: [
+          {
+            required: true,
+            message: "请输入您的手机号或昵称",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入正确密码",
+            trigger: "blur"
+          },
+          {
+            type: "string",
+            // min: 6,
+            message: "密码长度应超过6位数",
+            trigger: "blur"
+          }
+        ]
+      },
+
+      signFormInline: {
+        mobile: "",
+        verify_code: "",
+        code: "",
+        password: ""
+      },
+      signRuleInline: {
+        mobile: [
+          {
+            required: true,
+            message: "请输入您的手机号或昵称",
+            trigger: "blur"
+          }
+        ],
+        verify_code: [
+          {
+            required: true,
+            message: "请输入验证码",
+            trigger: "blur"
+          }
+        ],
+        code: [
+          {
+            required: true,
+            message: "请输入短信验证码",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入您的密码",
+            trigger: "blur"
+          },
+          {
+            type: "string",
+            min: 6,
+            message: "密码长度应超过6位数",
+            trigger: "blur"
+          }
+        ]
+      },
       recommendData: [],
       spicesData: [],
       fragranceData: [],
@@ -619,6 +743,8 @@ const index = {
         arrow: 'never',
       },
       get_coupons: false,
+      coupons_list: [],
+      person_coupons: [],
     };
   }, beforeRouteEnter(to, from, next) {
     //当组件加载时自动调用此函数 函数结尾必须next();
@@ -655,11 +781,171 @@ const index = {
         this.newsList = d.obj.carddata.slice(0, 3);
       }
     });
+
     //页面两侧浮动元素
     float();
   }, methods: {
+    // 获取cookie
+    getCookie(name) {
+      var v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+      return v ? v[2] : null;
+    },
+    //设置cookie
+    setCookie(name, value, days) {
+      var d = new Date();
+      d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * days);
+      window.document.cookie =
+        name + "=" + value + ";path=/;expires=" + d.toGMTString();
+    },
+    // 登录页面弹窗
+    loginRender() {
+      this.modalLogin = true;
+      this.loginShow = false;
+    },
+    // 注册页面弹窗
+    signRender() {
+      this.modalSign = true;
+      this.loginShow = false;
+    },
+    // 前往注册页面弹窗
+    goSignRender() {
+      this.modalLogin = false;
+      this.modalSign = true;
+    },
+    goLoginRender() {
+      this.modalLogin = true;
+      this.modalSign = false;
+    },
+    // 用户登录
+    loginSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          let pk = "account.do.login";
+          let mobile = this.loginFormInline.mobile;
+          let password = this.loginFormInline.password;
+          let time = new Date().getTime();
+          let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&username=" + mobile + "&userpwd=" + password;
+          fetch(url, { credentials: "include" })
+            .then(r => r.json())
+            .then(d => {
+              let token = d.obj.data.token;
+              if (token == -1) {
+                this.$Message.error("账号或密码错误");
+
+                // 「备注」账号不存在和密码错误返回的数据一样，需要验证用户是否已经注册
+
+
+              } else {
+                this.$Message.success("登录成功");
+                this.modalLogin = false;
+                this.setCookie("_lac_k_", token, 3);
+              }
+            })
+        } else {
+          this.$Message.error("登录失败");
+        }
+      });
+    },
+    //点击刷新图片验证码
+    getImgCode() {
+      this.timeStamp = new Date().getTime();
+    },
+    // 获取短信验证码
+    getVerifyCode() {
+      this.sendCode = false;
+      this.auth_time = 60;
+      let time_reduce = setInterval(v => {
+        this.auth_time--;
+        if (this.auth_time <= 0) {
+          this.sendCode = true;
+          clearInterval(time_reduce);
+        }
+      }, 1000);
+      let mobile = this.signFormInline.mobile;
+      let verify_code = this.signFormInline.verify_code;
+      let time = new Date().getTime();
+      let url = appset.domain + "/front/sms/request_code/?" + time + "&mobile=" + mobile + "&verify_code=" + verify_code;
+      fetch(url, { credentials: "include" }).then(r => r.json()).then(d => { })
+    },
+    // 用户注册
+    signSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          let pk = "account.user.register";
+          let mobile = this.signFormInline.mobile;
+          let code = this.signFormInline.code;
+          let password = this.signFormInline.password;
+          let time = new Date().getTime();
+          let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&mobile=" + mobile + "&code=" + code + "&username=" + mobile + "&userpwd=" + password;
+          fetch(url, { method: "POST", credentials: "include" })
+            .then(r => r.json())
+            .then(d => {
+              if (d.obj.msg == 'success') {
+                this.$Message.success("注册成功，请登录");
+                this.modalSign = false;
+                this.modalLogin = true;
+              }
+            });
+
+        } else {
+          this.$Message.error("注册失败");
+        }
+      });
+    },
+    //领取优惠券
+    getCoupons(id, couponNo) {
+      let token = this.getCookie("_lac_k_");
+      if (token) {
+        let pk = "coupon.group.pub";
+        let bid = couponNo;
+        // let sn = "1498201310156";
+        let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&bid=" + bid + "&token=" + token;
+        fetch(url).then(r => r.json()).then(d => {
+          console.log(d);
+        });
+      } else {
+        this.get_coupons = false;
+        this.modalLogin = true;
+      }
+    },
+    //优惠券弹窗
     couponsShow() {
-      this.get_coupons = true;
+      //获取系统优惠券列表
+      let pk_coupons = "tcss.get.coupons.list";
+      let url_coupons = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_coupons;
+      let login = this.getCookie("_lac_k_");
+      fetch(url_coupons).then(r => r.json()).then(d => {
+        if (d.available) {
+          this.coupons_list = d.obj.data;
+          //获取用户优惠券列表
+          if (login) {
+            let pk_person_coupons = "tcss.account.coupons";
+            let token = login;
+            let url_person_coupons = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_person_coupons + "&statuses=10" + "&token=" + token;
+            fetch(url_person_coupons).then(r => r.json()).then(d => {
+              if (d.available && d.obj) {
+                this.person_coupons = d.obj;
+                for (let i = 0; i < this.person_coupons.length; i++) {
+                  for (let j = 0; j < this.coupons_list.length; j++) {
+                    if (this.coupons_list[j].id === this.person_coupons[i].batch.id) {
+                      this.coupons_list[j].getStatus = true;
+                    } else {
+                      this.coupons_list[j].getStatus = false;
+                    }
+                  }
+                }
+                this.get_coupons = true;
+              } else {
+                this.get_coupons = true;
+              }
+            });
+            
+          } else {
+            this.get_coupons = true;
+          }
+        }
+      });
+
     },
     loveXiangChange(data) {
       this.checkArr = data;
@@ -679,19 +965,6 @@ const index = {
           if (d.available && d.obj.data) {
             this.spicesData = d.obj.data.spices;
             this.fragranceData = d.obj.data.fragrance;
-            //获取所有香料
-            // this.spicesData.forEach(v => {
-            //   v.itemList.forEach(val => {
-            //     this.spicesList.push(val);
-            //   });
-            // });
-            // console.log(this.spicesList);
-            //根据香料名称获取code
-            // this.spicesList.forEach(v => {
-            //   if(v.name == '香草') {
-            //     console.log(v);
-            //   }
-            // });
           }
         });
     },
@@ -840,12 +1113,12 @@ const index = {
 
   },
   watch: {
-		huaxiangCheck() {
-			if (this.huaxiangCheck.length > 3) {
-				this.disabled = true;
-			} else {
-				this.disabled = false;
-			}
-		}
-	}
+    huaxiangCheck() {
+      if (this.huaxiangCheck.length > 3) {
+        this.disabled = true;
+      } else {
+        this.disabled = false;
+      }
+    }
+  }
 }

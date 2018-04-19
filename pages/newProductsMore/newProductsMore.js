@@ -37,9 +37,9 @@ const newProductsMore = {
                                 <p>¥{{item.goods.goods_price / 100}}</p>
                             </li>
                         </ul>
-                        <ul class="page-list">
+                        <!--<ul class="page-list">
                             <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
-                        </ul>
+                        </ul>-->
                     </div>
                     <!-- slide-nav end -->
                     
@@ -84,7 +84,7 @@ const newProductsMore = {
 
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
-        document.title = "家具香氛";
+        document.title = "新品上架";
         next();
     }, created() {
         //组件加载完成会自动调用此方法

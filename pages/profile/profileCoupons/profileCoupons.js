@@ -27,17 +27,17 @@ const profileCoupons = {
                         <Tabs :animated="false" type="card">
                             <TabPane label="未使用优惠券">
                                 <div class="profileCoupons-table-container">
-                                    <Table border :columns="columns1" :data="data1"></Table>
+                                    <Table border :columns="columns1" v-for="item in coupons_no_use" :key="item.id" :data="item"></Table>
                                 </div>
                             </TabPane>
                             <TabPane label="已使用优惠券">
                                 <div class="profileCoupons-table-container">
-                                    <Table border :columns="columns1" :data="data2"></Table> 
+                                    <Table border :columns="columns1" v-for="item in coupons_used" :key="item.id" :data="item"></Table> 
                                 </div>
                             </TabPane>
                             <TabPane label="已失效优惠券">
                                 <div class="profileCoupons-table-container">
-                                    <Table border :columns="columns1" :data="data3"></Table> 
+                                    <Table border :columns="columns1" v-for="item in coupons_expired" :key="item.id" :data="item"></Table> 
                                 </div>
                             </TabPane>
                         </Tabs>
@@ -91,36 +91,9 @@ const profileCoupons = {
                     align: "center"
                 },
             ],
-            data1: [
-                {
-                    orderId: "情人节¥100优惠券",
-                    order: "¥100",
-                    deadline: "2017.12.30-2018.01.30",
-                    orderPrice: "¥1234.00",
-                    orderTime: "2017/1/13  22:32:55",
-                    orderStatus: "未使用"
-                }
-            ],
-            data2: [
-                {
-                    orderId: "情人节¥100优惠券",
-                    order: "¥100",
-                    deadline: "2017.12.30-2018.01.30",
-                    orderPrice: "¥1234.00",
-                    orderTime: "2017/2/22  22:32:55",
-                    orderStatus: "已使用"
-                }
-            ],
-            data3: [
-                {
-                    orderId: "情人节¥100优惠券",
-                    order: "¥100",
-                    deadline: "2017.12.30-2018.01.30",
-                    orderPrice: "¥3334.00",
-                    orderTime: "2017/3/22  22:32:55",
-                    orderStatus: "已失效"
-                }
-            ],
+            coupons_no_use: [],
+            coupons_used: [],
+            coupons_expired: [],
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -129,6 +102,66 @@ const profileCoupons = {
     }, created() {
         //组件加载完成会自动调用此方法
         window.scrollTo(0, 0);
+    }, mounted() {
+        //获取用户未使用优惠券
+        let pk = "tcss.account.coupons";
+        let token = myCookie.getCookie("_lac_k_");
+        let url_no_use = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&token=" + token + "&statuses=10";
+        fetch(url_no_use).then(r => r.json()).then(d => {
+            if (d.available && d.obj) {
+                let coupon_list = [];
+                d.obj.forEach(v => {
+                    let data = [{
+                        orderId: v.batch.info,
+                        order: "¥" + v.batch.cr.crval / 100,
+                        deadline: v.batch.validatePeriod,
+                        orderPrice: v.batch.content,
+                        // orderTime: "2017/3/22  22:32:55",
+                        orderStatus: "未使用"
+                    }];
+                    coupon_list.push(data);
+                });
+                this.coupons_no_use = coupon_list;
+            }
+        });
+        //获取用户已使用优惠券
+        let url_used = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&token=" + token + "&statuses=20";
+        fetch(url_used).then(r => r.json()).then(d => {
+            if (d.available && d.obj) {
+                let coupon_list = [];
+                d.obj.forEach(v => {
+                    let data = [{
+                        orderId: v.batch.info,
+                        order: "¥" + v.batch.cr.crval / 100,
+                        deadline: v.batch.validatePeriod,
+                        orderPrice: v.batch.content,
+                        // orderTime: "2017/3/22  22:32:55",
+                        orderStatus: "已使用"
+                    }];
+                    coupon_list.push(data);
+                });
+                this.coupons_used = coupon_list;
+            }
+        });
+        //获取用户已失效优惠券
+        let url_expired = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&token=" + token + "&statuses=30";
+        fetch(url_expired).then(r => r.json()).then(d => {
+            if (d.available && d.obj) {
+                let coupon_list = [];
+                d.obj.forEach(v => {
+                    let data = [{
+                        orderId: v.batch.info,
+                        order: "¥" + v.batch.cr.crval / 100,
+                        deadline: v.batch.validatePeriod,
+                        orderPrice: v.batch.content,
+                        // orderTime: "2017/3/22  22:32:55",
+                        orderStatus: "已失效"
+                    }];
+                    coupon_list.push(data);
+                });
+                this.coupons_expired = coupon_list;
+            }
+        });
     }, methods: {
         handleSubmit(name) {
             this.$refs[name].validate(valid => {

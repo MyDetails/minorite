@@ -917,31 +917,36 @@ const index = {
       fetch(url_coupons).then(r => r.json()).then(d => {
         if (d.available) {
           this.coupons_list = d.obj.data;
+          console.log(this.coupons_list);
           //获取用户优惠券列表
-          if (login) {
-            let pk_person_coupons = "tcss.account.coupons";
-            let token = login;
-            let url_person_coupons = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_person_coupons + "&statuses=10" + "&token=" + token;
-            fetch(url_person_coupons).then(r => r.json()).then(d => {
-              if (d.available && d.obj) {
-                this.person_coupons = d.obj;
-                for (let i = 0; i < this.person_coupons.length; i++) {
-                  for (let j = 0; j < this.coupons_list.length; j++) {
-                    if (this.coupons_list[j].id === this.person_coupons[i].batch.id) {
-                      this.coupons_list[j].getStatus = true;
-                    } else {
-                      this.coupons_list[j].getStatus = false;
+          if (this.coupons_list.length !== 0) {
+            if (login) {
+              let pk_person_coupons = "tcss.account.coupons";
+              let token = login;
+              let url_person_coupons = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_person_coupons + "&statuses=10" + "&token=" + token;
+              fetch(url_person_coupons).then(r => r.json()).then(d => {
+                if (d.available && d.obj) {
+                  this.person_coupons = d.obj;
+                  for (let i = 0; i < this.person_coupons.length; i++) {
+                    for (let j = 0; j < this.coupons_list.length; j++) {
+                      if (this.coupons_list[j].id === this.person_coupons[i].batch.id) {
+                        this.coupons_list[j].getStatus = true;
+                      } else {
+                        this.coupons_list[j].getStatus = false;
+                      }
                     }
                   }
+                  this.get_coupons = true;
+                } else {
+                  this.get_coupons = true;
                 }
-                this.get_coupons = true;
-              } else {
-                this.get_coupons = true;
-              }
-            });
-            
+              });
+
+            } else {
+              this.get_coupons = true;
+            }
           } else {
-            this.get_coupons = true;
+            this.$Message.info('暂无优惠券，请随时关注活动');
           }
         }
       });

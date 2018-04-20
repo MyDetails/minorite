@@ -45,7 +45,7 @@ const goodsDetails = {
 						</div>
 						<div class="gd-details-price">
 							<span>小众售价:</span>
-							<span>¥{{skuPrice / 100}}</span>
+							<span>¥{{skuPrice / 100}}<s v-if="del_line" style="font-size:14px;margin-left:5px;">¥{{oriPrice / 100}}</s></span>
 							<span>运费：¥10.00</span>
 							<span>满减</span>
 							<span>全店满1000元减100元</span>
@@ -258,9 +258,11 @@ const goodsDetails = {
 			unitData: [],
 			unitList: [],
 			skuPrice: 0,
+			oriPrice: 0,
 			skuId: "",
 			skuUnit: "",
 			skuStock: "",
+			del_line: false,
 			unitSelected: 0,
 			goodsContent: "",
 			bigImg: "",
@@ -4678,37 +4680,70 @@ const goodsDetails = {
 		fetch(url_goods_details)
 			.then(r => r.json())
 			.then(d => {
-				this.goodsContent = d.obj.data.goods.content;
-				this.goodsDetails = d.obj.data.goods.g;
-				this.unitData = d.obj.data.goods.g.goodsSkuList;
-				this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
-				this.goodsImgList = d.obj.data.goods.g.goodsImgList;
-				this.unitData.forEach(v => {
-					let unitObj = JSON.parse(v.skus);
-					for (let key in unitObj) {
-						let obj = {
-							id: v.id,
-							skuPrice: v.skuPrice,
-							unit: unitObj[key],
-							stock: v.stock
-						}
-						this.unitList.push(obj);
-					}
-				});
-				this.skuPrice = this.unitData[0].skuPrice;
-				this.skuId = this.unitList[0].id;
-				this.skuUnit = this.unitList[0].unit;
-				this.skuStock = this.unitList[0].stock;
-				// this.brand = d.obj.data.category;
-				if(d.obj.data.category !== null) {
-					this.brand = d.obj.data.category;
-				} else {
-					let obj = {
-						catContent: d.obj.data.goods.content,
-						catNameEn: "试香包"
+				if (d.available) {
+					if (!d.obj.data.is_77) {
+						this.del_line = false;
+						this.goodsContent = d.obj.data.goods.content;
+						this.goodsDetails = d.obj.data.goods.g;
+						this.unitData = d.obj.data.goods.g.goodsSkuList;
+						this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
+						this.goodsImgList = d.obj.data.goods.g.goodsImgList;
+						this.unitData.forEach(v => {
+							let obj = {
+								id: v.id,
+								skuPrice: v.skuPrice,
+								unit: JSON.parse(v.skus)['容量'],
+								stock: v.stock
+							}
+							this.unitList.push(obj);
+						});
+						this.skuPrice = this.unitData[0].skuPrice;
+						this.skuId = this.unitList[0].id;
+						this.skuUnit = this.unitList[0].unit;
+						this.skuStock = this.unitList[0].stock;
+						if (d.obj.data.category !== null) {
+							this.brand = d.obj.data.category;
+						} else {
+							let obj = {
+								catContent: d.obj.data.goods.content,
+								catNameEn: "试香包"
 
-					};
-					this.brand = obj; 
+							};
+							this.brand = obj;
+						}
+					} else {
+						this.del_line = true;
+						this.goodsContent = d.obj.data.goods.content;
+						this.goodsDetails = d.obj.data.goods.g;
+						this.unitData = d.obj.data.skuList;
+						this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
+						this.goodsImgList = d.obj.data.goods.g.goodsImgList;
+						this.unitData.forEach(v => {
+							let obj = {
+								id: v.sku.id,
+								skuPrice: v.mkPrice,
+								oriPrice: v.sku.skuPrice,
+								unit: JSON.parse(v.sku.skus)['容量'],
+								stock: v.sku.stock
+							}
+							this.unitList.push(obj);
+						});
+						this.skuPrice = this.unitList[0].skuPrice;
+						this.oriPrice = this.unitList[0].oriPrice;
+						this.skuId = this.unitList[0].id;
+						this.skuUnit = this.unitList[0].unit;
+						this.skuStock = this.unitList[0].stock;
+						if (d.obj.data.category !== null) {
+							this.brand = d.obj.data.category;
+						} else {
+							let obj = {
+								catContent: d.obj.data.goods.content,
+								catNameEn: "试香包"
+
+							};
+							this.brand = obj;
+						}
+					}
 				}
 			});
 
@@ -4947,6 +4982,7 @@ const goodsDetails = {
 			this.unitList.forEach(v => {
 				if (id == v.id) {
 					this.skuPrice = v.skuPrice;
+					this.oriPrice = v.oriPrice;
 					this.unitSelected = index;
 					this.skuId = v.id;
 					this.skuUnit = v.unit;

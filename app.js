@@ -68,6 +68,9 @@ Vue.component('AppHeader', {
 																	<router-link v-if="childItem.go" :to="{path: '/' + childItem.go}">
 																			{{childItem.title}}
 																	</router-link>
+																	<router-link v-else-if="childItem.goods" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
+																			{{childItem.title}}
+																	</router-link>
 																	<router-link v-else :to="{path: '/' + childItem.name, query: {cat: childItem.params}}">
 																			{{childItem.title}}
 																	</router-link>
@@ -844,7 +847,7 @@ Vue.component('AppHeader', {
 					title: "优惠活动",
 					childName: [
 						{ name: "duoshou", go: "duoshou", title: "优惠指南" },
-						{ name: "testAroma", go: "testAroma", title: "双周七七" },
+						{ name: "testAroma", goods: "goodsDetails", title: "双周七七" },
 						{ name: "testAroma", go: "testAroma", title: "试香包" },
 					]
 				},
@@ -865,11 +868,9 @@ Vue.component('AppHeader', {
 			searchData: [],
 			searchDataCover: [],
 			huaxiangCheck: [],
-			autocompleteData: ['水香调', '芳香调', '果香调', '柑橘调', '绿调', '柔和花香调', '普通花香调',
-				'柔和东方调', '木质东方调', '花香东方调', '普通东方调', '苔藓木香调', '普通木香调',
-				'干燥木香调', '圣洁之水', '自由之篷', '圣兽之皮', '无花之花', '堡垒之殇', '血色之木',
-				'森林之噬', '骚动之云', '柔美之穿', '俊美之兽', '大地之士'],
+			autocompleteData: [],
 			searchResShow: true,
+			goodsParams: "",
 		}
 	},
 	mounted() {
@@ -881,6 +882,15 @@ Vue.component('AppHeader', {
 			this.searchData = history_key;
 			this.searchDataCover = history_key;
 		}
+
+		//获取双周七七商品
+		let pk_77 = "coupon.get_mar_77";
+		let url_77 = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_77;
+		fetch(url_77).then(r => r.json()).then(d => {
+			if (d.available && d.obj.carddata.length > 0) {
+				this.goodsParams = d.obj.carddata[0].g.id;
+			}
+		});
 	},
 	methods: {
 		handleSearch(value) {
@@ -970,7 +980,7 @@ Vue.component('AppHeader', {
 				this.modalPersonalAroma = true;
 			}
 		},
-		
+
 		format(val) {
 			return val + "%";
 		},
@@ -1403,6 +1413,9 @@ Vue.component('SlideNav', {
 										</router-link>
 									</li>
 								</ol>
+								<router-link class="brands-hover" v-else-if="index !=1 && childItem.goods" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
+									{{childItem.title}}
+								</router-link>
 								<router-link class="brands-hover" v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
 									{{childItem.title}}
 								</router-link>
@@ -1420,6 +1433,7 @@ Vue.component('SlideNav', {
 			slideSelected: -1,
 			childSelected: 0,
 			clickArr: [],
+			goodsParams: "",
 			slideNavList: [
 				{
 					id: 0,
@@ -1481,7 +1495,7 @@ Vue.component('SlideNav', {
 					flag: false,
 					childList: [
 						{ cid: 71, name: "duoshou", go: "duoshou", title: "剁手指南", checked: true },
-						{ cid: 72, name: "testAroma", go: "testAroma", title: "双周七七", },
+						{ cid: 72, name: "goodsDetails", goods: "goodsDetails", title: "双周七七", },
 						{ cid: 73, name: "testAroma", go: "testAroma", title: "试香包", }
 					]
 				},
@@ -1520,6 +1534,14 @@ Vue.component('SlideNav', {
 		let url_fragrance = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_fragrance + "&parent=347";
 		fetch(url_fragrance, { incredentails: "include" }).then(r => r.json()).then(d => {
 			this.slideNavList[2].childList = d.obj.data[d.obj.data.length - 1].sons;
+		});
+		//获取双周七七商品
+		let pk_77 = "coupon.get_mar_77";
+		let url_77 = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_77;
+		fetch(url_77).then(r => r.json()).then(d => {
+			if (d.available && d.obj.carddata.length > 0) {
+				this.goodsParams = d.obj.carddata[0].g.id;
+			}
 		});
 	},
 	methods: {
@@ -1603,7 +1625,7 @@ Vue.component('PersonalMsg', {
 					this.info_list = d.obj;
 					this.address_list = d.obj.data;
 					d.obj.data.forEach(v => {
-						if(v.def) {
+						if (v.def) {
 							this.address = v;
 						}
 					});

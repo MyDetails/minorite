@@ -79,11 +79,11 @@ const pay = {
                                     订单详情
                                 </div>
                                 <div class="pay-order-list">
-                                    <Table class="pay-order-table"  ref="selection" :columns="columns4" :data="data1"></Table>
+                                    <Table class="pay-order-table"  ref="selection" :columns="columns4" :data="dis_pay_list"></Table>
                                 </div>
                                 <div class="pay-count-accounts">
                                     <div class="pay-goods-num">
-                                        <p>共<span> {{data1.length}} </span> 件商品</p>
+                                        <p>共<span> {{dis_pay_list.length}} </span> 件商品</p>
                                         <p>总计 ¥{{totalPrice}}</p>
                                         <p>支付方式</p>
                                     </div>
@@ -102,8 +102,9 @@ const pay = {
                                         </RadioGroup>
                                    </div>
                                     <div class="pay-coupon">
-                                        <p>优惠券<span>-¥0</span></p>
-                                        <p>满¥400包邮</p>
+                                        <!--<p>优惠券<span>-¥0</span></p>
+                                        <p>满¥400包邮</p>-->
+                                        <p v-for="(item, index) in dis_rules" :key="index">{{item}}</p>
                                     </div>
                                     <div class="pay-car-address">
                                         <p>
@@ -139,7 +140,7 @@ const pay = {
                 province: "",
                 city: "",
                 county: "东城区",
-                o_id:"",
+                o_id: "",
             },
             info_list: {},
             ruleValidate: {
@@ -255,7 +256,16 @@ const pay = {
                     title: "价格",
                     key: "price",
                     width: 140,
-                    align: "center"
+                    align: "center",
+                    render: (h, params) => {
+                         if(params.row.price.m_price) {
+                            return h("div", {}, [
+                                h("p", {}, params.row.price.dis_price), h("s", {style: {color: '#727272', fontSize: '14px'}}, params.row.price.ori_price)])
+                        } else {
+                            return h("div", {}, [
+                                h("p", {}, params.row.price.dis_price)])
+                        }
+                    }
                 }
             ],
             data1: [],
@@ -2281,6 +2291,10 @@ const pay = {
             order_time: 0,
             o_id: "",
             confirmModal: false,
+            ids: "",
+            dis_pay_list: [],
+            m_price: false,
+            dis_rules: [],
         };
     }, mounted() {
         //获取token
@@ -2303,11 +2317,62 @@ const pay = {
                 skuId: v.skuId,
             };
             this.data1.push(carItem);
-            this.totalPrice += v.goods_price * v.goods_num;
+            // this.totalPrice += v.goods_price * v.goods_num;
         });
+        //从后台获取结算商品的折扣信息
+        let oss = "";
+        this.data1.forEach(v => {
+            let ossStr = v.id + ',' + v.skuId + ',' + v.number + ";";
+            oss += ossStr;
+        });
+        this.ids = oss;
+        let pk_goods_discount = "coupon.get_mar_goods";
+        let url_goods_discount = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_goods_discount + "&ids=" + this.ids + "&token=" + this.token;
+        fetch(url_goods_discount).then(r => r.json()).then(d => {
+            if (d.available && d.obj.carddata) {
+                d.obj.carddata.forEach((v, i) => {
+                    let dis_price;
+                    if(v.mcPrice) {
+                        dis_price = v.mcPrice / 100;
+                        this.m_price = true;
+                    } else if(v.mkPrice) {
+                        dis_price = v.mkPrice / 100;
+                        this.m_price = true;
+                    } else {
+                        dis_price = v.oriPrice / 100;
+                        this.m_price = false;
+                    }
+                    let payItem = {
+                        id: v.g.id,
+                        name: {
+                            src: v.g.goods_picturelink,
+                            goods_name: v.g.goods_name,
+                            unit: JSON.parse(v.sku.skus)['容量']
+                        },
+                        price: {
+                            dis_price: dis_price,
+                            ori_price: v.oriPrice /100,
+                            m_price: this.m_price
+                        },
+                        number: v.sum,
+                        skuId: v.sku.id
+                    };
+                    this.dis_pay_list.push(payItem);
+                });
+            }
+        });
+        //从后台获取满减规则
+        let pk_dis_rules = "coupon.mar_calculator";
+        let url_dis_rules = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_dis_rules + "&ids=" + this.ids + "&token=" + this.token;
+        fetch(url_dis_rules).then(r => r.json()).then(d => {
+            if (d.available && d.obj) {
+                this.totalPrice = d.obj.carddata.payPrice / 100;
+                this.dis_rules = d.obj.carddata.rules;
+            }
+        })
         //获取收货地址
         let pk = "account.get.addresses";
-        let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk;
+        let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&token=" + this.token;
         fetch(url, { credentials: "include" }).then(r => r.json()).then(d => {
             if (d.available) {
                 this.info_list = d.obj;
@@ -2615,12 +2680,12 @@ const pay = {
             $.get(url_code, d => {
                 if (d.available && d.obj.data) {
                     location.href = appset.domain + "/front/pageapp#/profileOrders";
-                }else{
+                } else {
                     this.$Message.info('您还未完成付款');
                 }
             })
         },
-        custom () {
+        custom() {
             this.confirmModal = true;
         }
 

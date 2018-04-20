@@ -35,8 +35,8 @@ const profileCar = {
                             </div>
                         </div>
                         <div class="coupon">
-                            <input type="checkbox" checked="checked">
-                            <span> 使用优惠券 </span>
+                            <!--<input type="checkbox" checked="checked">
+                            <span> 使用优惠券 </span>-->
                             <p>满¥400包邮</p>
                         </div>
                         <div class="car-address">
@@ -247,9 +247,11 @@ const profileCar = {
         ];
     },
     methods: {
+        //选择全部商品
         handleSelectAll(status) {
             this.$refs.selection.selectAll(status);
         },
+        //点击去结算
         goPay() {
             for (let i = 0; i < this.carList.length; i++) {
                 for (let j = 0; j < this.payList.length; j++) {
@@ -276,6 +278,7 @@ const profileCar = {
         carSelect(val) {
             this.payList = val;
         },
+        //修改购物车商品数量
         numChange(index, val) {
             this.totalPrice = 0;
             let carItem = this.data1[index];

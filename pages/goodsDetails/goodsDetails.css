@@ -4,11 +4,6 @@
   margin: 0 auto;
   background: #a62126;
 }
-.collect {
-  color: #f7c83c;
-  font-size: 16px;
-  padding-top: 3px;
-}
 .collect-word,
 .collect {
   cursor: pointer;
@@ -76,17 +71,20 @@
     display: flex;
     height: 16px;
   }
-  .gd-details-name span:first-child {
+  .gd-details-name-title {
     font-size: 16px;
     color: #aaa;
     margin-right: 11px;
   }
-  .gd-details-name span:nth-child(2) {
+  .collect {
     width: 16px;
     height: 16px;
     margin-right: 5px;
+    color: #f7c83c;
+    font-size: 16px;
+    padding-top: 3px;
   }
-  .gd-details-name span:nth-child(3) {
+  .collect-word {
     padding-top: 3px;
     font-size: 11px;
     color: #959595;

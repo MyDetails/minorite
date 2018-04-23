@@ -53,12 +53,15 @@ const brand = {
                                         </router-link>
                                     </li>
                                 </ol>
-                                <router-link v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
-                                    {{childItem.title}}
+                                <router-link class="brands-hover" v-else-if="index !=1 && childItem.goods" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
+									{{childItem.title}}
+								</router-link>
+								<router-link class="brands-hover" v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
+									{{childItem.title}}
                                 </router-link>
-                                <router-link v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
-                                    {{childItem.title}}
-                                </router-link>
+                                <router-link class="brands-hover" v-else-if="index !=1 && childItem.params" :to="{path: '/' + childItem.name, query:{cat: childItem.params}}">
+									{{childItem.title}}
+								</router-link>
                             </li>
                         </ol>
                     </li>
@@ -78,9 +81,11 @@ const brand = {
                         <p>¥{{item.goods.goods_price / 100}}</p>
                     </li>
                     </ul>
-                    <ul class="page-list">
+                    <!-- 分页器 开始 -->
+                    <!--<ul class="page-list">
                         <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
-                    </ul>
+                    </ul>-->
+                    <!-- 分页器 结束 -->
                 </div>
             </div>
         </div>
@@ -90,8 +95,9 @@ const brand = {
         return {
             pageId: "",
             slideSelected: -1,
-			childSelected: 0,
-			clickArr: [],
+            childSelected: 0,
+            clickArr: [],
+            goodsParams: "",
             slideNavList: [
                 {
                     id: 0,
@@ -152,8 +158,8 @@ const brand = {
                     title: "优惠活动",
                     flag: false,
                     childList: [
-                        { cid: 71, name: "vipClub", go: "vipClub", title: "优惠指南", checked: true },
-                        { cid: 72, name: "testAroma", go: "testAroma", title: "双周七七", },
+                        { cid: 71, name: "duoshou", go: "duoshou", title: "优惠指南", checked: true },
+                        { cid: 72, name: "goodsDetails", goods: "goodsDetails", title: "双周七七", },
                         { cid: 73, name: "testAroma", go: "testAroma", title: "试香包", }
                     ]
                 },
@@ -234,6 +240,14 @@ const brand = {
             .then(d => {
                 this.brandGoodsList = d.obj;
             });
+        //获取双周七七商品
+        let pk_77 = "coupon.get_mar_77";
+        let url_77 = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_77;
+        fetch(url_77).then(r => r.json()).then(d => {
+            if (d.available && d.obj.carddata) {
+                this.goodsParams = d.obj.carddata.goods.g.id;
+            }
+        });
     },
     methods: {
         clickNav(index) {

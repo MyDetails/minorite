@@ -28,7 +28,7 @@ const pay = {
                             支付订单
                         </div>
                         <div class="pay-box-container">
-                            <div class="editor-address-box">
+                            <div v-if="!orderData" class="editor-address-box">
                                 <p>收货地址</p>
                                 <Form class="address-form" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
                                     <FormItem prop="defaultAddress" class="select-address">
@@ -85,9 +85,9 @@ const pay = {
                                     <div class="pay-goods-num">
                                         <p>共<span> {{dis_pay_list.length}} </span> 件商品</p>
                                         <p>总计 ¥{{totalPrice}}</p>
-                                        <p>支付方式</p>
+                                        <p v-if="!orderData">支付方式</p>
                                     </div>
-                                    <div class="pay-methods-box">
+                                    <div v-if="!orderData" class="pay-methods-box">
                                         <RadioGroup v-model="payMethod">
                                             <Radio label="30010">
                                             <div class="alipay pay-methods">
@@ -112,7 +112,7 @@ const pay = {
                                         </p>
                                     </div>
                                     <div class="total-price">
-                                        <p>应付金额： <span>¥{{totalPrice}}</span></p>
+                                        <p>应付金额： <span>¥{{payPrice}}</span></p>
                                         <input type="button" value="提交订单" @click="payMethods">
                                     </div>
                                 </div>
@@ -249,21 +249,24 @@ const pay = {
                 {
                     title: "数量",
                     key: "number",
-                    width: 244,
+                    width: 214,
                     align: "center",
                 },
                 {
                     title: "价格",
                     key: "price",
-                    width: 140,
+                    width: 170,
                     align: "center",
                     render: (h, params) => {
-                         if(params.row.price.m_price) {
+                        if (params.row.price.m_price && params.row.price.mk_price) {
                             return h("div", {}, [
-                                h("p", {}, params.row.price.dis_price), h("s", {style: {color: '#727272', fontSize: '14px'}}, params.row.price.ori_price)])
+                                h("p", {}, [h("span", {style: {fontSize: '12px', color: '#727272', marginRight: '5px'}}, "活动价:"), h("span", {style: {fontSize: '20px', color: '#166B53'}}, "¥" + params.row.price.mk_price / 100)]), h("s", { style: { color: '#727272', fontSize: '14px' } }, "¥" + params.row.price.ori_price / 100)])
+                        } else if(params.row.price.m_price && params.row.price.mc_price) {
+                            return h("div", {}, [
+                                h("p", {}, [h("span", {style: {fontSize: '12px', color: '#727272', marginRight: '5px'}}, "会员价:"), h("span", {style: {fontSize: '20px', color: '#166B53'}}, "¥" + params.row.price.mc_price / 100)]), h("s", { style: { color: '#727272', fontSize: '14px' } }, "¥" + params.row.price.ori_price / 100)])
                         } else {
                             return h("div", {}, [
-                                h("p", {}, params.row.price.dis_price)])
+                                h("p", {}, "¥" + params.row.price.ori_price / 100)])
                         }
                     }
                 }
@@ -271,6 +274,7 @@ const pay = {
             data1: [],
             carList: [],
             totalPrice: 0,
+            payPrice: 0,
             arr: [
                 { name: "选择省份", sub: [{ name: "请选择" }], type: 1 },
                 {
@@ -2295,8 +2299,21 @@ const pay = {
             dis_pay_list: [],
             m_price: false,
             dis_rules: [],
+            orderData: {},
         };
-    }, mounted() {
+    },
+    beforeRouteEnter(to, from, next) {
+        //当组件加载时自动调用此函数 函数结尾必须next();
+        document.title = "提交订单";
+        next();
+    },
+    created() {
+        //组件加载完成会自动调用此方法
+        window.scrollTo(0, 0);
+        //获取当前是否创建订单
+        this.orderData = this.$route.params.orderData;
+    },
+    mounted() {
         //获取token
         this.token = this.getCookie("_lac_k_");
         //获取购物车
@@ -2321,43 +2338,66 @@ const pay = {
         });
         //从后台获取结算商品的折扣信息
         let oss = "";
-        this.data1.forEach(v => {
-            let ossStr = v.id + ',' + v.skuId + ',' + v.number + ";";
-            oss += ossStr;
-        });
+        if (!this.orderData) {
+            this.data1.forEach(v => {
+                let ossStr = v.id + ',' + v.skuId + ',' + v.number + ";";
+                oss += ossStr;
+            });
+        } else {
+            this.orderData.order.forEach(v => {
+                let ossStr = v.goodsId + ',' + v.goodsSkuId + ',' + v.buyNum + ";";
+                oss += ossStr;
+            });
+        }
         this.ids = oss;
         let pk_goods_discount = "coupon.get_mar_goods";
         let url_goods_discount = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_goods_discount + "&ids=" + this.ids + "&token=" + this.token;
         fetch(url_goods_discount).then(r => r.json()).then(d => {
             if (d.available && d.obj.carddata) {
                 d.obj.carddata.forEach((v, i) => {
-                    let dis_price;
-                    if(v.mcPrice) {
-                        dis_price = v.mcPrice / 100;
+                    let mk_price; //活动价格
+                    let mc_price; //会员价格
+                    let ori_price; // 商品原价
+                    if (v.mcPrice) {
                         this.m_price = true;
-                    } else if(v.mkPrice) {
-                        dis_price = v.mkPrice / 100;
+                        mc_price = v.mcPrice;
+                        mk_price = v.mkPrice;
+                        ori_price = v.oriPrice;
+                    } else if (v.mkPrice) {
                         this.m_price = true;
+                        mc_price = v.mcPrice;
+                        mk_price = v.mkPrice;
+                        ori_price = v.oriPrice;
                     } else {
-                        dis_price = v.oriPrice / 100;
                         this.m_price = false;
+                        mc_price = v.mcPrice;
+                        mk_price = v.mkPrice;
+                        ori_price = v.oriPrice;
+                    }
+                    console.log(mk_price, mc_price, ori_price);
+                    let unitObj = JSON.parse(v.sku.skus);
+                    let unit = "";
+                    for (item in unitObj) {
+                        unit = unitObj[item];
                     }
                     let payItem = {
                         id: v.g.id,
                         name: {
                             src: v.g.goods_picturelink,
                             goods_name: v.g.goods_name,
-                            unit: JSON.parse(v.sku.skus)['容量']
+                            unit: unit
                         },
                         price: {
-                            dis_price: dis_price,
-                            ori_price: v.oriPrice /100,
+                            mk_price: mk_price,
+                            mc_price: mc_price,
+                            ori_price: ori_price,
                             m_price: this.m_price
                         },
                         number: v.sum,
                         skuId: v.sku.id
                     };
                     this.dis_pay_list.push(payItem);
+                    console.log(this.dis_pay_list);
                 });
             }
         });
@@ -2366,7 +2406,8 @@ const pay = {
         let url_dis_rules = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_dis_rules + "&ids=" + this.ids + "&token=" + this.token;
         fetch(url_dis_rules).then(r => r.json()).then(d => {
             if (d.available && d.obj) {
-                this.totalPrice = d.obj.carddata.payPrice / 100;
+                this.totalPrice = d.obj.carddata.oriPrice / 100;
+                this.payPrice = d.obj.carddata.payPrice / 100;
                 this.dis_rules = d.obj.carddata.rules;
             }
         })
@@ -2389,15 +2430,18 @@ const pay = {
         fetch(url_pay_methods, { credentials: "include" }).then(r => r.json()).then(d => {
             // console.log(d);
         });
+        //获取用户个人信息
+        let pk_per_info = "account.info.get";
+        let token = myCookie.getCookie('_lac_k_');
+        let url_per_info = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_per_info + "&token=" + token;
+        fetch(url_per_info).then(r => r.json()).then(d => {
+            if (d.available) {
+                this.userno = d.obj.userno;
+            }
+        });
 
-    }, beforeRouteEnter(to, from, next) {
-        //当组件加载时自动调用此函数 函数结尾必须next();
-        document.title = "提交订单";
-        next();
-    }, created() {
-        //组件加载完成会自动调用此方法
-        window.scrollTo(0, 0);
-    }, methods: {
+    },
+    methods: {
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -2412,15 +2456,28 @@ const pay = {
 
 
                     let pk = "account.add.modify.address";
-                    let time = new Date().getTime();
-                    let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&address=" + address + "&cel=" + num + "&name=" + name + "&def=" + "0" + "&id=";
+                    let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&address=" + address + "&cel=" + num + "&name=" + name + "&def=" + "0" + "&id=";
                     fetch(url, { method: "POST", credentials: "include" })
                         .then(r => r.json())
                         .then(d => {
                             if (d.available == true) {
                                 this.$Message.success("创建收货地址成功！");
-                                setTimeout(() => { router.go(0); }, 500);
-                                window.scrollTo(0, 0);
+                                // setTimeout(() => { router.go(0); }, 500);
+                                // window.scrollTo(0, 0);
+                                //获取收货地址
+                                let pk = "account.get.addresses";
+                                let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&token=" + this.token;
+                                fetch(url, { credentials: "include" }).then(r => r.json()).then(d => {
+                                    if (d.available) {
+                                        this.info_list = d.obj;
+                                        this.address_list = d.obj.data;
+                                        this.address_list.forEach(v => {
+                                            let id = v.id.toString();
+                                            v.id = id;
+                                        });
+                                        this.editorShow = false;
+                                    }
+                                });
                             } else {
                                 this.$Message.error("创建收货地址失败，请重新创建！");
                             }
@@ -2437,35 +2494,52 @@ const pay = {
             this.formValidate.text = selectedData.map(o => o.label).join(" / ");
         },
         payMethods() {
-            let pk = "tcss.goods.pay.cashdesk";
-            let oss = "";
-            this.data1.forEach(v => {
-                let ossStr = v.id + ',' + v.skuId + ',' + v.number + ";";
-                oss += ossStr;
-            });
-            let time = new Date().getTime();
+            // let pk = "tcss.goods.pay.cashdesk";
+            let pk;
+            let url;
+            // let oss = "";
             let store_id = this.addressId;
             let buy_pay_code = this.payMethod;
+            let token = myCookie.getCookie('_lac_k_');
+            
+            // this.data1.forEach(v => {
+            //     let ossStr = v.id + ',' + v.skuId + ',' + v.number + ";";
+            //     oss += ossStr;
+            // });
+            
+            if (this.orderData) {
+                store_id = true;
+                pk = "order.update_goods_order_offe";
+                url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&o_id=" + this.orderData.orderId + "&oc=1000" + "&token=" +token;
+            } else {
+                store_id = this.addressId;
+                pk = "order.create_goods_order_offer";
+                url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&oss=" + this.ids + "&buy_deliver_code=2000" + "&store_id=" + store_id + "&buy_pay_code=" + buy_pay_code + "&token=" + token;
+            }
             if (store_id === null || store_id === undefined || store_id === '') {
                 this.$Message.error("请选择收货地址");
+            } else if (this.userno === '' || this.userno === null || this.userno === undefined) {
+                this.$Message.warning('请前往个人中心完善真实姓名和身份证信息');
+                setTimeout(() => {
+                    this.$router.push({ path: '/profileMsg' });
+                }, 2000);
             } else {
-                let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&oss=" + oss + "&buy_deliver_code=2000" + "&store_id=" + store_id + "&buy_pay_code=" + buy_pay_code;
+                // let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&oss=" + oss + "&buy_deliver_code=2000" + "&store_id=" + store_id + "&buy_pay_code=" + buy_pay_code;
                 if (buy_pay_code == 'wxpay') {
                     fetch(url, { credentials: "include" })
                         .then(r => r.json())
                         .then(d => {
-                            if (d.available) {
-                                this.order_num = d.obj.on;
-                                this.order_time = d.obj.aTime;
-                                this.o_id = d.obj.id;
+                            if (d.available && d.obj.success) {
+                                this.order_num = d.obj.carddata.on;
+                                this.order_time = d.obj.carddata.aTime;
+                                this.o_id = d.obj.carddata.id;
                                 let pk_code = "tcss.build.wx.pay";
-                                let oss_code = d.obj.id + "," + "1000";
+                                let oss_code = d.obj.carddata.id + "," + "1000";
 
                                 let token = this.token;
                                 let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&t_t=NATIVE&pk=" + pk_code + "&oss=" + oss_code + "&prefer_way=0&market_item_id=0&acmid=0&quanid=0" + "&token=" + token;
                                 fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
                                     if (d.available) {
-                                        console.log(d);
                                         let code_url = d.obj.data.code_url;
                                         this.$router.push({ name: "wxPay", params: { totalPrice: this.totalPrice, code_url: code_url, order_num: this.order_num, order_time: this.order_time, o_id: this.o_id } });
                                     }
@@ -2474,137 +2548,15 @@ const pay = {
                         });
 
                 } else if (buy_pay_code == '30010') {
-                    // fetch(url, { credentials: "include" })
-                    //     .then(r => r.json())
-                    //     .then(d => {
-                    //         if (d.available) {
-                    //             let pk_code = "order.pay.alipay.unifiedorders";
-                    //             let oss_code = d.obj.id + "," + "1000";
-                    //             this.formOss = oss_code;
-                    //             let token = this.token;
-                    //             let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
-                    //             fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
-                    //                 if (d.available) {
-                    //                     let url_jsp = "/front/using/alipay_new.jsp";
-                    //                     let data = this.formOss;
-                    //                     var form = $("#submit_alipay");
-                    //                     form.attr({ "action": url_jsp });
-                    //                     var input = $("<input type='hidden' id='alipay_param' name='alipay_param' />")
-                    //                     input.attr({ "method": "post" });
-                    //                     input.val(data);
-                    //                     form.append(input);
-                    //                     form.submit();
-                    //                 }
-                    //             });
-                    //         }
-                    //     });
-
-
-                    // $("#submit_alipay").submit(function (e) {
-                    //     e.preventDefault();
-                    // let count = 1
-                    // if (count === 1) {
-                    //     count ++;
-                    //     fetch(url, { credentials: "include" })
-                    //         .then(r => r.json())
-                    //         .then(d => {
-                    //             if (d.available) {
-                    //                 let pk_code = "order.pay.alipay.unifiedorders";
-                    //                 let oss_code = d.obj.id + "," + "1000";
-                    //                 this.formOss = oss_code;
-                    //                 let token = this.token;
-                    //                 let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
-                    //                 fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
-                    //                     if (d.available) {
-                    //                         let oss = this.formOss;
-                    //                         this.form_data = oss;
-                    //                         this.form_flag = '2';
-                    //                         console.log('aaaaaaaaa');
-                    //                     }
-                    //                 });
-                    //             }
-                    //         });
-                    //         return count;
-                    // } else if (count === 2) {
-                    //     $("#submit_alipay").submit();
-                    //     console.log(this.form_data);
-                    //     console.log('bbbbbbb');
-                    // }
-                    // // });
-                    // // $("#submit_alipay").submit();
-                    // // $("submit_form").click(function() {
-                    // //     alert('222222');
-                    // // });
-
-
-                    // new Promise((resolve, reject) => {
-                    //     // fetch(url, { credentials: "include" })
-                    //     //     .then(r => r.json())
-                    //     //     .then(d => {
-                    //     //         if (d.available) {
-                    //     //             let pk_code = "order.pay.alipay.unifiedorders";
-                    //     //             let oss_code = d.obj.id + "," + "1000";
-                    //     //             this.formOss = oss_code;
-                    //     //             let token = this.token;
-                    //     //             let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
-                    //     //             fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
-                    //     //                 if (d.available) {
-                    //     //                     let oss = this.formOss;
-                    //     //                     this.form_data = oss;
-                    //     //                     this.form_flag = '2';
-                    //     //                     console.log('aaaaaaaaa');
-                    //     //                 }
-                    //     //             });
-                    //     //         }
-                    //     //     });
-                    //     setTimeout(function() {
-                    //         console.log('aaaaaaa');
-                    //     },1000)
-
-                    // }).then(r => {
-                    //     // console.log(this.form_data);
-                    //     log('done' + r);
-                    //     console.log('bbbbbbb');
-                    //     // $("#submit_alipay").submit();
-
-                    // });
-
-
-                    // new Promise(function (resolve, reject) {
-                    //     fetch(url, { credentials: "include" })
-                    //         .then(r => r.json())
-                    //         .then(d => {
-                    //             if (d.available) {
-                    //                 let pk_code = "order.pay.alipay.unifiedorders";
-                    //                 let oss_code = d.obj.id + "," + "1000";
-                    //                 this.formOss = oss_code;
-                    //                 let token = this.token;
-                    //                 let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
-                    //                 fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
-                    //                     if (d.available) {
-                    //                         let oss = this.formOss;
-                    //                         this.form_data = oss;
-                    //                         this.form_flag = '2';
-                    //                         console.log('aaaaaaaaa');
-                    //                     }
-                    //                 });
-                    //             }
-                    //         });
-                    // }).then(function (r) {
-                    //     $("#submit_alipay").submit();
-                    // }).catch(function (reason) {
-                    //     console.log('Failed: ' + reason);
-                    // });
-
                     //设置当前所有ajax请求为同步
                     $.ajaxSetup({
                         async: false
                     });
                     $.get(url, d => {
-                        if (d.available) {
+                        if (d.available && d.obj.success) {
                             let pk_code = "order.pay.alipay.unifiedorders";
-                            let oss_code = d.obj.id + "," + "1000";
-                            this.o_id = d.obj.id;
+                            let oss_code = d.obj.carddata.id + "," + "1000";
+                            this.o_id = d.obj.carddata.id;
                             this.formOss = oss_code;
                             let token = this.token;
                             let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
@@ -2626,8 +2578,6 @@ const pay = {
                     })
                 }
             }
-
-
         },
         updateCity: function () {
             for (var i in this.arr) {

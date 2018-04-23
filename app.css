@@ -1418,7 +1418,7 @@ border-color: #04593f;
   padding-left: 130px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 }
 .modalPersonalAroma-title1 p:first-child {
   width: 330px;
@@ -1431,6 +1431,8 @@ border-color: #04593f;
 .modalPersonalAroma-title1 p:nth-child(2) {
   margin-top: 24px;
   color: #04593f;
+  font-size: 14px;
+  padding-right: 26px;
 }
 .modalPersonalAroma-title2 p:first-child {
   width: 330px;
@@ -1818,4 +1820,9 @@ border-color: #04593f;
 }
 .modal-get-coupons .ivu-modal-body {
   padding: 80px 80px;
+}
+/********* 注册页面icon和文字 *********/
+.sign-input span:first-child, .sign-input span:nth-child(2), .sign-input .ivu-icon-ios-locked-outline {
+  height: 38px;
+  line-height: 38px;
 }

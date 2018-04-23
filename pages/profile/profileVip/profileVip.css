@@ -66,6 +66,28 @@ margin-top: 24px;
     bottom: 0;
     margin: auto 0;
 }
+.shu-line {
+    position: absolute;
+    top: -2px;
+    width: 2px;
+    height: 18px;
+    background: #A4232A;
+}
+.vip-0 {
+    left: 24px;
+}
+.vip-1 {
+    left: 108px;
+}
+.vip-2 {
+    left: 248px;
+}
+.vip-3 {
+    left: 408px;
+}
+.vip-4 {
+    left: 668px;
+}
 .discount-rank {
     position: absolute;
     left: 0;

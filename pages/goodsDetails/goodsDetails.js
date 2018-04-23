@@ -14,7 +14,7 @@ const goodsDetails = {
 					<p>
 						<span>首页</span> > 
 						<span>所有品牌</span> > 
-						<span>{{brand.catNameEn}}</span> >
+						<span v-if="brand">{{brand.catNameEn}}</span> >
 						<span>{{goodsDetails.goods_name}}</span>
 					</p>
 				</div>
@@ -37,7 +37,7 @@ const goodsDetails = {
 							{{goodsDetails.goods_name}}
 						</div>
 						<div class="gd-details-name">
-							<span>{{brand.catNameEn}}</span>
+							<span v-if="brand" class="gd-details-name-title">{{brand.catNameEn}}</span>
 							<span class="collect" @click="collect">
 								<Icon type="ios-star"></Icon>
 							</span>
@@ -119,7 +119,7 @@ const goodsDetails = {
 						<div class="xiahuaxian"></div>
 					</div>
 				<div class="about-goods" v-html="goodsContent"></div>
-				<div class="gd-description-title">
+				<div v-if="brand" class="gd-description-title">
 					<p>品牌介绍</p>
 					<div class="xiahuaxian"></div>
 				</div>
@@ -137,7 +137,7 @@ const goodsDetails = {
 					<div class="brand-desc-block"></div>
 				</div> -->
 				<!-- brand description end -->
-					<div class="brand-desc" v-html="brand.catContent"></div>
+					<div v-if="brand" class="brand-desc" v-html="brand.catContent"></div>
 
 					<div class="brand-about">
 						<img src="http://pe1s.static.pdr365.com/minorite/goodsDetails/gd_xize.png" alt="">
@@ -4688,15 +4688,22 @@ const goodsDetails = {
 						this.unitData = d.obj.data.goods.g.goodsSkuList;
 						this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
 						this.goodsImgList = d.obj.data.goods.g.goodsImgList;
+						let unitList = [];
 						this.unitData.forEach(v => {
+							let unitObj = JSON.parse(v.skus);
+							let unit = "";
+							for (item in unitObj) {
+								unit = unitObj[item];
+							}
 							let obj = {
 								id: v.id,
 								skuPrice: v.skuPrice,
-								unit: JSON.parse(v.skus)['容量'],
+								unit: unit,
 								stock: v.stock
 							}
-							this.unitList.push(obj);
+							unitList.push(obj);
 						});
+						this.unitList = unitList;
 						this.skuPrice = this.unitData[0].skuPrice;
 						this.skuId = this.unitList[0].id;
 						this.skuUnit = this.unitList[0].unit;
@@ -4704,12 +4711,7 @@ const goodsDetails = {
 						if (d.obj.data.category !== null) {
 							this.brand = d.obj.data.category;
 						} else {
-							let obj = {
-								catContent: d.obj.data.goods.content,
-								catNameEn: "试香包"
-
-							};
-							this.brand = obj;
+							this.brand = null;
 						}
 					} else {
 						this.del_line = true;
@@ -4718,16 +4720,23 @@ const goodsDetails = {
 						this.unitData = d.obj.data.skuList;
 						this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
 						this.goodsImgList = d.obj.data.goods.g.goodsImgList;
+						let unitList = [];
 						this.unitData.forEach(v => {
+							let unitObj = JSON.parse(v.sku.skus);
+							let unit = "";
+							for (item in unitObj) {
+								unit = unitObj[item];
+							}
 							let obj = {
 								id: v.sku.id,
 								skuPrice: v.mkPrice,
 								oriPrice: v.sku.skuPrice,
-								unit: JSON.parse(v.sku.skus)['容量'],
+								unit: unit,
 								stock: v.sku.stock
 							}
-							this.unitList.push(obj);
+							unitList.push(obj);
 						});
+						this.unitList = unitList;
 						this.skuPrice = this.unitList[0].skuPrice;
 						this.oriPrice = this.unitList[0].oriPrice;
 						this.skuId = this.unitList[0].id;
@@ -4736,17 +4745,11 @@ const goodsDetails = {
 						if (d.obj.data.category !== null) {
 							this.brand = d.obj.data.category;
 						} else {
-							let obj = {
-								catContent: d.obj.data.goods.content,
-								catNameEn: "试香包"
-
-							};
-							this.brand = obj;
+							this.brand = null;
 						}
 					}
 				}
 			});
-
 		//页面两侧浮动元素
 		float();
 	}, methods: {
@@ -4788,8 +4791,7 @@ const goodsDetails = {
 					let pk = "account.do.login";
 					let mobile = this.loginFormInline.mobile;
 					let password = this.loginFormInline.password;
-					let time = new Date().getTime();
-					let url = appset.domain + "/front/ypc/rt/?" + time + "&pk=" + pk + "&username=" + mobile + "&userpwd=" + password;
+					let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&username=" + mobile + "&userpwd=" + password;
 					fetch(url, { credentials: "include" })
 						.then(r => r.json())
 						.then(d => {
@@ -4990,6 +4992,86 @@ const goodsDetails = {
 				}
 			});
 		},
-
+	},
+	watch: {
+		$route() {
+			this.goodsId = this.$route.query.goodsId;
+			//获取商品详情
+			let pk_goods_details = "tcss.get.goods.details.perfume";
+			let url_goods_details = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_goods_details + "&goods_id=" + this.goodsId;
+			fetch(url_goods_details)
+				.then(r => r.json())
+				.then(d => {
+					if (d.available) {
+						if (!d.obj.data.is_77) {
+							this.del_line = false;
+							this.goodsContent = d.obj.data.goods.content;
+							this.goodsDetails = d.obj.data.goods.g;
+							this.unitData = d.obj.data.goods.g.goodsSkuList;
+							this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
+							this.goodsImgList = d.obj.data.goods.g.goodsImgList;
+							let unitList = [];
+							this.unitData.forEach(v => {
+								let unitObj = JSON.parse(v.skus);
+								let unit = "";
+								for (item in unitObj) {
+									unit = unitObj[item];
+								}
+								let obj = {
+									id: v.id,
+									skuPrice: v.skuPrice,
+									unit: unit,
+									stock: v.stock
+								}
+								unitList.push(obj);
+							});
+							this.unitList = unitList;
+							this.skuPrice = this.unitData[0].skuPrice;
+							this.skuId = this.unitList[0].id;
+							this.skuUnit = this.unitList[0].unit;
+							this.skuStock = this.unitList[0].stock;
+							if (d.obj.data.category !== null) {
+								this.brand = d.obj.data.category;
+							} else {
+								this.brand = null;
+							}
+						} else {
+							this.del_line = true;
+							this.goodsContent = d.obj.data.goods.content;
+							this.goodsDetails = d.obj.data.goods.g;
+							this.unitData = d.obj.data.skuList;
+							this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
+							this.goodsImgList = d.obj.data.goods.g.goodsImgList;
+							let unitList = [];
+							this.unitData.forEach(v => {
+								let unitObj = JSON.parse(v.sku.skus);
+								let unit = "";
+								for (item in unitObj) {
+									unit = unitObj[item];
+								}
+								let obj = {
+									id: v.sku.id,
+									skuPrice: v.mkPrice,
+									oriPrice: v.sku.skuPrice,
+									unit: unit,
+									stock: v.sku.stock
+								}
+								unitList.push(obj);
+							});
+							this.unitList = unitList;
+							this.skuPrice = this.unitList[0].skuPrice;
+							this.oriPrice = this.unitList[0].oriPrice;
+							this.skuId = this.unitList[0].id;
+							this.skuUnit = this.unitList[0].unit;
+							this.skuStock = this.unitList[0].stock;
+							if (d.obj.data.category !== null) {
+								this.brand = d.obj.data.category;
+							} else {
+								this.brand = null;
+							}
+						}
+					}
+				});
+		}
 	}
 }

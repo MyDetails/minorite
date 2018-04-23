@@ -226,7 +226,7 @@ const profileMsg = {
             let sex = this.formItem.radio;
             let token = this.getCookie("_lac_k_");
             this.token = token;
-            if (nick !== '' && namecn !== '' && userno !== '') {
+            if (nick !== '' && namecn !== '' && userno.length > 17) {
                 let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&nick=" + nick + "&namecn=" + namecn + "&userno=" + userno + "&sex=" + sex;
                 fetch(url, {
                     method: "POST",
@@ -247,15 +247,34 @@ const profileMsg = {
                             })
                         this.$Message.success("保存成功");
                     } else {
-                        this.$Message.success("保存失败");
+                        this.$Message.error("保存失败");
                     }
                 });
             } else {
-                this.$Message.error("提交内容不能为空");
+                this.$Message.error("请填写正确的个人信息");
             }
         },
         //修改密码
         handleSubmitPwd() {
+            if (this.formRight.input6 && this.formRight.input7 && this.formRight.input8) {
+                let pk = "account.info.passwd.modify";
+                let token = myCookie.getCookie('_lac_k_');
+                let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&org_passwd=" + this.formRight.input6 + "&new_passwd=" + this.formRight.input8 + "&token=" + token;
+                fetch(url, { incredentails: "include" }).then(r => r.json()).then(d => {
+                    console.log(d);
+                    if(d.available && d.obj.success) {
+                        this.$Message.success('修改密码成功，请重新登录');
+                        myCookie.clearCookie('_lac_k_');
+                        setTimeout(() => {
+                            this.$router.push({path: '/'});
+                        }, 2000);
+                    } else {
+                        this.$Message.error('修改密码失败');
+                    }
+                })
+            } else {
+                this.$Message.error('修改密码失败')
+            }
 
         },
         changePwd() {

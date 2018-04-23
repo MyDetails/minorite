@@ -40,9 +40,7 @@ const profileCar = {
                             <p>满¥400包邮</p>
                         </div>
                         <div class="car-address">
-                            <p>
-                            北京 北京市 东城区朝阳门街道 银河SOHO D座B1层5-165
-                            </p>
+                            <p>{{def_address}}</p>
                         </div>
                         <div class="del-go">
                             <input class="del" type="button" value="删除选中项">
@@ -61,7 +59,9 @@ const profileCar = {
             columns4: [],
             data1: [],
             carList: [],
-            payList: []
+            payList: [],
+            def_address: "",
+
         }
     },
     computed: {
@@ -94,7 +94,6 @@ const profileCar = {
         if (car) {
             this.carList = JSON.parse(car);
         }
-        console.log(this.carList);
         this.carList.forEach((v, i) => {
             let carItem = {
                 goods_id: v.goods_id,
@@ -115,6 +114,20 @@ const profileCar = {
             this.data1.push(carItem);
             this.totalPrice += v.goods_price * v.goods_num;
         });
+        //获取收货地址
+		let pk = "account.get.addresses";
+		let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk;
+		fetch(url, { credentials: "include" })
+			.then(r => r.json())
+			.then(d => {
+				if (d.available && d.obj.data) {
+					d.obj.data.forEach(v => {
+						if (v.def) {
+							this.def_address = v.address;
+						}
+                    });
+				}
+			});
 
         this.columns4 = [
             {

@@ -50,7 +50,7 @@ const index = {
 					<ul class="new-goods-list">
 						<li class="new-goods-item" v-for="item in newGoodsList" :key="item.goods.id">
 							<router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}">
-								<img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
+								<img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="" style="height:100%;">
 							</router-link>
               <div class="new-goods-details">
                 <p v-if="item.cat" class="new-goods-name">{{item.cat.catNameEn || item.cat.catNameCn}}</p>
@@ -917,7 +917,6 @@ const index = {
       fetch(url_coupons).then(r => r.json()).then(d => {
         if (d.available) {
           this.coupons_list = d.obj.data;
-          console.log(this.coupons_list);
           //获取用户优惠券列表
           if (this.coupons_list.length !== 0) {
             if (login) {

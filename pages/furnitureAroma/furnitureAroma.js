@@ -27,19 +27,21 @@ const furnitureAroma = {
                     <div class="slide-nav-right">
                         <ul class="furnitureAroma-img-list">
                             <li v-for="item in furnitureAromaImgList" :key="item.goods.id">
-                                <div class="furnitureAroma-img">
-                                    <router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;background:#fff;">
+                                <div class="furnitureAroma-img" style="width:190px;height:190px;">
+                                    <router-link :to="{path: '/goodsDetails', query:{goodsId: item.goods.id}}" style="display:block;background:#fff;width:100%;height:100%;">
                                         <img :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" alt="">
                                     </router-link>
                                 </div>
-                                <p>{{item.cat.catNameEn}}</p>
-                                <p>{{item.goods.goods_name}}</p>
-                                <p>¥{{item.goods.goods_price / 100}}</p>
+                                <p v-if="item.cat" class="furnitureAroma-brand-title">{{item.cat.catNameEn}}</p>
+                                <p class="furnitureAroma-goods-name">{{item.goods.goods_name}}</p>
+                                <p class="furnitureAroma-goods-price">¥{{item.goods.goods_price / 100}}</p>
                             </li>
                         </ul>
-                        <ul class="page-list">
+                        <!-- 分页器 开始 -->
+                        <!--<ul class="page-list">
                             <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
-                        </ul>
+                        </ul>-->
+                        <!-- 分页器 结束 -->
                     </div>
                     <!-- slide-nav end -->
                     

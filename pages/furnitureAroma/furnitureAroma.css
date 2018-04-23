@@ -85,21 +85,20 @@
   .furnitureAroma-img a {
     padding: 10px;
   }
-  .furnitureAroma-img-list li p {
-    margin: 0;
-  }
-  .furnitureAroma-img-list li p:first-of-type {
+  .furnitureAroma-brand-title {
     margin-top: 10px;
     font-size: 12px;
     font-weight: bold;
     color: #a62126;
+    text-align: center;
   }
-  .furnitureAroma-img-list li p:nth-of-type(2) {
+  .furnitureAroma-goods-name {
     margin-top: 4px;
     font-size: 11px;
     color: #000;
+    text-align: center;
   }
-  .furnitureAroma-img-list li p:nth-of-type(3) {
+  .furnitureAroma-goods-price {
     font-size: 11px;
     color: #000;
   }

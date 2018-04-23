@@ -31,8 +31,8 @@ const newProducts = {
                 <div class="slide-nav-right" style="margin-bottom:250px;">
                     <div class="newProducts-list-box">
                         <div class="newProducts-list" v-for="item in newProducts" :key="item.goods.id">
-                            <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="display: block;background:transparent;">
-                                <img class="newProducts-list-img" :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" style="padding:10px;">
+                            <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="display: block;background:transparent;width:240px;height:240px;">
+                                <img class="newProducts-list-img" :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" style="padding:10px;height:100%;">
                             </router-link>
                             <p class="newProducts-list-title">{{item.cat.catNameEn}}</p>
                             <p class="newProducts-list-info">{{item.goods.goods_name}}</p>
@@ -57,8 +57,8 @@ const newProducts = {
                 <div class="slide-nav-right" style="position:relative;">
                     <div class="newProducts-list-bottom-box">
                         <div class="newProducts-list-b" v-for="(item, index) in salesRankingList" :key="item.goods.id">
-                            <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="display:block;padding:10px;transparent;">
-                                <img class="newProducts-list-b-img" :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big">
+                            <router-link :to="{path: '/goodsDetails', query: {goodsId: item.goods.id}}" style="display:block;padding:10px;transparent;width: 240px;height:240px;">
+                                <img class="newProducts-list-b-img" :src="'http://pe1d.static.pdr365.com/' + item.goods.goods_picturelink_big" style="height:100%;">
                             </router-link>
                             <img class="newProducts-list-b-num" :src="'http://pe1s.static.pdr365.com/minorite/newProducts/arrival-' + index + '.png'">
                             <p class="newProducts-list-b-title">{{item.cat.catNameEn}}</p>

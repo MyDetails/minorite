@@ -11,7 +11,7 @@ const routes = [
 	{ path: '/personalAroma', component: personalAroma },
 	{ path: '/testAroma', component: testAroma },
 	{ path: '/vipClub', component: vipClub },
-	{ path: '/pay', component: pay },
+	{ name: 'pay', path: '/pay', component: pay },
 	{ name: 'wxPay', path: '/wxPay', component: wxPay },
 	{ name: 'newsList', path: '/newsList', component: newsList },
 	{ name: 'duoshou', path: '/duoshou', component: duoshou },
@@ -68,7 +68,7 @@ Vue.component('AppHeader', {
 																	<router-link v-if="childItem.go" :to="{path: '/' + childItem.go}">
 																			{{childItem.title}}
 																	</router-link>
-																	<router-link v-else-if="childItem.goods" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
+																	<router-link v-else-if="childItem.goods && goodsParams" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
 																			{{childItem.title}}
 																	</router-link>
 																	<router-link v-else :to="{path: '/' + childItem.name, query: {cat: childItem.params}}">
@@ -550,12 +550,12 @@ Vue.component('AppHeader', {
 											<div class="modalPersonalAroma-left">
 												<div class="modalPersonalAroma-title1">
 													<p>寻找一款专属于自己的小众香</p>
-													<p>小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之<br><br>地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小<br>众之地小众之地小众之地小众之地小众之地小众之地小<br>众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小<br>众之地小众之地小众之地小众之地小众之地小众之地小<br>众之地小众之地小众之地小众之地小众之地</p>
+													<p>英国人Michael Edward在1983年创立了香气轮（Fragrance Wheel），他系统性地将香水分为四大调（清新调、花香调、东方调、木质调）和十四个小调，透过这种分门别类的方式，让我们更精确地描绘各个香水不同的特征。时至今日，香气轮已成为全球通用的分类标准，也是了解香水世界不可缺少的工具。</p>
 												</div>
-												<div class="modalPersonalAroma-title2">
+												<!--<div class="modalPersonalAroma-title2">
 													<p>寻找一款专属于自己的小众香</p>
 													<p>小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之地小众之<br><br>之地小众之地小众之地小众之地小众之地小众</p>
-												</div>
+												</div>-->
 											</div>
 											<div class="modalPersonalAroma-right">
 												<div class="circular">
@@ -847,7 +847,7 @@ Vue.component('AppHeader', {
 					title: "优惠活动",
 					childName: [
 						{ name: "duoshou", go: "duoshou", title: "优惠指南" },
-						{ name: "testAroma", goods: "goodsDetails", title: "双周七七" },
+						{ name: "index", goods: "goodsDetails", title: "双周七七" },
 						{ name: "testAroma", go: "testAroma", title: "试香包" },
 					]
 				},
@@ -887,8 +887,10 @@ Vue.component('AppHeader', {
 		let pk_77 = "coupon.get_mar_77";
 		let url_77 = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_77;
 		fetch(url_77).then(r => r.json()).then(d => {
-			if (d.available && d.obj.carddata.length > 0) {
-				this.goodsParams = d.obj.carddata[0].g.id;
+			if (d.available && d.obj.carddata) {
+				this.goodsParams = d.obj.carddata.goods.g.id;
+			} else {
+				this.goodsParams = '';
 			}
 		});
 	},
@@ -1091,6 +1093,7 @@ Vue.component('AppHeader', {
 		},
 		//获取短信验证码
 		getVerifyCode() {
+			console.log('1111111111');
 			let mobile = this.signFormInline.mobile;
 			let verify_code = this.signFormInline.verify_code;
 			let time = new Date().getTime();
@@ -1413,7 +1416,7 @@ Vue.component('SlideNav', {
 										</router-link>
 									</li>
 								</ol>
-								<router-link class="brands-hover" v-else-if="index !=1 && childItem.goods" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
+								<router-link class="brands-hover" v-else-if="index !=1 && childItem.goods && goodsParams" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
 									{{childItem.title}}
 								</router-link>
 								<router-link class="brands-hover" v-else-if="index !=1 && childItem.go" :to="{path: '/' + childItem.go}">
@@ -1539,8 +1542,10 @@ Vue.component('SlideNav', {
 		let pk_77 = "coupon.get_mar_77";
 		let url_77 = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_77;
 		fetch(url_77).then(r => r.json()).then(d => {
-			if (d.available && d.obj.carddata.length > 0) {
-				this.goodsParams = d.obj.carddata[0].g.id;
+			if (d.available && d.obj.carddata) {
+				this.goodsParams = d.obj.carddata.goods.g.id;
+			} else {
+				this.goodsParams = '';
 			}
 		});
 	},

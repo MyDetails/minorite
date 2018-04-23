@@ -30,11 +30,7 @@ const profileVip = {
                                 您的会员等级:
                             </div>                       
                             <div class="vip-level">
-                                <div class="vip-level-blank  vip-level-blank-active">VIP0</div>
-                                <div class="vip-level-blank">VIP1</div>
-                                <div class="vip-level-blank">VIP2</div>
-                                <div class="vip-level-blank">VIP3</div>
-                                <div class="vip-level-blank">VIP4</div>
+                                <div v-for="item in vip_list" :key="item.id" class="vip-level-blank" :class="item.current === '1' ? 'vip-level-blank-active' : ''">{{item.levname}}</div>
                             </div>
                         </div>
                         <div class="profileVip-item">
@@ -42,7 +38,7 @@ const profileVip = {
                                 当前享受优惠:
                             </div>                       
                             <div class="vip-level">
-                                <div class="discount-blank">9.8折</div>
+                                <div v-if="dis_count" class="discount-blank">{{dis_count}}折</div>
                                 <div class="discount-blank">免费试香</div>
                                 <div class="discount-blank">每月会员团购</div>
                                 <div class="discount-blank">活动预告/新春介绍</div>
@@ -73,7 +69,9 @@ const profileVip = {
                                     <span>9折</span>
                                     <span>8.8折</span>
                                 </div>
-                                <div class="gradual-bar"></div>
+                                <div class="gradual-bar">
+                                    <div class="shu-line" :class="vip_index ? 'vip-' + vip_index : ''"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="profileVip-item vip-time-item">
@@ -92,7 +90,10 @@ const profileVip = {
         </div> 
 	`, data: function () {
         return {
-
+            vip_list: [],
+            cur_vip: [],
+            dis_count: "",
+            vip_index: ""
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -101,6 +102,24 @@ const profileVip = {
     }, created() {
         //组件加载完成会自动调用此方法
         window.scrollTo(0,0);
+    }, mounted() {
+        //获取会员等级
+        let pk = "mc.minorite.levels";
+        let token = myCookie.getCookie("_lac_k_");
+        let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&token=" + token;
+        fetch(url, { incredentails: "include" }).then(r => r.json()).then(d => {
+            if(d.available && d.obj) {
+                this.vip_list = d.obj;
+                d.obj.forEach((v, i) => {
+                    if(v.current === '1') {
+                        this.cur_vip = v;
+                        this.dis_count = parseFloat(v.levdiscount) / 10;
+                        this.vip_index = i;
+                    }
+                });
+            }
+        });
+
     }, methods: {
 
 

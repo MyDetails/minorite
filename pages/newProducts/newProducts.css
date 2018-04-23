@@ -275,7 +275,8 @@
   flex-direction: column;
   align-items: center;
   width: 25%;
-  height: 240px;
+  /* height: 240px; */
+  margin-bottom: 30px;
 }
 .brand-img {
   width: 160px;

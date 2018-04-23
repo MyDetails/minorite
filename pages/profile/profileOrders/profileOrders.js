@@ -212,47 +212,48 @@ const profileOrders = {
                                 },
                                 on: {
                                     click: () => {
-                                        var payType = params.row.payType;
-                                        if (payType == 'wxpay') {
-                                            let pk_code = "tcss.build.wx.pay";
-                                            let oss_code = params.row.orderId + "," + "1000";
-                                            // let token = this.token;
-                                            //获取token
-                                            let token = this.getCookie("_lac_k_");
-                                            let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&t_t=NATIVE&pk=" + pk_code + "&oss=" + oss_code + "&prefer_way=0&market_item_id=0&acmid=0&quanid=0" + "&token=" + token;
-                                            fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
-                                                if (d.available) {
-                                                    console.log(d);
-                                                    let code_url = d.obj.data.code_url;
-                                                    this.$router.push({ name: "wxPay", params: { totalPrice: params.row.payAmount, code_url: code_url, order_num: params.row.on, order_time: params.row.aTime, o_id: params.row.orderId } });
-                                                }
-                                            });
-                                        } else {
-                                            //设置当前所有ajax请求为同步
-                                            $.ajaxSetup({
-                                                async: false
-                                            });
-                                            let pk_code = "order.pay.alipay.unifiedorders";
-                                            let oss_code = params.row.orderId + "," + "1000";
-                                            this.formOss = oss_code;
-                                            let token = this.getCookie("_lac_k_");
-                                            let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
-                                            $.get(url_code, d => {
-                                                if (d.available) {
-                                                    this.custom();
-                                                    let url_jsp = "/front/using/alipay_new.jsp";
-                                                    let data = this.formOss;
-                                                    let form = $("#submit_alipay");
-                                                    form.attr({ "action": url_jsp });
-                                                    let input = $("<input type='hidden' id='alipay_param' name='alipay_param' />")
-                                                    input.attr({ "method": "post" });
-                                                    input.val(data);
-                                                    form.append(input);
-                                                    form.submit();
-                                                }
-                                            })
-                                        }
+                                        // var payType = params.row.payType;
+                                        // if (payType == 'wxpay') {
+                                        //     let pk_code = "tcss.build.wx.pay";
+                                        //     let oss_code = params.row.orderId + "," + "1000";
+                                        //     // let token = this.token;
+                                        //     //获取token
+                                        //     let token = this.getCookie("_lac_k_");
+                                        //     let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&t_t=NATIVE&pk=" + pk_code + "&oss=" + oss_code + "&prefer_way=0&market_item_id=0&acmid=0&quanid=0" + "&token=" + token;
+                                        //     fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
+                                        //         if (d.available) {
+                                        //             console.log(d);
+                                        //             let code_url = d.obj.data.code_url;
+                                        //             this.$router.push({ name: "wxPay", params: { totalPrice: params.row.payAmount, code_url: code_url, order_num: params.row.on, order_time: params.row.aTime, o_id: params.row.orderId } });
+                                        //         }
+                                        //     });
+                                        // } else {
+                                        //     //设置当前所有ajax请求为同步
+                                        //     $.ajaxSetup({
+                                        //         async: false
+                                        //     });
+                                        //     let pk_code = "order.pay.alipay.unifiedorders";
+                                        //     let oss_code = params.row.orderId + "," + "1000";
+                                        //     this.formOss = oss_code;
+                                        //     let token = this.getCookie("_lac_k_");
+                                        //     let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_code + "&oss=" + oss_code + "&token=" + token;
+                                        //     $.get(url_code, d => {
+                                        //         if (d.available) {
+                                        //             this.custom();
+                                        //             let url_jsp = "/front/using/alipay_new.jsp";
+                                        //             let data = this.formOss;
+                                        //             let form = $("#submit_alipay");
+                                        //             form.attr({ "action": url_jsp });
+                                        //             let input = $("<input type='hidden' id='alipay_param' name='alipay_param' />")
+                                        //             input.attr({ "method": "post" });
+                                        //             input.val(data);
+                                        //             form.append(input);
+                                        //             form.submit();
+                                        //         }
+                                        //     })
+                                        // }
                                         console.log(params.row);
+                                        this.$router.push({ name: 'pay', params: { orderData: params.row } });
                                     }
                                 }
                             },
@@ -387,7 +388,7 @@ const profileOrders = {
                 fetch(url_first, { credentials: "include" })
                     .then(r => r.json())
                     .then(d => {
-                        if (d.available) {
+                        if (d.available && d.obj) {
                             let order_list = [];
                             for (var i = 0; i < d.obj.length; i++) {
                                 var order = [];
@@ -469,105 +470,113 @@ const profileOrders = {
                 let statuses = "0000";
                 let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
                 fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
-                    let order_list = [];
-                    for (var i = 0; i < d.obj.length; i++) {
-                        var order = [];
-                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
-                            order.push(d.obj[i].o_goods[j]);
-                        }
-                        var data = [
-                            {
-                                orderId: d.obj[i].id,
-                                receivePerson: d.obj[i].mobile,
-                                orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                orderTime: this.timeFormat(d.obj[i].aTime),
-                                orderStatus: "待付款",
-                                order: order,
-                                os: d.obj[i].os,
-                                payType: d.obj[i].payType,
-                                payAmount: d.obj[i].payAmount / 100,
-                                on: d.obj[i].on,
-                                aTime: d.obj[i].aTime,
+                    if (d.available && d.obj) {
+                        let order_list = [];
+                        for (var i = 0; i < d.obj.length; i++) {
+                            var order = [];
+                            for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                                order.push(d.obj[i].o_goods[j]);
                             }
-                        ];
-                        order_list.push(data);
+                            var data = [
+                                {
+                                    orderId: d.obj[i].id,
+                                    receivePerson: d.obj[i].mobile,
+                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                    orderTime: this.timeFormat(d.obj[i].aTime),
+                                    orderStatus: "待付款",
+                                    order: order,
+                                    os: d.obj[i].os,
+                                    payType: d.obj[i].payType,
+                                    payAmount: d.obj[i].payAmount / 100,
+                                    on: d.obj[i].on,
+                                    aTime: d.obj[i].aTime,
+                                }
+                            ];
+                            order_list.push(data);
+                        }
+                        this.no_pay_order = order_list;
                     }
-                    this.no_pay_order = order_list;
                 });
             } else if (name === 'order_no_send') {
                 let statuses = "1001";
                 let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
                 fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
-                    let order_list = [];
-                    for (var i = 0; i < d.obj.length; i++) {
-                        var order = [];
-                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
-                            order.push(d.obj[i].o_goods[j]);
-                        }
-                        var data = [
-                            {
-                                orderId: d.obj[i].id,
-                                receivePerson: d.obj[i].mobile,
-                                orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                orderTime: this.timeFormat(d.obj[i].aTime),
-                                orderStatus: "待发货",
-                                order: order,
-                                os: d.obj[i].os,
+                    if (d.available && d.obj) {
+                        let order_list = [];
+                        for (var i = 0; i < d.obj.length; i++) {
+                            var order = [];
+                            for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                                order.push(d.obj[i].o_goods[j]);
                             }
-                        ];
-                        order_list.push(data);
+                            var data = [
+                                {
+                                    orderId: d.obj[i].id,
+                                    receivePerson: d.obj[i].mobile,
+                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                    orderTime: this.timeFormat(d.obj[i].aTime),
+                                    orderStatus: "待发货",
+                                    order: order,
+                                    os: d.obj[i].os,
+                                }
+                            ];
+                            order_list.push(data);
+                        }
+                        this.no_send_order = order_list;
                     }
-                    this.no_send_order = order_list;
                 });
             } else if (name === 'order_no_receive') {
                 let statuses = "2000";
                 let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
                 fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
-                    let order_list = [];
-                    for (var i = 0; i < d.obj.length; i++) {
-                        var order = [];
-                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
-                            order.push(d.obj[i].o_goods[j]);
-                        }
-                        var data = [
-                            {
-                                orderId: d.obj[i].id,
-                                receivePerson: d.obj[i].mobile,
-                                orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                orderTime: this.timeFormat(d.obj[i].aTime),
-                                orderStatus: "待收货",
-                                order: order,
-                                os: d.obj[i].os,
+                    if (d.available && d.obj) {
+                        let order_list = [];
+                        for (var i = 0; i < d.obj.length; i++) {
+                            var order = [];
+                            for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                                order.push(d.obj[i].o_goods[j]);
                             }
-                        ];
-                        order_list.push(data);
+                            var data = [
+                                {
+                                    orderId: d.obj[i].id,
+                                    receivePerson: d.obj[i].mobile,
+                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                    orderTime: this.timeFormat(d.obj[i].aTime),
+                                    orderStatus: "待收货",
+                                    order: order,
+                                    os: d.obj[i].os,
+                                }
+                            ];
+                            order_list.push(data);
+                        }
+                        this.no_receive_order = order_list;
                     }
-                    this.no_receive_order = order_list;
                 });
             } else if (name === 'order_done') {
                 let statuses = "3000";
                 let url_nopay = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&statuses=" + statuses + "&token=" + token;
                 fetch(url_nopay, { credentials: "include" }).then(r => r.json()).then(d => {
-                    let order_list = [];
-                    for (var i = 0; i < d.obj.length; i++) {
-                        var order = [];
-                        for (var j = 0; j < d.obj[i].o_goods.length; j++) {
-                            order.push(d.obj[i].o_goods[j]);
-                        }
-                        var data = [
-                            {
-                                orderId: d.obj[i].id,
-                                receivePerson: d.obj[i].mobile,
-                                orderPrice: "¥" + d.obj[i].payAmount / 100,
-                                orderTime: this.timeFormat(d.obj[i].aTime),
-                                orderStatus: "已完成",
-                                order: order,
-                                os: d.obj[i].os,
+                    if (d.available && d.obj) {
+                        let order_list = [];
+                        for (var i = 0; i < d.obj.length; i++) {
+                            var order = [];
+                            for (var j = 0; j < d.obj[i].o_goods.length; j++) {
+                                order.push(d.obj[i].o_goods[j]);
                             }
-                        ];
-                        order_list.push(data);
+                            var data = [
+                                {
+                                    orderId: d.obj[i].id,
+                                    receivePerson: d.obj[i].mobile,
+                                    orderPrice: "¥" + d.obj[i].payAmount / 100,
+                                    orderTime: this.timeFormat(d.obj[i].aTime),
+                                    orderStatus: "已完成",
+                                    order: order,
+                                    os: d.obj[i].os,
+                                }
+                            ];
+                            order_list.push(data);
+                        }
+                        this.no_send_order = order_list;
                     }
-                    this.no_send_order = order_list;
                 });
             }
 

@@ -37,9 +37,11 @@ const testAroma = {
                                 <p>¥{{item.goods.goods_price / 100}}</p>
                             </li>
                         </ul>
-                        <ul class="page-list">
+                        <!-- 分页器 开始 -->
+                        <!--<ul class="page-list">
                             <li v-for="(item,index) in pageList"  class="fade-end" :class="currentPage == index ? 'current' : ''" @click="pageActive(index)" :key="item.id">{{index + 1}}</li>
-                        </ul>
+                        </ul>-->
+                        <!-- 分页器 结束 -->
                     </div>
                     <!-- slide-nav end -->
 

@@ -28,3 +28,7 @@
     margin-top: 30px;
     padding-left: 30px;
 }
+
+.ivu-timeline-item-head {
+    background: transparent;
+}

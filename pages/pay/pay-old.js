@@ -2390,7 +2390,7 @@ const pay = {
                                 let url_code = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&t_t=NATIVE&pk=" + pk_code + "&oss=" + oss_code + "&prefer_way=0&market_item_id=0&acmid=0&quanid=0" + "&token=" + token;
                                 fetch(url_code, { credentials: "include" }).then(r => r.json()).then(d => {
                                     if (d.available) {
-                                        console.log(d);
+                                        // console.log(d);
                                         let code_url = d.obj.data.code_url;
                                         this.$router.push({ name: "wxPay", params: { totalPrice: this.totalPrice, code_url: code_url, order_num: this.order_num, order_time: this.order_time } });
                                     }

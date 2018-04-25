@@ -69,13 +69,13 @@ const profileMsg = {
                                 <div class="personal-msg">
                                     <Form :model="formRight" label-position="right" :label-width="100">
                                         <FormItem label="昵称：">
-                                            <Input v-model="formRight.input1"></Input>
+                                            <Input v-model="formRight.input1" :placeholder="profileData.nick ? profileData.nick : ''"></Input>
                                         </FormItem>
                                         <FormItem label="真实姓名：">
-                                            <Input v-model="formRight.input2"></Input>
+                                            <Input v-model="formRight.input2" :placeholder="profileData.namecn ? profileData.namecn : ''"></Input>
                                         </FormItem>
                                         <FormItem label="身份证号：">
-                                            <Input v-model="formRight.input3"></Input>
+                                            <Input v-model="formRight.input3" :placeholder="profileData.userno ? profileData.userno : ''"></Input>
                                         </FormItem>
                                         <FormItem label="称谓：">
                                             <RadioGroup v-model="formItem.radio">
@@ -164,6 +164,8 @@ const profileMsg = {
             profileData: {
                 nick: "",
                 phone: "",
+                namecn: "",
+                userno: "",
             },
             headImgUrl: "",
             pwd_level: "",
@@ -199,10 +201,16 @@ const profileMsg = {
         fetch(url_info, { credentials: "include" })
             .then(r => r.json())
             .then(d => {
-                this.profileData.nick = d.obj.nick;
-                let str = d.obj.phone + "";
-                this.profileData.phone = str.substr(0, 3) + "****" + str.substr(7);
-                this.headImgUrl = d.obj.headimgurl;
+                if (d.available && d.obj) {
+                    let phone = d.obj.phone;
+                    let userno = d.obj.userno;
+                    let namecn = d.obj.namecn;
+                    this.profileData.nick = d.obj.nick;
+                    this.profileData.phone = phone.substr(0, 3) + "****" + phone.substr(7);
+                    this.profileData.userno = userno.substr(0, 4) + "****" + userno.substr(14);
+                    this.profileData.namecn = namecn.substr(0, 1) + "**";
+                    this.headImgUrl = d.obj.headimgurl;
+                }
             })
         this.container_big();
         tabName = this.$route.query.tabName;
@@ -217,8 +225,8 @@ const profileMsg = {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
             return v ? v[2] : null;
         },
+        //提交个人信息
         handleSubmit(name) {
-            //提交个人信息
             let pk = "account.info.update";
             let nick = this.formRight.input1;
             let namecn = this.formRight.input2;
@@ -240,9 +248,13 @@ const profileMsg = {
                         fetch(url_info, { credentials: "include" })
                             .then(r => r.json())
                             .then(d => {
+                                let phone = d.obj.phone;
+                                let userno = d.obj.userno;
+                                let namecn = d.obj.namecn;
                                 this.profileData.nick = d.obj.nick;
-                                let str = d.obj.phone + "";
-                                this.profileData.phone = str.substr(0, 3) + "****" + str.substr(7);
+                                this.profileData.phone = phone.substr(0, 3) + "****" + phone.substr(7);
+                                this.profileData.userno = userno.substr(0, 4) + "****" + userno.substr(14);
+                                this.profileData.namecn = namecn.substr(0, 1) + "**";
                                 this.headImgUrl = d.obj.headimgurl;
                             })
                         this.$Message.success("保存成功");
@@ -261,12 +273,11 @@ const profileMsg = {
                 let token = myCookie.getCookie('_lac_k_');
                 let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&org_passwd=" + this.formRight.input6 + "&new_passwd=" + this.formRight.input8 + "&token=" + token;
                 fetch(url, { incredentails: "include" }).then(r => r.json()).then(d => {
-                    console.log(d);
-                    if(d.available && d.obj.success) {
+                    if (d.available && d.obj.success) {
                         this.$Message.success('修改密码成功，请重新登录');
                         myCookie.clearCookie('_lac_k_');
                         setTimeout(() => {
-                            this.$router.push({path: '/'});
+                            this.$router.push({ path: '/' });
                         }, 2000);
                     } else {
                         this.$Message.error('修改密码失败');
@@ -277,6 +288,7 @@ const profileMsg = {
             }
 
         },
+        //检测密码强弱
         changePwd() {
             let reg1 = /^[0-9]{6,16}$/; //弱密码
             let reg2 = /^[0-9A-Za-z]{6,16}$/; //中密码
@@ -293,13 +305,6 @@ const profileMsg = {
                 this.pwd_level = "";
             }
         },
-        //确认密码
-        // checkPwd() {
-        //     if(this.formRight.input8 !== this.formRight.input7) {
-
-        //     }
-        // },
-
         // 获取cookie
         getCookie(name) {
             let v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");

@@ -1,16 +1,15 @@
 const routes = [
 	{ path: '/', component: index },
-	{ path: '/bar', component: bar },
-	{ path: '/brand', component: brand },
-	{ path: '/allBrands', component: allBrands },
-	{ path: '/furnitureAroma', component: furnitureAroma },
-	{ path: '/giftsBox', component: giftsBox },
-	{ path: '/goodsDetails', component: goodsDetails },
-	{ path: '/newProducts', component: newProducts },
-	{ path: '/offlineArtSpace', component: offlineArtSpace },
-	{ path: '/personalAroma', component: personalAroma },
-	{ path: '/testAroma', component: testAroma },
-	{ path: '/vipClub', component: vipClub },
+	{ name: 'brand', path: '/brand', component: brand },
+	{ name: 'allBrands', path: '/allBrands', component: allBrands },
+	{ name: 'furnitureAroma', path: '/furnitureAroma', component: furnitureAroma },
+	{ name: 'giftsBox', path: '/giftsBox', component: giftsBox },
+	{ name: 'goodsDetails', path: '/goodsDetails', component: goodsDetails },
+	{ name: 'newProducts', path: '/newProducts', component: newProducts },
+	{ name: 'offlineArtSpace', path: '/offlineArtSpace', component: offlineArtSpace },
+	{ name: 'personalAroma', path: '/personalAroma', component: personalAroma },
+	{ name: 'testAroma', path: '/testAroma', component: testAroma },
+	{ name: 'vipClub', path: '/vipClub', component: vipClub },
 	{ name: 'pay', path: '/pay', component: pay },
 	{ name: 'wxPay', path: '/wxPay', component: wxPay },
 	{ name: 'newsList', path: '/newsList', component: newsList },
@@ -425,9 +424,9 @@ Vue.component('AppHeader', {
 											<tr v-for="item in fragranceData" :key="item.code">
 												<th>{{item.name}}</th>
 												<td>
-												<CheckboxGroup v-model="huaxiang">
-													<Checkbox v-for="child in item.itemList" :key="child.code" :label="child.code" :disabled="disabled">
-														<span  @click.stop="cancelChecked(child.code)">{{child.name}}</span>
+												<CheckboxGroup v-model="huaxiang" @on-change="changeHuaxiang">
+													<Checkbox v-for="child in item.itemList" :key="child.code" :label="child.code">
+														{{child.name}}
 													</Checkbox>
 												</CheckboxGroup>
 												</td>
@@ -449,13 +448,13 @@ Vue.component('AppHeader', {
 											<li v-for="item in recommendData" :key="item.id">
 												<div class="test11-item-left">
 													<p>匹配指数78</p>
-													<p>Andree Putman</p>
-													<p>Figue en Fleur</p>
+													<p></p>
+													<p></p>
 													<p>{{item.goods_name}}</p>
 												</div>
 												<div class="test11-item-right">
 													<a style="display:block;" @click="goGoods(item.id)">
-														<img :src="'http://pe1d.static.pdr365.com/' + item.goods_picturelink" alt="">
+														<img :src="'http://pe1d.static.pdr365.com/' + item.goods_picturelink" alt="" style="height:100%;">
 													</a>
 												</div>
 											</li>
@@ -847,7 +846,7 @@ Vue.component('AppHeader', {
 					title: "优惠活动",
 					childName: [
 						{ name: "duoshou", go: "duoshou", title: "优惠指南" },
-						{ name: "index", goods: "goodsDetails", title: "双周七七" },
+						{ name: "duoshou", goods: "goodsDetails", title: "双周七七" },
 						{ name: "testAroma", go: "testAroma", title: "试香包" },
 					]
 				},
@@ -867,15 +866,12 @@ Vue.component('AppHeader', {
 			search: "",
 			searchData: [],
 			searchDataCover: [],
-			huaxiangCheck: [],
 			autocompleteData: [],
 			searchResShow: true,
 			goodsParams: "",
 		}
 	},
 	mounted() {
-		// let carList = JSON.parse(sessionStorage.getItem('carList'));
-		// this.carLength = carList.length;
 		this.timeStamp = new Date().getTime();
 		let history_key = JSON.parse(localStorage.getItem('history_key'));
 		if (history_key) {
@@ -930,7 +926,6 @@ Vue.component('AppHeader', {
 			let pk = "tcss.goods_code";
 			let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk;
 			fetch(url).then(r => r.json()).then(d => {
-				console.log(d);
 				this.autocompleteData = d.obj.carddata;
 			});
 		},
@@ -944,8 +939,11 @@ Vue.component('AppHeader', {
 			if (this.search) {
 				let history_key = JSON.parse(localStorage.getItem('history_key'));
 				if (history_key) {
-					history_key.push(this.search);
-					localStorage.setItem('history_key', JSON.stringify(history_key));
+					let index = history_key.indexOf(this.search);
+					if (index === -1) {
+						history_key.push(this.search);
+						localStorage.setItem('history_key', JSON.stringify(history_key));
+					}
 				} else {
 					let arr = [];
 					arr.push(this.search);
@@ -1093,7 +1091,6 @@ Vue.component('AppHeader', {
 		},
 		//获取短信验证码
 		getVerifyCode() {
-			console.log('1111111111');
 			let mobile = this.signFormInline.mobile;
 			let verify_code = this.signFormInline.verify_code;
 			let time = new Date().getTime();
@@ -1139,20 +1136,10 @@ Vue.component('AppHeader', {
 				}
 			});
 		},
-		//选中香气
-		cancelChecked(code) {
-			let index = this.huaxiangCheck.indexOf(code);
-			if (this.huaxiangCheck.length < 3) {
-				if (index === -1) {
-					this.huaxiangCheck.push(code);
-				} else {
-					this.huaxiangCheck.splice(index, 1);
-				}
-			} else if (this.huaxiangCheck.length === 3 || this.huaxiangCheck.length > 3) {
-				this.disabled = true;
-				if (index !== -1) {
-					this.huaxiangCheck.splice(index, 1);
-				}
+		//测试题第十题，最多选三个以上
+		changeHuaxiang(val) {
+			if (val.length > 4) {
+				val.splice(-2, 1);
 			}
 		},
 		//测试结果点击跳转到商品详情页
@@ -1244,8 +1231,9 @@ Vue.component('AppHeader', {
 		next11() {
 			this.modal11 = false;
 			this.modal12 = true;
-			if (this.huaxiangCheck.length > 0) {
-				this.huaxiang = this.huaxiangCheck;
+			if (this.huaxiang.length > 1) {
+				let index = this.huaxiang.indexOf('0000');
+				this.huaxiang.splice(index, 1);
 			}
 
 			let aromaValueList = [
@@ -1296,15 +1284,6 @@ Vue.component('AppHeader', {
 			this.$router.push({ path: '/allBrands' });
 		},
 	},
-	watch: {
-		huaxiangCheck() {
-			if (this.huaxiangCheck.length > 3) {
-				this.disabled = true;
-			} else {
-				this.disabled = false;
-			}
-		}
-	}
 });
 
 // 注册全局footer组件
@@ -1402,18 +1381,18 @@ Vue.component('SlideNav', {
 						</p>
 						<ol v-if="item.flag" class="slide-nav-hidden">
 							<li v-for="(childItem,childIndex) in item.childList" :key="childIndex">
-								<router-link class="brands-hover" v-if="index==1 && childItem.id" :to="{path: '/brand', query: {brand: childItem.id}}">
+								<a class="brands-hover" v-if="index==1 && childItem.id" :class="childItem.id === brand_active_id ? 'brand-active' : ''" @click="goBrand(childItem.id)">
 									{{childItem.name || childItem.catNameEn}}
-								</router-link>
+								</a>
 								<p v-if="index==2" :class="childSelected == childIndex ? 'fragrance-nav-active' : ''" @click="childClickNav(childIndex)">
 									<span v-if="childItem.sons"> {{clickShow[childIndex] ? "-" : "+"}} </span>
 									<span>{{childItem.catNameCn}}</span>
 								</p>
 								<ol v-if="index==2 && clickShow[childIndex]" class="slide-nav-hidden fragrance-nav">
 									<li v-for="(_Item, _Index) in childItem.sons" :key="_Item.id">
-										<router-link class="brands-hover" :to="{path: '/personalAroma', query: {cat: _Item.id}}">
+										<a class="brands-hover" @click="goPersonalAroma(_Item.id)">
 											{{_Item.catNameCn}}
-										</router-link>
+										</a>
 									</li>
 								</ol>
 								<router-link class="brands-hover" v-else-if="index !=1 && childItem.goods && goodsParams" :to="{path: '/' + childItem.goods, query: {goodsId: goodsParams}}">
@@ -1508,7 +1487,8 @@ Vue.component('SlideNav', {
 					flag: false,
 					title: "VIP俱乐部"
 				}
-			]
+			],
+			brand_active_id: "",
 		}
 	},
 	computed: {
@@ -1563,6 +1543,15 @@ Vue.component('SlideNav', {
 				this.clickArr.splice(index, 1);
 			}
 		},
+		//前往单个品牌
+		goBrand(id) {
+			this.brand_active_id = id;
+			this.$router.push({ path: "/brand", query: { brand: id } });
+		},
+		//前往个人香水
+		goPersonalAroma(id) {
+            this.$router.push({ path: '/personalAroma', query: { cat: id } });
+        }
 	}
 });
 

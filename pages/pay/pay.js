@@ -2317,7 +2317,7 @@ const pay = {
         //获取token
         this.token = this.getCookie("_lac_k_");
         //获取购物车
-        let car = sessionStorage.getItem("payList");
+        let car = localStorage.getItem("payList");
         if (car) {
             this.carList = JSON.parse(car);
         }
@@ -2374,7 +2374,6 @@ const pay = {
                         mk_price = v.mkPrice;
                         ori_price = v.oriPrice;
                     }
-                    console.log(mk_price, mc_price, ori_price);
                     let unitObj = JSON.parse(v.sku.skus);
                     let unit = "";
                     for (item in unitObj) {
@@ -2397,7 +2396,6 @@ const pay = {
                         skuId: v.sku.id
                     };
                     this.dis_pay_list.push(payItem);
-                    console.log(this.dis_pay_list);
                 });
             }
         });
@@ -2494,18 +2492,19 @@ const pay = {
             this.formValidate.text = selectedData.map(o => o.label).join(" / ");
         },
         payMethods() {
-            // let pk = "tcss.goods.pay.cashdesk";
+            // for (let i = 0; i < this.carList.length; i++) {
+            //     for (let j = 0; j < this.payList.length; j++) {
+            //         if (this.carList[i].skuId === this.payList[j].skuId) {
+            //             this.carList.splice(i, 1);
+            //         }
+            //     }
+            // }
+            
             let pk;
             let url;
-            // let oss = "";
             let store_id = this.addressId;
             let buy_pay_code = this.payMethod;
             let token = myCookie.getCookie('_lac_k_');
-            
-            // this.data1.forEach(v => {
-            //     let ossStr = v.id + ',' + v.skuId + ',' + v.number + ";";
-            //     oss += ossStr;
-            // });
             
             if (this.orderData) {
                 store_id = true;

@@ -55,6 +55,9 @@ const profileOrders = {
                     <Modal class="order-confirm-modal" v-model="confirmModal" title="提示" ok-text="付款成功" cancel-text="遇到问题" @on-ok="asyncOk" width="360px;">
                         <p>是否已完成付款？</p>
                     </Modal>
+                    <Modal class="cancel-order-confirm-modal" v-model="cancel_order_modal" title="提示" ok-text="确定" cancel-text="取消" @on-ok="cancelOrder" width="360px;">
+                        <p>是否取消订单？</p>
+                    </Modal>
                 </div>
                 <form action="/front/using/alipay_new.jsp" id="submit_alipay" method="post" target="_blank">
 
@@ -82,6 +85,8 @@ const profileOrders = {
             no_receive_order: [],
             done_order: [],
             confirmModal: false,
+            cancel_order_modal: false,
+            cancel_order_id: "",
             tabName: "order_all",
         };
     }, beforeRouteEnter(to, from, next) {
@@ -206,9 +211,11 @@ const profileOrders = {
                                     size: "small"
                                 },
                                 style: {
-                                    background: "#f7f9f3",
                                     border: "0",
-                                    color: "#04593f"
+                                    color: "#f7f9f3",
+                                    background: "#04593f",
+                                    marginTop: "5px",
+                                    marginBottom: "5px"
                                 },
                                 on: {
                                     click: () => {
@@ -252,13 +259,47 @@ const profileOrders = {
                                         //         }
                                         //     })
                                         // }
-                                        console.log(params.row);
+                                        let payList = [];
+                                        params.row.order.forEach((v, i) => {
+                                            let carItem = {
+                                                goods_id: v.goodsId,
+                                                goods_name: v.goodsName,
+                                                goods_price: v.saleAmount,
+                                                // goods_unit: v.goods_unit,
+                                                goods_picturelink: v.imgUrl,
+                                                goods_num: v.buyNum,
+                                                skuId: v.goodsSkuId,
+                                            };
+                                            payList.push(carItem);
+                                        });
+                                        let payListStr = JSON.stringify(payList);
+                                        localStorage.setItem("payList", payListStr);
+
+
                                         this.$router.push({ name: 'pay', params: { orderData: params.row } });
+                                        console.log(params.row);
                                     }
                                 }
                             },
                             "去支付"
-                        )
+                        ), h("Button", {
+                            props: {
+                                size: "small"
+                            },
+                            style: {
+                                background: "#f7f9f3",
+                                border: "0",
+                                boxShadow: "none",
+                                color: "#a62136",
+                            },
+                            on: {
+                                click: () => {
+                                    console.log(params.row);
+                                    this.cancel_order_modal = true;
+                                    this.cancel_order_id = params.row.orderId;
+                                }
+                            }
+                        }, "取消订单")
                         ]);
                     } else if (params.row.os == "1000" || params.row.os == "1001") {
                         return h("div", {}, [
@@ -300,7 +341,7 @@ const profileOrders = {
                                     },
                                     on: {
                                         click: () => {
-                                            this.goLogistics(params.index);
+                                            this.goLogistics(params.index, params.row);
                                         }
                                     }
                                 },
@@ -329,8 +370,9 @@ const profileOrders = {
             });
         },
         //查看物流
-        goLogistics(index) {
-            this.$router.push({ path: "/profileLogistics" });
+        goLogistics(index, params) {
+            let orderId = params.orderId;
+            this.$router.push({ path: "/profileLogistics", query: { orderId: orderId } });
         },
         //十进制
         add0(m) {
@@ -377,6 +419,20 @@ const profileOrders = {
         //确认支付弹窗
         custom() {
             this.confirmModal = true;
+        },
+        //取消订单
+        cancelOrder() {
+            let pk = "order.cance_order";
+            let token = myCookie.getCookie('_lac_k_');
+            let o_id = this.cancel_order_id;
+            let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&o_id=" + o_id + "&o_c=1000" + "&token=" + token;
+            fetch(url).then(r => r.json()).then(d => {
+                console.log(d);
+                if (d.available && d.obj.success) {
+                    this.$Message.success('取消订单成功');
+                    this.tabOrderStatus(this.tabName);
+                }
+            })
         },
         //根据tab标签的名称展示相应内容
         tabOrderStatus(name) {
@@ -460,8 +516,12 @@ const profileOrders = {
                                             os: d.obj[i].os
                                         }
                                     ];
+                                } else if (d.obj[i].os == "9001") {
+                                    var data = null;
                                 }
-                                order_list.push(data);
+                                if (data) {
+                                    order_list.push(data);
+                                }
                             }
                             this.orderData = order_list;
                         }

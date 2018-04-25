@@ -106,7 +106,6 @@ const searchRes = {
 			let pk = "tcss.goods_search";
 				url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&key=" + res;
 				fetch(url).then(r => r.json()).then(d => {
-					console.log(d);
 					if(d.available) {
 						this.giftsBoxImgList = d.obj.carddata;
 					}

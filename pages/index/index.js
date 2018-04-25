@@ -465,9 +465,10 @@ const index = {
               <tr v-for="item in fragranceData" :key="item.code">
                 <th>{{item.name}}</th>
                 <td>
-                  <CheckboxGroup v-model="huaxiang">
-                    <Checkbox v-for="child in item.itemList" :key="child.code" :label="child.code" :disabled="disabled">
-                        <span  @click.stop="cancelChecked(child.code)">{{child.name}}</span>
+                  <CheckboxGroup v-model="huaxiang" @on-change="changeHuaxiang">
+                    <Checkbox v-for="child in item.itemList" :key="child.code" :label="child.code">
+                        <!--<span  @click.stop="cancelChecked(child.code)">{{child.name}}</span>-->
+                        {{child.name}}
                     </Checkbox>
                   </CheckboxGroup>
                 </td>
@@ -490,13 +491,12 @@ const index = {
               <li v-for="item in recommendData" :key="item.id">
                 <div class="test11-item-left">
                   <p>匹配指数78</p>
-                  <p>Andree Putman</p>
-                  <p>Figue en Fleur</p>
+                  <p></p>
                   <p>{{item.goods_name}}</p>
                 </div>
                 <div class="test11-item-right">
                   <a @click="goGoods(item.id)" style="display:block;">
-                    <img :src="'http://pe1d.static.pdr365.com/' + item.goods_picturelink" alt="">
+                    <img :src="'http://pe1d.static.pdr365.com/' + item.goods_picturelink" alt="" style="height:100%;">
                   </a>
                 </div>
               </li>
@@ -735,7 +735,7 @@ const index = {
       fragranceData: [],
       spicesList: [],
       disabled: false,
-      huaxiangCheck: [],
+      // huaxiangCheck: [],
       bannerValue: 0,
       bannerSetting: {
         autoplaySpeed: 5000,
@@ -785,6 +785,12 @@ const index = {
     //页面两侧浮动元素
     float();
   }, methods: {
+    //测试题第十题，最多选三个以上
+    changeHuaxiang(val) {
+       if(val.length > 4) {
+        val.splice(-2,1);
+      } 
+    },
     // 获取cookie
     getCookie(name) {
       var v = window.document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -901,7 +907,7 @@ const index = {
         // let sn = "1498201310156";
         let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&bid=" + bid + "&token=" + token;
         fetch(url).then(r => r.json()).then(d => {
-          console.log(d);
+          // console.log(d);
         });
       } else {
         this.get_coupons = false;
@@ -1051,8 +1057,9 @@ const index = {
     next11() {
       this.modal11 = false;
       this.modal12 = true;
-      if (this.huaxiangCheck.length > 0) {
-        this.huaxiang = this.huaxiangCheck;
+      if (this.huaxiang.length > 1) {
+        let index = this.huaxiang.indexOf('0000');
+        this.huaxiang.splice(index, 1);
       }
 
       let aromaValueList = [
@@ -1095,34 +1102,34 @@ const index = {
       return val + "%";
     },
     //取消选中香气
-    cancelChecked(code) {
-      let index = this.huaxiangCheck.indexOf(code);
-      if (this.huaxiangCheck.length < 3) {
-        if (index === -1) {
-          this.huaxiangCheck.push(code);
-        } else {
-          this.huaxiangCheck.splice(index, 1);
-        }
-      } else if (this.huaxiangCheck.length === 3 || this.huaxiangCheck.length > 3) {
-        this.disabled = true;
-        if (index !== -1) {
-          this.huaxiangCheck.splice(index, 1);
-        }
-      }
-    },
+    // cancelChecked(code) {
+    //   let index = this.huaxiangCheck.indexOf(code);
+    //   if (this.huaxiangCheck.length < 3) {
+    //     if (index === -1) {
+    //       this.huaxiangCheck.push(code);
+    //     } else {
+    //       this.huaxiangCheck.splice(index, 1);
+    //     }
+    //   } else if (this.huaxiangCheck.length === 3 || this.huaxiangCheck.length > 3) {
+    //     this.disabled = true;
+    //     if (index !== -1) {
+    //       this.huaxiangCheck.splice(index, 1);
+    //     }
+    //   }
+    // },
     goGoods(id) {
       this.modal12 = false;
       this.$router.push({ path: '/goodsDetails', query: { goodsId: id } });
     }
 
   },
-  watch: {
-    huaxiangCheck() {
-      if (this.huaxiangCheck.length > 3) {
-        this.disabled = true;
-      } else {
-        this.disabled = false;
-      }
-    }
-  }
+  // watch: {
+  //   huaxiangCheck() {
+  //     if (this.huaxiangCheck.length > 3) {
+  //       this.disabled = true;
+  //     } else {
+  //       this.disabled = false;
+  //     }
+  //   }
+  // }
 }

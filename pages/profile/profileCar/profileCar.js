@@ -90,7 +90,7 @@ const profileCar = {
     },
     mounted() {
         //获取购物车
-        let car = sessionStorage.getItem("carList");
+        let car = localStorage.getItem("carList");
         if (car) {
             this.carList = JSON.parse(car);
         }
@@ -245,7 +245,7 @@ const profileCar = {
                                         if (this.carList.length === 0) {
                                             this.carList = null;
                                         }
-                                        sessionStorage.setItem(
+                                        localStorage.setItem(
                                             "carList",
                                             JSON.stringify(this.carList)
                                         );
@@ -266,19 +266,12 @@ const profileCar = {
         },
         //点击去结算
         goPay() {
-            for (let i = 0; i < this.carList.length; i++) {
-                for (let j = 0; j < this.payList.length; j++) {
-                    if (this.carList[i].skuId === this.payList[j].skuId) {
-                        this.carList.splice(i, 1);
-                    }
-                }
-            }
             if (this.payList.length > 0) {
                 let payListStr = JSON.stringify(this.payList);
                 let carListStr = JSON.stringify(this.carList);
 
-                sessionStorage.setItem("payList", payListStr);
-                sessionStorage.setItem("carList", carListStr);
+                localStorage.setItem("payList", payListStr);
+                localStorage.setItem("carList", carListStr);
                 this.$router.push({ path: "/pay" });
             } else {
                 this.$Message.error("请选择商品");

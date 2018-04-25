@@ -26,23 +26,26 @@ const profileLogistics = {
                     <div class="profileLogistics-box">
                         <div class="profileLogistics-title">
                             <span>我的物流</span>
-                            <span>圆通速递</span>
-                            <span>500466923126</span>
+                            <span>{{deliver_name}}</span>
+                            <span>{{deliver_no}}</span>
                         </div>
                         <div class="profileLogistics-item">
-                            <Steps :current="1" direction="vertical" size="small">
-                                <Step title="2018.2.24 22:23" content="客户 签收人：本人签收 感谢使用圆通速递，期待再次为您服务"></Step>
-                                <Step title="2018.2.24 22:23" content="「北京转运中心」 已发出  下一站  「北京市东城区金宝街公司」"></Step>
-                                <Step title="2018.2.24 22:23" content="「北京市朝阳区樱花公司」 已收件"></Step>
-                                <Step title="2018.2.24 22:23" content="买家已发货，包裹等待揽收"></Step> 
-                            </Steps>
+                            <Timeline>
+                                <TimelineItem v-for="(item, index) in deliver_data" :key="index" color="#05593F">
+                                    <Icon type="checkmark-circled" slot="dot"></Icon>
+                                    <p style="font-size:16px;color:#495060">{{item.time}}</p>
+                                    <p style="font-size:12px;color:#8F939D">{{item.context}}</p>
+                                </TimelineItem>
+                            </Timeline>
                         </div>
                     </div>
                 </div>
             </div>
 	`, data: function () {
         return {
-            
+            deliver_data: [],
+            deliver_name: "",
+            deliver_no: "",
         };
     }, beforeRouteEnter(to, from, next) {
         //当组件加载时自动调用此函数 函数结尾必须next();
@@ -51,8 +54,38 @@ const profileLogistics = {
     }, created() {
         //组件加载完成会自动调用此方法
         window.scrollTo(0, 0);
+    }, mounted() {
+        let o_id = this.$route.query.orderId;
+        let pk = "order.express.follow";
+        // let code = "490190074640"; //于聪的物流信息
+        let token = myCookie.getCookie('_lac_k_');
+        let url = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk + "&o_id=" + o_id + "&token=" + token;
+        fetch(url, { incredentail: "include" }).then(r => r.json()).then(d => {
+            if (d.available && d.obj.success) {
+                let deliver_data = JSON.parse(d.obj.data[0].wuliu);
+                // console.log(deliver_data);
+                this.deliver_data = deliver_data.lastResult.data;
+                this.deliver_no = d.obj.data[0].billNo;
+                deliver_code = d.obj.data[0].orderDeliveryDto.billFirm;
+                if(deliver_code === "df1001") {
+                    this.deliver_name = "顺丰速运"
+                } else if (deliver_code === "df1002") {
+                    this.deliver_name = "申通"
+                } else if(deliver_code === "df1003") {
+                    this.deliver_name = "圆通";
+                } else if(deliver_code === "df1004") {
+                    this.deliver_name = "中通";
+                }else if(deliver_code === "df1005") {
+                    this.deliver_name = "百世汇通";
+                } else if (deliver_code === "df1006") {
+                    this.deliver_name = "韵达";
+                } else if(deliver_code === "df9000") {
+                    this.deliver_name = "其他快递"
+                }
+            }
+        })
     }, methods: {
-        
+
     }
 
 }

@@ -24,11 +24,11 @@ const goodsDetails = {
 				<div class="gd-details-container">
 					<div class="gd-details-left">
 						<div class="gd-details-bigImage">
-							<img :src="'http://pe1d.static.pdr365.com/' + bigImg" alt="" style="height:100%;">
+							<img v-if="bigImg" :src="'http://pe1d.static.pdr365.com/' + bigImg" alt="" style="height:100%;">
 						</div>
 						<ul class="gd-details-imgList">
 							<li v-for="(item, index) in goodsImgList" :key="index">
-								<img v-if="item.imgUrl" :src="'http://pe1d.static.pdr365.com/' + item.imgUrl" alt="" style="height:100%;">
+								<img v-if="item.imgUrl" :src="'http://pe1d.static.pdr365.com/' + item.imgUrl" alt="" style="height:100%;background:#fff;">
 							</li>
 						</ul>
 					</div>
@@ -72,7 +72,7 @@ const goodsDetails = {
 							<span>数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量:</span>
 							<div class="counter">
 								<div class="counter-left">
-									<input type="text" v-model="goodsNum">
+									<input type="text" readonly v-model="goodsNum">
 								</div>
 								<div class="counter-right">
 									<div class="counter-plus" @click="addNum">+</div>
@@ -4674,82 +4674,7 @@ const goodsDetails = {
 		// this.brand = JSON.parse(this.$route.query.brandStr);
 	}, mounted() {
 		this.timeStamp = new Date().getTime();
-		//获取商品详情
-		let pk_goods_details = "tcss.get.goods.details.perfume";
-		let url_goods_details = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_goods_details + "&goods_id=" + this.goodsId;
-		fetch(url_goods_details)
-			.then(r => r.json())
-			.then(d => {
-				if (d.available) {
-					if (!d.obj.data.is_77) {
-						this.del_line = false;
-						this.goodsContent = d.obj.data.goods.content;
-						this.goodsDetails = d.obj.data.goods.g;
-						this.unitData = d.obj.data.goods.g.goodsSkuList;
-						this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
-						this.goodsImgList = d.obj.data.goods.g.goodsImgList;
-						let unitList = [];
-						this.unitData.forEach(v => {
-							let unitObj = JSON.parse(v.skus);
-							let unit = "";
-							for (item in unitObj) {
-								unit = unitObj[item];
-							}
-							let obj = {
-								id: v.id,
-								skuPrice: v.skuPrice,
-								unit: unit,
-								stock: v.stock
-							}
-							unitList.push(obj);
-						});
-						this.unitList = unitList;
-						this.skuPrice = this.unitData[0].skuPrice;
-						this.skuId = this.unitList[0].id;
-						this.skuUnit = this.unitList[0].unit;
-						this.skuStock = this.unitList[0].stock;
-						if (d.obj.data.category !== null) {
-							this.brand = d.obj.data.category;
-						} else {
-							this.brand = null;
-						}
-					} else {
-						this.del_line = true;
-						this.goodsContent = d.obj.data.goods.content;
-						this.goodsDetails = d.obj.data.goods.g;
-						this.unitData = d.obj.data.skuList;
-						this.bigImg = d.obj.data.goods.g.goods_picturelink_big;
-						this.goodsImgList = d.obj.data.goods.g.goodsImgList;
-						let unitList = [];
-						this.unitData.forEach(v => {
-							let unitObj = JSON.parse(v.sku.skus);
-							let unit = "";
-							for (item in unitObj) {
-								unit = unitObj[item];
-							}
-							let obj = {
-								id: v.sku.id,
-								skuPrice: v.mkPrice,
-								oriPrice: v.sku.skuPrice,
-								unit: unit,
-								stock: v.sku.stock
-							}
-							unitList.push(obj);
-						});
-						this.unitList = unitList;
-						this.skuPrice = this.unitList[0].skuPrice;
-						this.oriPrice = this.unitList[0].oriPrice;
-						this.skuId = this.unitList[0].id;
-						this.skuUnit = this.unitList[0].unit;
-						this.skuStock = this.unitList[0].stock;
-						if (d.obj.data.category !== null) {
-							this.brand = d.obj.data.category;
-						} else {
-							this.brand = null;
-						}
-					}
-				}
-			});
+		this.getGoodsDetails();
 		//页面两侧浮动元素
 		float();
 	}, methods: {
@@ -4889,7 +4814,7 @@ const goodsDetails = {
 				payList.push(payItem);
 				this.payList = payList;
 				let payListStr = JSON.stringify(this.payList);
-				sessionStorage.setItem("payList", payListStr);
+				localStorage.setItem("payList", payListStr);
 				this.$router.push({ path: "/pay" });
 			} else {
 				this.modalLogin = true;
@@ -4899,7 +4824,7 @@ const goodsDetails = {
 		// 加入购物车
 		addToCar() {
 			let login = this.getCookie("_lac_k_");
-			this.carList = JSON.parse(sessionStorage.getItem("carList"));
+			this.carList = JSON.parse(localStorage.getItem("carList"));
 			let carItem = {
 				goods_id: this.goodsDetails.id,
 				goods_name: this.goodsDetails.goods_name,
@@ -4934,7 +4859,7 @@ const goodsDetails = {
 					this.$Message.success("成功加入购物车");
 				}
 				let carListStr = JSON.stringify(this.carList);
-				sessionStorage.setItem("carList", carListStr);
+				localStorage.setItem("carList", carListStr);
 			} else {
 				this.goMethods = "car";
 				this.modalLogin = true;
@@ -4972,10 +4897,14 @@ const goodsDetails = {
 			}
 		},
 		addNum() {
-			this.goodsNum++;
+			if(this.goodsNum < this.skuStock) {
+				this.goodsNum++
+			} else {
+				this.$Message.warning('库存不足');
+			}
 		},
 		cutNum() {
-			if (this.goodsNum < 1) {
+			if (this.goodsNum < 2) {
 				return;
 			}
 			this.goodsNum--;
@@ -4992,11 +4921,9 @@ const goodsDetails = {
 				}
 			});
 		},
-	},
-	watch: {
-		$route() {
+		//获取商品详情
+		getGoodsDetails() {
 			this.goodsId = this.$route.query.goodsId;
-			//获取商品详情
 			let pk_goods_details = "tcss.get.goods.details.perfume";
 			let url_goods_details = appset.domain + "/front/ypc/rt/?" + Date.parse(new Date()) + "&pk=" + pk_goods_details + "&goods_id=" + this.goodsId;
 			fetch(url_goods_details)
@@ -5072,6 +4999,11 @@ const goodsDetails = {
 						}
 					}
 				});
+		}
+	},
+	watch: {
+		$route() {
+			this.getGoodsDetails();
 		}
 	}
 }

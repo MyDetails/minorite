@@ -17,6 +17,18 @@
   background: #04593f;
   border-color: #04593f;
 }
+.cancel-order-confirm-modal .ivu-modal-content {
+  height: 180px;
+  background: #ededec;
+  border-radius: 5px;
+}
+.cancel-order-confirm-modal .ivu-modal-close {
+  display: none;
+}
+.cancel-order-confirm-modal .ivu-btn-primary {
+  background: #04593f;
+  border-color: #04593f;
+}
 
 /* .header-search .ivu-modal-content {
   width: 100%;
